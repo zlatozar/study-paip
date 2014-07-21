@@ -20,14 +20,14 @@
               (Aristotle) (A A Milne) (Z Z Top)
               (Sir Larry Olivier) (Miss Scarlet)))
 
-;;______________________________________
-;;
+;;; ____________________________________________________________________________
+;;;
 
 (defparameter *titles*
   '(Mr Mrs Miss Ms Sir Madam Dr Admiral Major General)
   "A list of titles that can appear at the start of a name.")
 
-;;______________________________________
+;;; ____________________________________________________________________________
 ;;
 
 (defun first-name (name)
@@ -36,7 +36,7 @@
       (first-name (rest name))
       (first name)))
 
-;;______________________________________
+;;; ____________________________________________________________________________
 ;;
 
 (defun number-and-negation (x)
@@ -49,7 +49,7 @@
   "Given a list, return only the numbers and their negations."
   (mappend #'number-and-negation input))
 
-;;______________________________________
+;;; ____________________________________________________________________________
 ;;
 
 (defun atomprint (exp &optional (depth 0))
@@ -59,7 +59,7 @@
       (dolist (element exp)
         (atomprint element (+ depth 1)))))
 
-;;______________________________________
+;;; ____________________________________________________________________________
 ;;
 
 (defun power (x n)
@@ -69,7 +69,7 @@
         ((evenp n) (expt (power x (/ n 2)) 2))
         (t (* x (power x (- n 1))))))
 
-;;______________________________________
+;;; ____________________________________________________________________________
 ;;
 
 (defun count-atoms (exp)
@@ -87,7 +87,7 @@
         (t (+ (count-all-atoms (first exp) 1)
               (count-all-atoms (rest exp) 0)))))
 
-;;______________________________________
+;;; ____________________________________________________________________________
 ;;
 
 (defun count-anywhere (item tree)
@@ -97,7 +97,7 @@
         (t (+ (count-anywhere item (first tree))
               (count-anywhere item (rest tree))))))
 
-;;______________________________________
+;;; ____________________________________________________________________________
 ;;
 
 (defun dot-product (a b)

@@ -3,7 +3,7 @@
 ;;; Code from Paradigms of Artificial Intelligence Programming
 ;;; Copyright (c) 1991 Peter Norvig
 
-;;;; File intro-examples.lisp
+;;;; File examples.lisp
 
 (in-package #:tutor)
 
@@ -44,14 +44,14 @@
   ((setf town (list 'Anytown 'USA)))
   ((list p 'of town 'may 'have 'already 'won!))
   ((append p '(of) town '(may have already won)))
-  (p)
 
+  (p)
   (:section "1.5 Defining New Functions")
 
   "The special form DEFUN stands for 'define function.'"
   "It is used here to define a new function called last-name:"
-  ;; ((requires "intro"))
 
+  ;; requires "intro.lisp"
   ((last-name p) => PUBLIC @ 13)
   ((last-name '(Rex Morgan MD)) => MD)
   ((last-name '(Spot)) => SPOT)
@@ -119,5 +119,4 @@
   "first argument and applies the function to a list of arguments,"
   "but in the case of FUNCALL, the arguments are listed separately:"
   ((funcall #'+ 2 3) => 5 @ 20)
-  ((apply #'+ '(2 3)) => 5)
-)
+  ((apply #'+ '(2 3)) => 5))

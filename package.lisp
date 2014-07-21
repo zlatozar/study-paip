@@ -1,52 +1,99 @@
 ;;; -*- Mode: Lisp; Syntax: Common-Lisp; -*-
 
-;;;; package.lisp: Define packages
+;;;; package.lisp: Define PAIP packages. Every chapter is a package.
 
-;;______________________________________
-;;                     Examine packages
+(in-package :cl-user)
 
-(defun package-internal-symbols (package)
-  (let ((rslt nil))
-    (do-symbols (s package)
-                (when (eq (second
-                           (multiple-value-list
-                            (find-symbol (symbol-name s) package)))
-                          :internal)
-                  (push s rslt)))
-    rslt))
+;;; ____________________________________
+;;;                               Tools
 
-(defun package-external-symbols (package)
-  (let ((rslt nil))
-    (do-external-symbols (s package)
-                         (push s rslt))
-    rslt))
+(defpackage #:tools
+  (:documentation "This package is not part of the book.
+It contains functions that are collected from other places and
+could help during coding sessions.")
+  (:use #:common-lisp)
+  (:export #:??
+           #:?a
+           #:?f
+           #:?s
+           #:?t
+           #:?v))
 
-;;______________________________________
-;;                Book helper functions
+;;; ____________________________________
+;;;               Book helper functions
 
-;; Helper functions
-(defpackage #:paip
-  (:use #:cl)
+(defpackage #:paip-aux
+  (:documentation "Useful functions defined in the book.")
+  (:use #:common-lisp)
   (:shadow #:symbol
            #:debug)
 
   (:export #:starts-with
            #:mappend))
 
-;;______________________________________
-;;                        Book chapters
+;;; ____________________________________
+;;;            Book chapters with tools
+
+;;; PART I
 
 (defpackage #:ch1
-  (:use #:cl)
+  (:documentation "Chapter 1: Introduction to Lisp")
+  (:use #:common-lisp
+        #:tools
+        #:paip-aux)
+
   (:export #:first-name
            #:last-name))
 
+(defpackage #:ch2
+  (:documentation "Chapter 2: A Simple Lisp Program")
+  (:use #:common-lisp
+        #:tools
+        #:paip-aux)
 
+  (:export #:*grammar*
+           #:*bigger-grammar*
 
-;;______________________________________
-;;                         Run examples
+           #:sentence
+           #:noun-phrase
+           #:verb-phrase
+           #:generate
+           #:generate-tree))
+
+(defpackage #:ch3
+  (:documentation "Chapter 3: Overview of Lisp")
+  (:use #:common-lisp
+        #:tools
+        #:paip-aux)
+
+  (:export #:length9
+           #:tree-equal
+           #:same-shape-tree
+           #:adder
+           #:bank-account))
+
+;;; PART II
+
+;;; ____________________________________
+;;;                        Run examples
 
 (defpackage #:tutor
-  (:use #:cl
-        #:paip
-        #:ch1))
+  (:documentation "Use defined in the book test framework
+and run chapter examples.")
+  (:use #:common-lisp
+        #:paip-aux
+
+        #:ch1
+        #:ch2
+        #:ch3)
+
+  (:export #:do-examples
+           #:do-chapter))
+
+;;; ____________________________________
+;;;                             Exposed
+
+(defpackage #:paip
+  (:documentation "Expose functions from PAIP books that could be
+used in projects.")
+  (:use #:common-lisp))

@@ -5,7 +5,7 @@
 
 ;;;; File auxfns.lisp: Auxiliary functions
 
-(in-package #:paip)
+(in-package #:paip-aux)
 
 ;;; File auxfns.lisp: Auxiliary functions used by all other programs
 
@@ -38,8 +38,8 @@
 ;; NOTE: examples.lips will be removed during reading
 (defvar *paip-files*
   `("auxfns" "tutor" "examples"
-             "ch1/intro" "ch1/examples" "simple" "overview" "gps1" "gps" "eliza1" "eliza"
-             "patmatch"
+             "ch01/intro" "ch01/examples" "ch02/simple" "ch02/examples" "ch03/overview" "ch03/examples"
+             "gps1" "gps" "eliza1" "eliza" "patmatch"
              "eliza-pm" "search" "gps-srch" "student" "macsyma" "macsymar" "unify"
              "prolog1" "prolog" "prologc1" "prologc2" "prologc" "prologcp"
              "clos" "krep1" "krep2" "krep" "cmacsyma" "mycin" "mycin-r" "waltz"
@@ -156,8 +156,8 @@
 
   )
 
-;;______________________________________
-;;
+;;; ____________________________________________________________________________
+;;;
 
 (defun length=1 (x)
   "Is x a list of length 1?"
@@ -167,8 +167,8 @@
   "The rest of a list after the first THREE elements."
   (cdddr list))
 
-;;______________________________________
-;;                  Auxiliary Functions
+;;; ____________________________________________________________________________
+;;;                                                         Auxiliary Functions
 
 (setf (symbol-function 'find-all-if) #'remove-if-not)
 
@@ -201,8 +201,8 @@
         ((length=1 exps) (first exps))
         (t (cons op exps))))
 
-;;______________________________________
-;;
+;;; ____________________________________________________________________________
+;;;
 
 (defun seq-ref (seq index)
   "Return code that indexes into a sequence, using
@@ -220,7 +220,7 @@
       (setf (fill-pointer array)
             (max (fill-pointer array) new-length))))
 
-;;______________________________________
+;;; ____________________________________________________________________________
 ;;
 
 ;;; NOTE: In ANSI Common Lisp, the effects of adding a definition (or most
@@ -240,7 +240,7 @@
   "Return the last element (not last cons cell) of list"
   (first (last list)))
 
-;;______________________________________
+;;; ____________________________________________________________________________
 ;;
 
 (defun mappend (fn list)
@@ -260,21 +260,21 @@
   "Pick a random element out of a sequence."
   (elt seq (random (length seq))))
 
-;;______________________________________
-;;
+;;; ____________________________________________________________________________
+;;;
 
 (defun member-equal (item list)
   (member item list :test #'equal))
 
-;;______________________________________
-;;
+;;; ____________________________________________________________________________
+;;;
 
 (defun compose (&rest functions)
   #'(lambda (x)
       (reduce #'funcall functions :from-end t :initial-value x)))
 
-;;______________________________________
-;;        The Debugging Output Facility
+;;; ____________________________________________________________________________
+;;;                                               The Debugging Output Facility
 
 (defvar *dbg-ids* nil "Identifiers used by dbg")
 
@@ -293,8 +293,8 @@
   (setf *dbg-ids* (if (null ids) nil
                       (set-difference *dbg-ids* ids))))
 
-;;______________________________________
-;;
+;;; ____________________________________________________________________________
+;;;
 
 (defun dbg-indent (id indent format-string &rest args)
   "Print indented debugging info if (DEBUG ID) has been specified."
@@ -303,8 +303,8 @@
     (dotimes (i indent) (princ "  " *debug-io*))
     (apply #'format *debug-io* format-string args)))
 
-;;______________________________________
-;;            Pattern Matching Facility
+;;; ____________________________________________________________________________
+;;;            Pattern Matching Facility
 
 (defconstant fail nil)
 (defvar no-bindings '((t . t)))
@@ -357,8 +357,8 @@
   "Get the value part (for var) from a binding list."
   (binding-val (get-binding var bindings)))
 
-;;______________________________________
-;;             The Memoization Facility
+;;; ____________________________________________________________________________
+;;;                                                    The Memoization Facility
 
 (defmacro defun-memo (fn args &body body)
   "Define a memoized function."
@@ -387,8 +387,8 @@
         (memo (symbol-function fn-name)
               :name fn-name :key key :test test)))
 
-;;______________________________________
-;;                 Delayed Computation
+;;; ____________________________________________________________________________
+;;;                                                         Delayed Computation
 
 (defstruct delay value (computed? nil))
 
@@ -403,8 +403,8 @@
       (prog1 (setf (delay-value delay) (funcall (delay-value delay)))
         (setf (delay-computed? delay) t))))
 
-;;______________________________________
-;;                          Defresource
+;;; ____________________________________________________________________________
+;;;                                                                 Defresource
 
 (defmacro defresource (name &key constructor (initial-copies 0)
                               (size (max initial-copies 10)))
@@ -438,8 +438,8 @@
            ,@body
            (,deallocate var)))))
 
-;;______________________________________
-;;                               Queues
+;;; ____________________________________________________________________________
+;;;                                                                      Queues
 
 ;;; A queue is a (last . contents) pair
 
@@ -505,8 +505,8 @@
       (or (find-if-anywhere predicate (first tree))
           (find-if-anywhere predicate (rest tree)))))
 
-;;______________________________________
-;;
+;;; ____________________________________________________________________________
+;;;
 
 (defmacro define-enumerated-type (type &rest elements)
   "Represent an enumerated type with integers 0-n."
@@ -520,8 +520,8 @@
           for i from 0
           collect `(defconstant ,element ,i))))
 
-;;______________________________________
-;;
+;;; ____________________________________________________________________________
+;;;
 
 (defun not-null (x) (not (null x)))
 
@@ -533,8 +533,8 @@
   "The first element of x, if it is a list; else x itself."
   (if (consp x) (first x) x))
 
-;;______________________________________
-;;      CLtL2 and ANSI CL Compatibility
+;;; ____________________________________________________________________________
+;;;                                             CLtL2 and ANSI CL Compatibility
 
 (unless (fboundp 'defmethod)
   (defmacro defmethod (name args &rest body)
@@ -607,8 +607,8 @@
        .,body))
   )
 
-;;______________________________________
-;;                               Reduce
+;;; ____________________________________________________________________________
+;;;                                                                      Reduce
 
 (when nil ;; Change this to T if you need REDUCE with :key keyword.
 
