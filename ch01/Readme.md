@@ -82,3 +82,5 @@ And do not forget parenthesis around lambda e.g.
     * Switch to ```lisp-koans``` package
     * Fill the blanks
     * Send s-expression to REPL to see result ```C-c C-j```. If it is correct should return ```T```
+    * When finish with koan file reload ````contemplate``` (choose [CONTINUE] Go ahead and
+change the value.). In this way next koan file will be suggested.
