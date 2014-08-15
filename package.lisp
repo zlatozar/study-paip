@@ -29,71 +29,88 @@ could help during coding sessions.")
            #:debug)
 
   (:export #:starts-with
-           #:mappend))
-
-;;; ____________________________________
-;;;            Book chapters with tools
-
-;;; PART I
-
-(defpackage #:ch1
-  (:documentation "Chapter 1: Introduction to Lisp")
-  (:use #:common-lisp
-        #:tools
-        #:paip-aux)
-
-  (:export #:first-name
-           #:last-name))
-
-(defpackage #:ch2
-  (:documentation "Chapter 2: A Simple Lisp Program")
-  (:use #:common-lisp
-        #:tools
-        #:paip-aux)
-
-  (:export #:*grammar*
-           #:*bigger-grammar*
-
-           #:sentence
-           #:noun-phrase
-           #:verb-phrase
-           #:generate
-           #:generate-tree))
-
-(defpackage #:ch3
-  (:documentation "Chapter 3: Overview of Lisp")
-  (:use #:common-lisp
-        #:tools
-        #:paip-aux)
-
-  (:export #:length9
-           #:tree-equal
-           #:same-shape-tree
-           #:adder
-           #:bank-account))
-
-;;; PART II
+           #:mappend
+           #:dbg-indent
+           #:find-all
+           #:find-all-if
+           #:debug
+           #:undebug
+           #:dbg-indent))
 
 ;;; ____________________________________
 ;;;                        Run examples
 
 (defpackage #:tutor
   (:documentation "Use defined in the book test framework
-and run chapter examples.")
+and run chapter examples. If in chapter there is more than one version
+only final is included.")
   (:use #:common-lisp
-        #:paip-aux
+        #:paip-aux)
+  (:shadowing-import-from #:common-lisp :debug)
 
-        #:ch1
-        #:ch2
-        #:ch3)
-
-  (:export #:do-examples
+  (:export #:defexamples
+           #:do-examples
            #:do-chapter))
+
+;;; ____________________________________
+;;;            Book chapters with tools
+
+;;; PART I "Introduction to Common Lisp"
+
+(defpackage #:ch1
+  (:documentation "Chapter 1: Introduction to Lisp")
+  (:use #:common-lisp
+        #:tools
+        #:paip-aux
+        #:tutor)
+  (:shadowing-import-from #:common-lisp :debug))
+
+
+(defpackage #:ch2
+  (:documentation "Chapter 2: A Simple Lisp Program")
+  (:use #:common-lisp
+        #:tools
+        #:paip-aux
+        #:tutor)
+  (:shadowing-import-from #:common-lisp :debug))
+
+
+(defpackage #:ch3
+  (:documentation "Chapter 3: Overview of Lisp")
+  (:use #:common-lisp
+        #:tools
+        #:paip-aux
+        #:tutor)
+  (:shadowing-import-from #:common-lisp :debug))
+
+
+;;; PART II "Early AI Programs"
+
+
+(defpackage #:ch4-first
+  (:documentation "Chapter 4: GPS: The General Problem Solver (first version)")
+  (:use #:common-lisp
+        #:tools
+        #:tutor
+        #:paip-aux)
+  (:shadowing-import-from #:common-lisp :debug))
+
+
+(defpackage #:ch4-final
+  (:documentation "Chapter 4: GPS: The General Problem Solver (final version)")
+  (:use #:common-lisp
+        #:tools
+        #:paip-aux
+        #:tutor)
+  (:shadowing-import-from #:paip-aux :debug)
+  ;; Expose final version
+  (:export #:gps))
 
 ;;; ____________________________________
 ;;;                             Exposed
 
 (defpackage #:paip
-  (:documentation "Expose functions from PAIP books that could be
+  (:documentation "Expose functions from PAIP book that could be
 used in projects.")
-  (:use #:common-lisp))
+  (:use #:common-lisp
+        #:ch4-final))

@@ -39,7 +39,7 @@
 (defvar *paip-files*
   `("auxfns" "tutor" "examples"
              "ch01/intro" "ch01/examples" "ch02/simple" "ch02/examples" "ch03/overview" "ch03/examples"
-             "gps1" "gps" "eliza1" "eliza" "patmatch"
+             "ch04/gps1" "ch04/gps" "ch04/examples" "eliza1" "eliza" "patmatch"
              "eliza-pm" "search" "gps-srch" "student" "macsyma" "macsymar" "unify"
              "prolog1" "prolog" "prologc1" "prologc2" "prologc" "prologcp"
              "clos" "krep1" "krep2" "krep" "cmacsyma" "mycin" "mycin-r" "waltz"

@@ -63,7 +63,7 @@
 
 (defmethod display-example (exp interface)
   ;; Display a prompt and the expression on the interface's output stream
-  (format (output-stream interface) "~&> ~S~%" exp))
+  (format (output-stream interface) "~&> ~S~%~%" exp))
 
 (defmethod display-section (section interface)
   ;; Display the string describing this section somewhere
@@ -119,9 +119,9 @@
                          (nearly-equal result expected))
                (if stream
                    (format *terminal-io*
-                           "~%**** expected ~S" expected)
+                           "~%**ERROR** expected ~S" expected)
                    (format *terminal-io*
-                           "~%**** For ~S~%     expected ~S~%      got:~S~%"
+                           "~%**ERROR** For ~S~%     expected ~S~%      got:~S~%"
                            exp expected result)))))
           ((atom example) (cerror "Bad example: ~A" example example)))
     ;; Return nil if there is a unexpected result:

@@ -26,4 +26,12 @@
 
                  (:file "ch03/overview")
                  (:file "ch03/examples" :depends-on ("tutor" "ch03/overview"))
+
+                 ;; first version
+                 (:file "ch04/gps1")
+                 (:file "ch04/examples-gps1" :depends-on ("tutor" "ch04/gps1"))
+                 ;; final version
+                 (:file "ch04/gps" :depends-on ("ch04/gps1"))
+                 (:file "ch04/examples-gps" :depends-on ("tutor" "ch04/gps"))
+
                  ))

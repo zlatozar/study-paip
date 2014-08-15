@@ -198,10 +198,6 @@
             (red . rouge) (you . tu))
           words))
 
-;; Moved from examples here
-(english->french '(hello my friend - how are you today?))
-; => (bonjour mon ami - comment va tu today?) @ 77)
-
 ;;; ____________________________________________________________________________
 
 (defstruct node
@@ -290,13 +286,12 @@
 
 ;;; ____________________________________________________________________________
 
-;; Use keywords when communicate between programs in different packages
 (defun bank-account (balance)
   "Open a bank account starting with the given balance."
   #'(lambda (action amount)
       (case action
-        (:deposit (setf balance (+ balance amount)))
-        (:withdraw (setf balance (- balance amount))))))
+        (deposit  (setf balance (+ balance amount)))
+        (withdraw (setf balance (- balance amount))))))
 
 ;;; ____________________________________________________________________________
 
@@ -328,7 +323,7 @@
 
 ;;; ____________________________________________________________________________
 
-;; NOTE: the function 'find-all' is defined in ../auxfns.lisp
+;; NOTE: The function 'find-all' described in book is defined in ../auxfns.lisp
 
 ;;; ____________________________________________________________________________
 

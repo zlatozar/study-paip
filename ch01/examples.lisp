@@ -5,7 +5,7 @@
 
 ;;;; File examples.lisp
 
-(in-package #:tutor)
+(in-package #:ch1)
 
 (defexamples 1 "Introduction to Lisp"
 

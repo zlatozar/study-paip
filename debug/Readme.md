@@ -147,6 +147,9 @@ REPL. You have to fill parameters only (if any)
 - **C-c M-o** - slime-repl-clear-buffer
 Type it when you are in REPL. It will clear the buffer like *C-l* in shell.
 - **C-c E** - slime-edit-value
+- **C-c x** - slime-export-symbol-at-point
+Place cursor on function that you want to be exported and it will be
+placed in 'package.el'.
 - **C-c ~** -  slime-sync-package-and-default-directory
 - **C-u C-c C-c** - compile function for debug
 - **C-u C-c C-k** - compile file for debug

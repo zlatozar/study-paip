@@ -37,6 +37,20 @@ or
 (tutor:do-examples 3)
 ```
 
+In some chapters there are many versions of the program. Examples to this attempts are
+marked with a second digit. For example for chapter 4 if you want to run naive approach,
+first version:
+
+``` cl
+(tutor:do-examples 4.1)
+```
+
+**Final version** is only with one digit:
+
+``` cl
+(tutor:do-examples 4)
+````
+
 ####Git Tags (work in progress)####
 
 Every chapter is a git tag(s):

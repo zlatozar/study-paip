@@ -45,7 +45,7 @@ comma then `p+`.
 ``` cl
 (defpackage :ch3
   (:use #:common-lisp
-        #::ch1)
+        #:ch1)
   (:import-from :ch2 :address)
   (:shadow :build-index))
 ```

@@ -28,7 +28,7 @@
   "A list of titles that can appear at the start of a name.")
 
 ;;; ____________________________________________________________________________
-;;
+;;;
 
 (defun first-name (name)
   "Select the first name from a name represented as a list."
@@ -37,7 +37,7 @@
       (first name)))
 
 ;;; ____________________________________________________________________________
-;;
+;;;
 
 (defun number-and-negation (x)
   "If x is a number, return a list of x and -x."
@@ -50,7 +50,7 @@
   (mappend #'number-and-negation input))
 
 ;;; ____________________________________________________________________________
-;;
+;;;
 
 (defun atomprint (exp &optional (depth 0))
   "Print each atom in exp, along with its depth of nesting."
@@ -60,7 +60,7 @@
         (atomprint element (+ depth 1)))))
 
 ;;; ____________________________________________________________________________
-;;
+;;;
 
 (defun power (x n)
   "Power raises x to the nth power.  N must be an integer >= 0.
@@ -70,7 +70,7 @@
         (t (* x (power x (- n 1))))))
 
 ;;; ____________________________________________________________________________
-;;
+;;;
 
 (defun count-atoms (exp)
   "Return the total number of non-nil atoms in the expression."
@@ -88,7 +88,7 @@
               (count-all-atoms (rest exp) 0)))))
 
 ;;; ____________________________________________________________________________
-;;
+;;;
 
 (defun count-anywhere (item tree)
   "Count the times item appears anywhere within tree."
@@ -98,7 +98,7 @@
               (count-anywhere item (rest tree))))))
 
 ;;; ____________________________________________________________________________
-;;
+;;;
 
 (defun dot-product (a b)
   "Compute the mathematical dot product of two vectors."

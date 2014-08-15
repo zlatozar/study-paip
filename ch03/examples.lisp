@@ -5,16 +5,16 @@
 
 ;;;; File examples.lisp
 
-(in-package #:tutor)
+(in-package #:ch3)
 
 (defexamples 3 "Overview of Lisp"
   "This chapter briefly covers the most important special forms and"
   "functions in Lisp."
 
   (:section "3.2 Special Forms")
-  "Start with functions and special forms for repetition:"
-  "First, functions like MAPCAR can apply to any number of lists:"
+  "Start with functions and special forms for repetition"
 
+  "First, functions like MAPCAR can apply to any number of lists:"
   ((mapcar #'- '(1 2 3)) => (-1 -2 -3) @ 61)
   ((mapcar #'+ '(1 2) '(10 20) '(100 200)) => (111 222))
 
@@ -27,8 +27,6 @@
   "Third, some have corresponding -IF or -IF-NOT versions:"
   ((remove-if #'oddp '(1 2 3 2 1 0 -1)) => (2 2 0))
   ((remove-if-not #'oddp '(1 2 3 2 1 0 -1)) => (1 3 1 -1))
-
-  ;; requires "overview.lisp"
 
   "The forms TRACE and UNTRACE are used to control debugging info:"
   ((trace length9) @ 65)
@@ -49,7 +47,9 @@
   ((sublis '((old . new)) '(old ((very old)))) => (NEW ((VERY NEW))))
   ((subst 'new 'old 'old) => NEW)
 
-  "For big example see 'english->french' function @ 77"
+  "Here is an example:"
+  ((english->french '(hello my friend - how are you today?))
+   => (bonjour mon ami - comment va tu today?) @ 77)
 
   (:section "3.10 Destructive Functions")
 
@@ -67,9 +67,10 @@
   "There is quite a conceptual load on the programmer who uses NCONC."
   "The advantage of NCONC is that it doesn't use any storage."
   ""
-  (:section "3.11 Overview of Data Types")
-  "The function TYPE-OF returns the type of its argument."
 
+  (:section "3.11 Overview of Data Types")
+
+  "The function TYPE-OF returns the type of its argument."
   ((type-of 123) => (integer 0 4611686018427387903) @ 82)
   ((typep 123 'fixnum) => t)
   ((typep 123 'integer) => t)
@@ -77,8 +78,8 @@
   ((subtypep 'fixnum 'integer) => t)
 
   (:section "3.12 Input/Output")
-  "FORMAT is the main function for formatted output:"
 
+  "FORMAT is the main function for formatted output: for more information see ch00"
   ((format t "hello, world") @ 84)
   ((format t "~&~a plus ~s is ~f" "two" "two" 4))
   ((let ((numbers '( 1 2 3 4 5)))
@@ -98,8 +99,8 @@
   ((time (f 10000)))
 
   (:section "3.15 Evaluation")
-  "The following five forms are equivalent:"
 
+  "The following five forms are equivalent:"
   ((+ 1 2 3 4) => 10 @ 91)
   ((funcall #'+ 1 2 3 4) => 10 @ 91)
   ((apply #'+ '(1 2 3 4)) => 10 @ 91)
@@ -107,10 +108,11 @@
   ((eval '(+ 1 2 3 4)) => 10 @ 91)
 
   (:section "3.16 Closures")
+
   "In the general case, a function consists of the body of the function"
   "coupled with any free lexical variables that the function references."
-  "Consider the example:"
 
+  "Consider the example:"
   ((mapcar (adder 3) '(1 3 10)) => (4 6 13) @ 92)
   ((mapcar (adder 10) '(1 3 10)) => (11 13 20) @ 92)
 
@@ -118,12 +120,13 @@
   "each with a separate value for the lexical variable BALANCE."
   ((defvar my-account nil))
   ((defvar your-account nil))
+
   ((setf my-account (bank-account 500.00)) @ 92)
   ((setf your-account (bank-account 250.00)) @ 93)
 
-  ((funcall my-account :withdraw 75.00) => 425.0)
-  ((funcall your-account :deposit 250.00) => 500.0)
-  ((funcall your-account :withdraw 100.00) => 400.0)
-  ((funcall my-account :withdraw 25.00) => 400.0)
+  ((funcall my-account 'withdraw 75.00) => 425.0)
+  ((funcall your-account 'deposit 250.00) => 500.0)
+  ((funcall your-account 'withdraw 100.00) => 400.0)
+  ((funcall my-account 'withdraw 25.00) => 400.0)
 
   "This style of programming is covered in more detail in chapter 13.")
