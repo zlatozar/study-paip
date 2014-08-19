@@ -24,7 +24,6 @@
   (elt choices (random (length choices))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun Adj* ()
   (if (= (random 2) 0)
@@ -85,7 +84,6 @@
         (t (list phrase))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defparameter *bigger-grammar*
   '((sentence -> (noun-phrase verb-phrase))
@@ -105,7 +103,6 @@
 ;; (setf *grammar* *bigger-grammar*)
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun generate-tree (phrase)
   "Generate a random sentence or phrase,
@@ -130,8 +127,7 @@
          (mappend #'generate-all (rewrites phrase)))
         (t (list (list phrase)))))
 
-;;; ____________________________________________________________________________
-;;;                                           See Notes.md for more explanation
+;;; See Readme.md for more explanation
 
 (defun combine-all (xlist ylist)
   "Return a list of lists formed by appending a y to an x.

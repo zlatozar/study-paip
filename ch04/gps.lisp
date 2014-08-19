@@ -37,7 +37,6 @@
             :del-list '(have-money))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun executing-p (x)
   "Is x of the form: (executing ...) ?"
@@ -60,12 +59,10 @@
             :add-list add-list :del-list del-list)))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (mapc #'convert-op *school-ops*)
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defvar *ops* nil "A list of available operators.")
 
@@ -77,7 +74,6 @@
   (remove-if #'atom (achieve-all (cons '(start) state) goals nil)))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun achieve-all (state goals goal-stack)
   "Achieve each goal, and make sure they still hold at the end."
@@ -99,13 +95,11 @@
                  (find-all goal *ops* :test #'appropriate-p)))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun member-equal (item list)
   (member item list :test #'equal))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun apply-op (state goal op goal-stack)
   "Return a new, transformed state if op is applicable."
@@ -125,7 +119,6 @@
   (member-equal goal (op-add-list op)))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun use (oplist)
   "Use oplist as the default list of operators."
@@ -134,7 +127,6 @@
   (length (setf *ops* oplist)))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defparameter *banana-ops*
   (list
@@ -164,7 +156,6 @@
        :del-list '(has-bananas hungry))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun make-maze-ops (pair)
   "Make maze ops in both directions"
@@ -185,7 +176,6 @@
              (23 18) (23 24) (24 19) (19 20) (20 15) (15 10) (10 5) (20 25))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun GPS (state goals &optional (*ops* *ops*))
   "General Problem Solver: from state, achieve goals using *ops*."
@@ -197,7 +187,6 @@
   (or (equal x '(start)) (executing-p x)))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun find-path (start end)
   "Search a maze for a path from start to end."
@@ -212,7 +201,6 @@
   (fifth (second action)))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun make-block-ops (blocks)
   (let ((ops nil))
@@ -239,7 +227,6 @@
       `((,a on ,c) (space on ,b))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun achieve-all (state goals goal-stack)
   "Achieve each goal, trying several orderings."
@@ -262,7 +249,6 @@
       (list l)))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun achieve (state goal goal-stack)
   "A goal is achieved if it already holds,
@@ -283,7 +269,6 @@
                            (op-preconds op)))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun permutations (bag)
   "Return a list of all the permutations of the input."

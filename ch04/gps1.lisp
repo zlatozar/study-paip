@@ -29,6 +29,8 @@
   "An op is appropriate to a goal if it is in its add list."
   (member goal (op-add-list op)))
 
+;; After applying operation it adds in add-list what is achieved and
+;; remove from del-list what is loosed.
 (defun apply-op (op)
   "Print a message and update *state* if op is applicable."
   (when (every #'achieve (op-preconds op))
@@ -38,7 +40,7 @@
     t))
 
 ;;; ____________________________________________________________________________
-;;;
+;;;                                                   Define list of operations
 
 (defparameter *school-ops*
   (list

@@ -69,6 +69,8 @@ And do not forget parenthesis around lambda e.g.
 - What is the difference between reading and evaluating an expression?
 - Every ```atom``` is either symbol or nonsymbol. A nonsymbol atom evaluates to itself.
 - Trees in Lisp are represented as nested lists. Try to solve exercise 1.4.
+- If you get error in REPL to not hurry to jump in SLDB. First see the error
+  explanation in REPL
 - Think of ```(mapcar #'last-name names)``` as:
 ```
 (list (last-name (first names))
