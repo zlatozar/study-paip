@@ -1,11 +1,11 @@
 ####Chapter 2####
 
-- If you want to trace whole program path pass all function and it's helper one to ```trace```.
+- If you want to trace whole program path pass all function and it's helper one to `trace`.
 ``` cl
 (trace sentence noun-phrase verb-phrase article noun verb)
 ```
 - When implement grammar rule we strive to use only linguistic conventions.
-- What is the difference between ```defparameter``` and ```defvar```?
+- What is the difference between `defparameter` and `defvar`?
 
 Use `defvar` for things you don't want to re-initialize up on re-load.
 ``` cl
@@ -18,16 +18,16 @@ this definition.
 
 On the other hand some kinds of options do want to get re-initialized up on re-reload then use
 `defparameter`.
-- ```assoc``` takes two arguments, a "key" and a list of lists, and returns the first
-element of the list of lists that starts with the key. If there is none, it returns ```nil```.
+- `assoc` takes two arguments, a "key" and a list of lists, and returns the first
+element of the list of lists that starts with the key. If there is none, it returns `nil`.
 - The craft of programming includes knowing what not to write, as well as what to write.
-- ```data-driven``` programming is, when data drives what the program does next.
+- `data-driven` programming is, when data drives what the program does next.
 - Work with the problem as much as possible in its own terms, and to minimize the part of
 the solution that is written directly in Lisp.
 - The advantage of representing information in a declarative form—as rules or facts
 rather than as Lisp functions—is that it can be easier to use the information for multiple
 purposes.
-- Try to understand ```combine-all``` function.
+- Try to understand `combine-all` function.
 
 Here is how function should work:
 ``` cl
@@ -71,4 +71,4 @@ Replace **'(1)** with **'y'** and voila:
            ylist))
 ```
 
-Try to solve exercise 2.4 now (or carefully read the answer).
+Try to solve exercise **2.4** now _(or carefully read the answer)_.

@@ -152,5 +152,5 @@ will be printed upon an assertion failure.
 fact, other keywords are allowed.
 - Function alias:
 ``` cl
-(setf (symbol-function 'find-all-if) #\`remove-if-not)
+(setf (symbol-function 'find-all-if) #`remove-if-not)
 ```
