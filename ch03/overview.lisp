@@ -8,7 +8,7 @@
 (in-package #:ch3)
 
 (defun tax-bracket (income)
-  "Determine what percent tax should be paid for this income."
+  "Determine what percent tax should be paid for this `income'."
   (cond ((< income 10000.00) 0.00)
         ((< income 30000.00) 0.20)
         ((< income 50000.00) 0.25)
@@ -129,7 +129,7 @@
 ;;; ____________________________________________________________________________
 
 (defun product (numbers)
-  "Multiply all the numbers together to compute their product."
+  "Multiply all the `numbers' together to compute their product."
   (let ((prod 1))
     (dolist (n numbers prod)
       (if (= n 0)
@@ -147,14 +147,14 @@
 ;;; ____________________________________________________________________________
 
 (defmacro while (test &rest body)
-  "Repeat body while test is true."
+  "Repeat `body' while `test' is true."
   (let ((code '(loop (unless test (return nil)) . body)))
     (subst test 'test (subst body 'body code))))
 
 ;;; ____________________________________________________________________________
 
 (defmacro while (test &rest body)
-  "Repeat body while test is true."
+  "Repeat `body' while `test' is true."
   `(loop (unless ,test (return nil))
       ,@body))
 
@@ -328,7 +328,7 @@
 ;;; ____________________________________________________________________________
 
 (defmacro while2 (test &body body)
-  "Repeat body while test is true."
+  "Repeat `body' while `test' is true."
   `(loop (if (not ,test) (return nil))
       . ,body))
 

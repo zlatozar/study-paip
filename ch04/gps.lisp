@@ -47,7 +47,7 @@
   (and (consp list) (eql (first list) x)))
 
 (defun convert-op (op)
-  "Make op conform to the (EXECUTING op) convention."
+  "Make `op' conform to the (EXECUTING op) convention."
   (unless (some #'executing-p (op-add-list op))
     (push (list 'executing (op-action op)) (op-add-list op)))
   op)
@@ -70,7 +70,7 @@
            (action nil) (preconds nil) (add-list nil) (del-list nil))
 
 (defun GPS (state goals &optional (*ops* *ops*))
-  "General Problem Solver: from state, achieve goals using *ops*."
+  "General Problem Solver: from `state', achieve `goals' using *ops*."
   (remove-if #'atom (achieve-all (cons '(start) state) goals nil)))
 
 ;;; ____________________________________________________________________________
@@ -87,7 +87,7 @@
 
 (defun achieve (state goal goal-stack)
   "A goal is achieved if it already holds,
-  or if there is an appropriate op for it that is applicable."
+or if there is an appropriate op for it that is applicable."
   (dbg-indent :gps (length goal-stack) "Goal: ~a" goal)
   (cond ((member-equal goal state) state)
         ((member-equal goal goal-stack) nil)
@@ -102,7 +102,7 @@
 ;;; ____________________________________________________________________________
 
 (defun apply-op (state goal op goal-stack)
-  "Return a new, transformed state if op is applicable."
+  "Return a new, transformed state if `op' is applicable."
   (dbg-indent :gps (length goal-stack) "Consider: ~a" (op-action op))
   (let ((state2 (achieve-all state (op-preconds op)
                              (cons goal goal-stack))))
@@ -115,13 +115,13 @@
               (op-add-list op)))))
 
 (defun appropriate-p (goal op)
-  "An op is appropriate to a goal if it is in its add list."
+  "An op is appropriate to a `goal' if it is in its add list."
   (member-equal goal (op-add-list op)))
 
 ;;; ____________________________________________________________________________
 
 (defun use (oplist)
-  "Use oplist as the default list of operators."
+  "Use `oplist' as the default list of operators."
   ;; Return something useful, but not too verbose:
   ;; the number of operators.
   (length (setf *ops* oplist)))
@@ -178,7 +178,7 @@
 ;;; ____________________________________________________________________________
 
 (defun GPS (state goals &optional (*ops* *ops*))
-  "General Problem Solver: from state, achieve goals using *ops*."
+  "General Problem Solver: from `state', achieve `goals' using *ops*."
   (find-all-if #'action-p
                (achieve-all (cons '(start) state) goals nil)))
 
@@ -189,7 +189,7 @@
 ;;; ____________________________________________________________________________
 
 (defun find-path (start end)
-  "Search a maze for a path from start to end."
+  "Search a maze for a path from `start' to `end'."
   (let ((results (GPS `((at ,start)) `((at ,end)))))
     (unless (null results)
       (cons start (mapcar #'destination
@@ -251,8 +251,8 @@
 ;;; ____________________________________________________________________________
 
 (defun achieve (state goal goal-stack)
-  "A goal is achieved if it already holds,
-  or if there is an appropriate op for it that is applicable."
+  "A `goal' is achieved if it already holds,
+or if there is an appropriate op for it that is applicable."
   (dbg-indent :gps (length goal-stack) "Goal: ~a" goal)
   (cond ((member-equal goal state) state)
         ((member-equal goal goal-stack) nil)
@@ -261,7 +261,7 @@
 
 (defun appropriate-ops (goal state)
   "Return a list of appropriate operators,
-  sorted by the number of unfulfilled preconditions."
+sorted by the number of unfulfilled preconditions."
   (sort (copy-list (find-all goal *ops* :test #'appropriate-p)) #'<
         :key #'(lambda (op)
                  (count-if #'(lambda (precond)
@@ -269,6 +269,7 @@
                            (op-preconds op)))))
 
 ;;; ____________________________________________________________________________
+;;;                                                                 See ex. 4.2
 
 (defun permutations (bag)
   "Return a list of all the permutations of the input."

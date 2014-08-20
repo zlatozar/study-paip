@@ -42,7 +42,6 @@
 ;;; Below we show an implementation for the five methods that is good
 ;;; for output streams (without any fancy window GUI).
 
-
 (defmethod output-stream (interface)
   ;; The stream on which output will be printed
   interface)
@@ -83,8 +82,8 @@
       (T (equal x y)))))
 
 (defun do-example (example interface)
-  "Run an example; print out what's happening unless INTERFACE is nil.
-  Return nil if there is a unexpected result."
+  "Run an example; print out what's happening unless `interface' is nil.
+Return nil if there is a unexpected result."
   (let* ((stream (output-stream interface))
          (*print-pretty* t)
          (*standard-output* stream)
@@ -128,7 +127,7 @@
     (or (eql expected ':anything) (nearly-equal result expected))))
 
 (defun do-chapter (chapter interface)
-  "Run the examples in a chapter.  Return the number of unexpected results."
+  "Run the examples in a chapter. Return the number of unexpected results."
   (let ((chapter (find-chapter chapter)))
     (set-chapter chapter interface)
     (let ((n (count-if-not
@@ -136,26 +135,26 @@
                   (do-example example interface))
               (chapter-examples chapter))))
       (if (> n 0)
-          (format t "~%**** ~D unexpected result~:p on Chapter ~D"
+          (format t "~%**ERROR** ~D unexpected result~:p on Chapter ~D"
                   n chapter)
           (format t "~%Chapter ~D done.~%" chapter))
       n)))
 
 (defun do-examples (chapters &optional (stream *standard-output*))
   "Run examples from one or more chapters and sum the number of errors.
-  If all is well, this should return 0. If STREAM is nil, very little
-  output is produced."
+If all is well, this should return 0. If STREAM is nil, very little
+output is produced."
   (loop for chapter in (cond ((member chapters '(all :all)) *chapters*)
                              ((listp chapters) chapters)
                              (t (list chapters)))
      sum (do-chapter chapter stream)))
 
 (defmacro defexamples (chapter-number title &rest examples)
-  "Define a set of test examples.  Each example is of the form
+  "Define a set of test examples. Each example is of the form
      (exp [ => result ] [ @ page ] [ :input string ])
   where [] indicates an optional part, and the parts can be in any order.
-  Evaluate exp and complain if it is not equal to result.  The page is
-  the page in the book where the example appears.  An 'example' may also be
+  Evaluate exp and complain if it is not equal to result. The page is
+  the page in the book where the example appears. An 'example' may also be
   one of the following:
      string                   Serves as documentation
      (:SECTION string)        Says what section of book we're in"

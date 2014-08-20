@@ -16,7 +16,7 @@
 (defun Verb ()        (one-of '(hit took saw liked)))
 
 (defun one-of (set)
-  "Pick one element of set, and make a list of it."
+  "Pick one element of `set', and make a list of it."
   (list (random-elt set)))
 
 (defun random-elt (choices)
@@ -54,18 +54,18 @@
   "A grammar for a trivial subset of English.")
 
 (defvar *grammar* *simple-grammar*
-  "The grammar used by generate.  Initially, this is *simple-grammar*,
+  "The grammar used by generate. Initially, this is *simple-grammar*,
   but we can switch to other grammars.")
 
 ;;; ____________________________________________________________________________
 ;;;                                                            Helper functions
 
 (defun rule-lhs (rule)
-  "The left hand side of a rule."
+  "The left hand side of a `rule'."
   (first rule))
 
 (defun rule-rhs (rule)
-  "The right hand side of a rule."
+  "The right hand side of a `rule'."
   (rest (rest rule)))
 
 (defun rewrites (category)
@@ -118,7 +118,7 @@
 ;;;                                      Use the Same Data for Several Programs
 
 (defun generate-all (phrase)
-  "Generate a list of all possible expansions of this phrase."
+  "Generate a list of all possible expansions of this `phrase'."
   (cond ((null phrase) (list nil))
         ((listp phrase)
          (combine-all (generate-all (first phrase))

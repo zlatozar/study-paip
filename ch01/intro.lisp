@@ -8,11 +8,11 @@
 (in-package #:ch1)
 
 (defun last-name (name)
-  "Select the last name from a name represented as a list."
+  "Select the last name from a `name' represented as a list."
   (first (last name)))
 
 (defun first-name (name)
-  "Select the first name from a name represented as a list."
+  "Select the first name from a `name' represented as a list."
   (first name))
 
 (setf names '((John Q Public) (Malcolm X)
@@ -29,7 +29,7 @@
 ;;; ____________________________________________________________________________
 
 (defun first-name (name)
-  "Select the first name from a name represented as a list."
+  "Select the first name from a `name' represented as a list."
   (if (member (first name) *titles*)
       (first-name (rest name))
       (first name)))
@@ -49,7 +49,7 @@
 ;;; ____________________________________________________________________________
 
 (defun atomprint (exp &optional (depth 0))
-  "Print each atom in exp, along with its depth of nesting."
+  "Print each atom in `exp', along with its depth of nesting."
   (if (atom exp)
       (format t "~&ATOM: ~a, DEPTH ~d" exp depth)
       (dolist (element exp)
@@ -58,7 +58,7 @@
 ;;; ____________________________________________________________________________
 
 (defun power (x n)
-  "Power raises x to the nth power.  N must be an integer >= 0.
+  "Power raises x to the nth power. N must be an integer >= 0.
    This executes in log n time, because of the check for even n."
   (cond ((= n 0) 1)
         ((evenp n) (expt (power x (/ n 2)) 2))
@@ -84,7 +84,7 @@
 ;;; ____________________________________________________________________________
 
 (defun count-anywhere (item tree)
-  "Count the times item appears anywhere within tree."
+  "Count the times `item' appears anywhere within `tree'."
   (cond ((eql item tree) 1)
         ((atom tree) 0)
         (t (+ (count-anywhere item (first tree))

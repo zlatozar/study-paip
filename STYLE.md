@@ -25,11 +25,11 @@
 
 ####Comments####
 
-**80 column maximum width**
+**80 column** maximum width
 
-;  for inline comment
-;;  for in function comment
-;;;   for between function comment
+;  for inline comment<br/>
+;;  for in function comment<br/>
+;;;   for between function comment<br/>
 ;;;;   for section header
 
 ###Multi-Line Strings###

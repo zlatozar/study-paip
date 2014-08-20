@@ -51,7 +51,7 @@
   (make-pathname :name nil :type nil
                  :defaults (or (and (boundp '*load-truename*) *load-truename*)
                                (truename ""))) ;;??? Maybe Change this
-  "The location of the source files for this book.  If things don't work,
+  "The location of the source files for this book. If things don't work,
   change it to reflect the location of the files on your computer.")
 
 (defparameter *paip-source*
@@ -88,13 +88,13 @@
 
 (defun load-paip-file (file)
   "Load the binary file if it exists and is newer, else load the source."
-                                        ;(let* ((src (paip-pathname file :lisp))
-                                        ;   (src-date (file-write-date src))
-                                        ;   (bin (paip-pathname file :binary))
-                                        ;   (bin-date (file-write-date bin)))
-                                        ;  (load (if (and (probe-file bin) src-date bin-date (>= bin-date src-date))
-                                        ;        bin
-                                        ;      src))))
+  ;;(let* ((src (paip-pathname file :lisp))
+  ;;   (src-date (file-write-date src))
+  ;;  (bin (paip-pathname file :binary))
+  ;;   (bin-date (file-write-date bin)))
+  ;;  (load (if (and (probe-file bin) src-date bin-date (>= bin-date src-date))
+  ;;        bin
+  ;;      src))))
   (load file))
 
 (defun requires (&rest files)
@@ -105,9 +105,9 @@
 
 (eval-when (load eval compile)
   (defmacro once-only (variables &rest body)
-    "Returns the code built by BODY.  If any of VARIABLES
-  might have side effects, they are evaluated once and stored
-  in temporary variables that are then passed to BODY."
+    "Returns the code built by BODY. If any of VARIABLES
+might have side effects, they are evaluated once and stored
+in temporary variables that are then passed to BODY."
     (assert (every #'symbolp variables))
     (let ((temps nil))
       (dotimes (i (length variables)) (push (gensym) temps))
@@ -121,13 +121,15 @@
                                variables temps)
                    .,body)))))
 
+;;; ____________________________________________________________________________
+
   (defun starts-with (list x)
     "Is x a list whose first element is x?"
     (and (consp list) (eql (first list) x)))
 
   (defun side-effect-free? (exp)
-    "Is exp a constant, variable, or function,
-  or of the form (THE type x) where x is side-effect-free?"
+    "Is `exp' a constant, variable, or function,
+or of the form (THE type x) where x is side-effect-free?"
     (or (atom exp) (constantp exp)
         (starts-with exp 'function)
         (and (starts-with exp 'the)
@@ -139,7 +141,7 @@
 
   (defmacro read-time-case (first-case &rest other-cases)
     "Do the first case, where normally cases are
-  specified with #+ or possibly #- marks."
+specified with #+ or possibly #- marks."
     (declare (ignore other-cases))
     first-case)
 
@@ -148,24 +150,22 @@
     (rest (rest x)))
 
   (defun find-anywhere (item tree)
-    "Does item occur anywhere in tree?"
+    "Does `item' occur anywhere in `tree'?"
     (if (atom tree)
         (if (eql item tree) tree)
         (or (find-anywhere item (first tree))
-            (find-anywhere item (rest tree)))))
-
-  )
+            (find-anywhere item (rest tree))))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun length=1 (x)
   "Is x a list of length 1?"
   (and (consp x) (null (cdr x))))
 
 (defun rest3 (list)
-  "The rest of a list after the first THREE elements."
+  "The rest of a `list' after the first THREE elements."
   (cdddr list))
+
 
 ;;; ____________________________________________________________________________
 ;;;                                                         Auxiliary Functions
@@ -174,8 +174,8 @@
 
 (defun find-all (item sequence &rest keyword-args
                  &key (test #'eql) test-not &allow-other-keys)
-  "Find all those elements of sequence that match item,
-  according to the keywords.  Doesn't alter sequence."
+  "Find all those elements of `sequence' that match `item',
+according to the keywords. Doesn't alter sequence."
   (if test-not
       (apply #'remove item sequence
              :test-not (complement test-not) keyword-args)
@@ -183,8 +183,8 @@
              :test (complement test) keyword-args)))
 
 (defun partition-if (pred list)
-  "Return 2 values: elements of list that satisfy pred,
-  and elements that don't."
+  "Return 2 values: elements of `list' that satisfy `pred',
+and elements that don't."
   (let ((yes-list nil)
         (no-list nil))
     (dolist (item list)
@@ -195,38 +195,39 @@
 
 (defun maybe-add (op exps &optional if-nil)
   "For example, (maybe-add 'and exps t) returns
-  t if exps is nil, exps if there is only one,
-  and (and exp1 exp2...) if there are several exps."
+t if exps is nil, exps if there is only one,
+and (and exp1 exp2...) if there are several exps."
   (cond ((null exps) if-nil)
         ((length=1 exps) (first exps))
         (t (cons op exps))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun seq-ref (seq index)
   "Return code that indexes into a sequence, using
-  the pop-lists/aref-vectors strategy."
+the pop-lists/aref-vectors strategy."
   `(if (listp ,seq)
        (prog1 (first ,seq)
          (setq ,seq (the list (rest ,seq))))
        (aref ,seq ,index)))
 
 (defun maybe-set-fill-pointer (array new-length)
-  "If this is an array with a fill pointer, set it to
-  new-length, if that is longer than the current length."
+  "If this is an `array' with a fill pointer, set it to
+`new-length', if that is longer than the current length."
   (if (and (arrayp array)
            (array-has-fill-pointer-p array))
       (setf (fill-pointer array)
             (max (fill-pointer array) new-length))))
 
 ;;; ____________________________________________________________________________
-;;
 
-;;; NOTE: In ANSI Common Lisp, the effects of adding a definition (or most
-;;; anything else) to a symbol in the common-lisp package is undefined.
+;;; NOTE:
+;;;
+;;; In ANSI Common Lisp, the effects of adding a definition
+;;; (or most anything else) to a symbol in the common-lisp package is undefined.
+;;;
 ;;; Therefore, it would be best to rename the function SYMBOL to something
-;;; else.  This has not been done (for compatibility with the book).
+;;; else. This has not been done (for compatibility with the book).
 
 (defun symbol (&rest args)
   "Concatenate symbols or strings to form an interned symbol"
@@ -237,15 +238,15 @@
   (make-symbol (format nil "~{~a~}" args)))
 
 (defun last1 (list)
-  "Return the last element (not last cons cell) of list"
+  "Return the last element (not last cons cell) of `list'"
   (first (last list)))
 
 ;;; ____________________________________________________________________________
 ;;
 
 (defun mappend (fn list)
-  "Append the results of calling fn on each element of list.
-  Like mapcon, but uses append instead of nconc."
+  "Append the results of calling `fn' on each element of `list'.
+Like mapcon, but uses append instead of nconc."
   (apply #'append (mapcar fn list)))
 
 (defun mklist (x)
@@ -261,13 +262,11 @@
   (elt seq (random (length seq))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun member-equal (item list)
   (member item list :test #'equal))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun compose (&rest functions)
   #'(lambda (x)
@@ -284,18 +283,6 @@
     (fresh-line *debug-io*)
     (apply #'format *debug-io* format-string args)))
 
-(defun debug (&rest ids)
-  "Start dbg output on the given ids."
-  (setf *dbg-ids* (union ids *dbg-ids*)))
-
-(defun undebug (&rest ids)
-  "Stop dbg on the ids.  With no ids, stop dbg altogether."
-  (setf *dbg-ids* (if (null ids) nil
-                      (set-difference *dbg-ids* ids))))
-
-;;; ____________________________________________________________________________
-;;;
-
 (defun dbg-indent (id indent format-string &rest args)
   "Print indented debugging info if (DEBUG ID) has been specified."
   (when (member id *dbg-ids*)
@@ -303,8 +290,17 @@
     (dotimes (i indent) (princ "  " *debug-io*))
     (apply #'format *debug-io* format-string args)))
 
+(defun debug (&rest ids)
+  "Start dbg output on the given `ids'."
+  (setf *dbg-ids* (union ids *dbg-ids*)))
+
+(defun undebug (&rest ids)
+  "Stop dbg on the `ids'. With no ids, stop dbg altogether."
+  (setf *dbg-ids* (if (null ids) nil
+                      (set-difference *dbg-ids* ids))))
+
 ;;; ____________________________________________________________________________
-;;;            Pattern Matching Facility
+;;;                                                   Pattern Matching Facility
 
 (defconstant fail nil)
 (defvar no-bindings '((t . t)))
@@ -327,7 +323,7 @@
   (cdr binding))
 
 (defun match-variable (var input bindings)
-  "Does VAR match input?  Uses (or updates) and returns bindings."
+  "Does VAR match input? Uses (or updates) and returns bindings."
   (let ((binding (get-binding var bindings)))
     (cond ((not binding) (extend-bindings var input bindings))
           ((equal input (binding-val binding)) bindings)
@@ -338,7 +334,7 @@
   (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
 
 (defun pat-match (pattern input &optional (bindings no-bindings))
-  "Match pattern against input in the context of the bindings"
+  "Match `pattern' against `input' in the context of the bindings"
   (cond ((eq bindings fail) fail)
         ((variable-p pattern) (match-variable pattern input bindings))
         ((eql pattern input) bindings)
@@ -354,7 +350,7 @@
   (car binding))
 
 (defun lookup (var bindings)
-  "Get the value part (for var) from a binding list."
+  "Get the value part (for `var') from a binding list."
   (binding-val (get-binding var bindings)))
 
 ;;; ____________________________________________________________________________
@@ -365,7 +361,7 @@
   `(memoize (defun ,fn ,args . ,body)))
 
 (defun memo (fn &key (key #'first) (test #'eql) name)
-  "Return a memo-function of fn."
+  "Return a memo-function of `fn'."
   (let ((table (make-hash-table :test test)))
     (setf (get name 'memo) table)
     #'(lambda (&rest args)
@@ -381,7 +377,7 @@
     (when table (clrhash table))))
 
 (defun memoize (fn-name &key (key #'first) (test #'eql))
-  "Replace fn-name's global definition with a memoized version."
+  "Replace `fn-name's global definition with a memoized version."
   (clear-memoize fn-name)
   (setf (symbol-function fn-name)
         (memo (symbol-function fn-name)
@@ -427,7 +423,7 @@
        ',name)))
 
 (defmacro with-resource ((var resource &optional protect) &rest body)
-  "Execute body with VAR bound to an instance of RESOURCE."
+  "Execute body with `var' bound to an instance of `resource'."
   (let ((allocate (symbol 'allocate- resource))
         (deallocate (symbol 'deallocate- resource)))
     (if protect
@@ -451,7 +447,7 @@
     (setf (car q) q)))
 
 (defun enqueue (item q)
-  "Insert item at the end of the queue."
+  "Insert `item' at the end of the queue."
   (setf (car q)
         (setf (rest (car q))
               (cons item nil)))
@@ -468,7 +464,7 @@
 (defun empty-queue-p (q) (null (queue-contents q)))
 
 (defun queue-nconc (q list)
-  "Add the elements of LIST to the end of the queue."
+  "Add the elements of `list' to the end of the queue."
   (setf (car q)
         (last (setf (rest (car q)) list))))
 
@@ -479,15 +475,15 @@
   (sort (copy-seq seq) pred :key key))
 
 (defun reuse-cons (x y x-y)
-  "Return (cons x y), or reuse x-y if it is equal to (cons x y)"
+  "Return (cons x y), or reuse `x-y' if it is equal to (cons x y)"
   (if (and (eql x (car x-y)) (eql y (cdr x-y)))
       x-y
       (cons x y)))
 
 (defun unique-find-if-anywhere (predicate tree
                                 &optional found-so-far)
-  "Return a list of leaves of tree satisfying predicate,
-  with duplicates removed."
+  "Return a list of leaves of `tree' satisfying `predicate',
+with duplicates removed."
   (if (atom tree)
       (if (funcall predicate tree)
           (adjoin tree found-so-far)
@@ -499,14 +495,13 @@
                                 found-so-far))))
 
 (defun find-if-anywhere (predicate tree)
-  "Does predicate apply to any atom in the tree?"
+  "Does `predicate' apply to any atom in the tree?"
   (if (atom tree)
       (funcall predicate tree)
       (or (find-if-anywhere predicate (first tree))
           (find-if-anywhere predicate (rest tree)))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defmacro define-enumerated-type (type &rest elements)
   "Represent an enumerated type with integers 0-n."
@@ -521,7 +516,6 @@
           collect `(defconstant ,element ,i))))
 
 ;;; ____________________________________________________________________________
-;;;
 
 (defun not-null (x) (not (null x)))
 
@@ -532,6 +526,7 @@
 (defun first-or-self (x)
   "The first element of x, if it is a list; else x itself."
   (if (consp x) (first x) x))
+
 
 ;;; ____________________________________________________________________________
 ;;;                                             CLtL2 and ANSI CL Compatibility
