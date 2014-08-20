@@ -19,6 +19,13 @@ could help during coding sessions.")
            #:?t
            #:?v))
 
+(defpackage #:pcl-test
+  (:documentation "Use defined in the book 'Practical Common Lisp' test framework
+to test chapter exercises.")
+  (:use #:common-lisp)
+  (:export #:deftest
+           #:check))
+
 ;;; ____________________________________
 ;;;               Book helper functions
 
@@ -65,6 +72,11 @@ only final is included.")
         #:tutor)
   (:shadowing-import-from #:common-lisp :debug))
 
+(defpackage #:ch1-exercises
+  (:documentation "Selected exercises form Chapter 1")
+  (:use #:common-lisp
+        #:ch1
+        #:pcl-test))
 
 (defpackage #:ch2
   (:documentation "Chapter 2: A Simple Lisp Program")
@@ -74,6 +86,11 @@ only final is included.")
         #:tutor)
   (:shadowing-import-from #:common-lisp :debug))
 
+(defpackage #:ch2-exercises
+  (:documentation "Selected exercises form Chapter 2")
+  (:use #:common-lisp
+        #:ch2
+        #:pcl-test))
 
 (defpackage #:ch3
   (:documentation "Chapter 3: Overview of Lisp")
@@ -82,6 +99,12 @@ only final is included.")
         #:paip-aux
         #:tutor)
   (:shadowing-import-from #:common-lisp :debug))
+
+(defpackage #:ch3-exercises
+  (:documentation "Selected exercises form Chapter 3")
+  (:use #:common-lisp
+        #:ch3
+        #:pcl-test))
 
 
 ;;; PART II "Early AI Programs"
@@ -94,7 +117,6 @@ only final is included.")
         #:tutor
         #:paip-aux)
   (:shadowing-import-from #:common-lisp :debug))
-
 
 (defpackage #:ch4-final
   (:documentation "Chapter 4: GPS: The General Problem Solver (final version)")

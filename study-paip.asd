@@ -11,21 +11,27 @@
 
     :serial t
     :components ((:file "package")
-                 (:file "tools/introspection")
 
-                 ;; Helper functions and examples runner
+                 ;; Helper functions
+                 (:file "tools/introspection" :depends-on ("package"))
+                 (:file "tools/test" :depends-on ("package"))
                  (:file "auxfns" :depends-on ("package"))
+
+                 ;; Book examples runner
                  (:file "tutor" :depends-on ("auxfns"))
 
                  ;; Book chapters
                  (:file "ch01/intro" :depends-on ("auxfns"))
                  (:file "ch01/examples" :depends-on ("tutor" "ch01/intro"))
+                 (:file "ch01/exercises" :depends-on ("tools/test" "ch01/intro"))
 
                  (:file "ch02/simple")
                  (:file "ch02/examples" :depends-on ("tutor" "ch02/simple"))
+                 (:file "ch02/exercises" :depends-on ("tools/test" "ch02/simple"))
 
                  (:file "ch03/overview")
                  (:file "ch03/examples" :depends-on ("tutor" "ch03/overview"))
+                 (:file "ch03/exercises" :depends-on ("tools/test" "ch03/overview"))
 
                  ;; first version
                  (:file "ch04/gps1")
