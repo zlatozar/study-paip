@@ -100,6 +100,7 @@
       (+ 1 (length9 (rest list)))))
 
 ;;; ____________________________________________________________________________
+;;;                                                              Tail recursive
 
 (defun length10-aux (sublist len-so-far)
   (if (null sublist)
@@ -109,14 +110,10 @@
 (defun length10 (list)
   (length10-aux list 0))
 
-;;; ____________________________________________________________________________
-
 (defun length11 (list &optional (len-so-far 0))
   (if (null list)
       len-so-far
       (length11 (rest list) (+ 1 len-so-far))))
-
-;;; ____________________________________________________________________________
 
 (defun length12 (the-list)
   (labels

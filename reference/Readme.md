@@ -13,6 +13,7 @@
     - [elt](#elt)
     - [assoc](#assoc)
     - [list](#list)
+    - [make-list](#make-list)
 - [Chapter-3](#chapter-3)
     - [incf](#incf)
     - [remove](#remove)
@@ -52,6 +53,8 @@
     - [print](#print)
     - [print1](#print)
     - [printc](#printc)
+    - [read](#read)
+    - [cerror)(#cerror)
 - [Chapter-4](#chapter-4)
     - [push](#push)
 - [Koans](#koans)
@@ -313,6 +316,23 @@ See also LISTP, LIST\*
 (equal '(1 2 3) (list 1 2 3)) => T
 ```
 
+### make-list
+
+(**make-list** _size_ :initial-element) => list
+
+Argument description:
+- _size_ - list size
+
+This creates and returns a list containing _size_ elements, each of which
+is initialized to the `:initial-element` argument (which defaults to nil).
+
+_size_ should be a non-negative integer.
+
+``` cl
+(make-list 5) => (nil nil nil nil nil)
+(make-list 3 :initial-element 'rah) => (rah rah rah)
+```
+
 ## Chapter-3
 
 ### incf
@@ -531,7 +551,7 @@ Argument description:
 - _key_           - function for extracting values from sequence
 - _from-end_      - direction flag, **default is NIL**
 - _start_         - bounding index
-- _end_           -  bounding index
+- _end_           - bounding index
 
 REDUCE applies function fn to its previous result and next element. The result
 is what fn returned in last call. For the first call fn is called with either
@@ -939,6 +959,50 @@ printed in a form that could be processed by `read`. The function `princ` is use
 in a human-readable format. This means that `read` cannot recover the original form; read
 would interpret it as two symbols, not one string.
 
+### read
+
+(**read** _input-stream?_ _eof-error-p?_ _eof-value?_ _recursive-p_) => an object
+
+Argument description:
+
+- _input-stream_ - an input stream, **default is standard input**
+- _eof-error-p_  - a boolean, true (default) is EOF should be signaled
+- _eof-value_    - an object that is returned as EOF value
+- _recursive-p_  - flag to note recursive processing
+
+READ function reads arbitrary readable lisp object from input stream.
+Reading process uses \*read-table\*.
+
+Note that \*read-eval\* global variable controls read-time evaluation (#. macro).
+
+See also: READ-LINE, WRITE and WRITE-LINE
+
+``` cl
+(let ((s (make-string-input-stream "(1 2 3)"))) (read s)) => (1 2 3)
+(let ((s (make-string-input-stream "#(1 2 3)"))) (read s)) => #(1 2 3)
+(let ((s (make-string-input-stream "\"hola\""))) (read s)) => "hola"
+```
+
+### cerror
+
+(**cerror** _continue-format-control_ _error-format-string_  _arguments?_) => NIL
+
+CERROR has two required arguments. The first argument is a format control string
+that you'll use to tell the program's user what will happen upon continuing
+from the error. The second argument is a condition designator
+(a format control string, a symbol that names a condition, or a condition
+object) used to tell the program's user about the error.
+
+If _error-format-string_ is a condition (see DEFINE-CONDITION), _arguments_
+can be supplied.
+
+``` cl
+(defun real-sqrt (n)
+  (when (minusp n)
+    (setq n (- n))
+    (cerror "Return sqrt(~D) instead." "Tried to take sqrt(-~D)." n))
+  (sqrt n))
+```
 
 ## Chapter-4
 

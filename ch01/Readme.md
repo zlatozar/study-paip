@@ -4,8 +4,18 @@
 e.g. `((+ 2 2) => 4 @ 4)`.
 - Lisp is case insensitive.
 - Lisp output is in UPPERCASE. In this way differ between input and output.
-Slime also made UPPERCASE red.
+Slime also made UPPERCASEd output in red.
 - Every expression return a value.
+
+**expressions** - things that are evaluated to produce a value
+(Every expression is either a single value or a list)
+**statements** - things that express an action
+
+For instance, in Python, x = 1 is a statement, and (x + 1) is an expression.
+By making everything an expression, however, Lisps remove this limitation.
+Since expressions are nestable, anything in the language can be combined with
+nearly anything else.
+
 - The last expression is returned as the value of the function call.
 - Slime: Use `C-c C-j` to send expression to REPL.
 - If you change code for experiment run `(ql:quickload :study-paip)` before.
@@ -13,8 +23,8 @@ Slime also made UPPERCASE red.
 - The term special form is used confusingly to refer both to symbols like setf and
 expressions that start with them, like `(setf x 3)`.
 - What is the difference between `list` and `append` ?
-- The symbol `nil` and the form () are completely synonymous; they are both representations of the empty list, `nil`
-is also used to denote the `false` value in Lisp.
+- The symbol `nil` and the form () are completely synonymous; they are both
+ representations of the empty list, `nil` is also used to denote the `false` value in Lisp.
 - Function definition form:
 
 ``` cl

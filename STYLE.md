@@ -22,6 +22,7 @@
 | foo-case          | foo-specific case expression                        |
 | foo-bar           | type-slot, converting FOO to BAR                    |
 | foo-to-bar        | converting FOO to BAR                               |
+| <class-name>      | Surround class name with "<" and ">"                |
 
 ####Comments####
 
@@ -73,3 +74,21 @@ in refactoring or code reading. Here are some variables examples:
     bad-word
     deck-letter
 `
+## Class
+
+Add `:type` to each slots
+
+``` cl
+(defclass <aluminium> (<metal>)
+    ((color :type string
+            :initarg :color
+            :initform "white")
+     (solidity :type (or integer <solidity>)
+               :initarg :solidity
+               :initform (make-instance '<solidity>))
+     (cost :type (or integer null)
+           :initarg :cost))
+  (:documentation "A class represents Aluminium."))
+```
+
+Don't forget a type `null` for optional slots.

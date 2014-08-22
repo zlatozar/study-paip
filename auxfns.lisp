@@ -242,7 +242,6 @@ the pop-lists/aref-vectors strategy."
   (first (last list)))
 
 ;;; ____________________________________________________________________________
-;;
 
 (defun mappend (fn list)
   "Append the results of calling `fn' on each element of `list'.

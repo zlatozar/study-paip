@@ -59,6 +59,31 @@ symbol from *ch3* to be used rather than any other symbols with the same name in
 from other packages.
 - But if you actually want to use one of the inherited symbols, then you need to resolve the ambiguity
 with a `:shadowing-import-from` clause.
+```cl
+(defpackage #:ch4-final
+  (:use #:common-lisp
+        #:tools
+        #:paip-aux
+        #:tutor)
+  (:shadowing-import-from #:paip-aux :debug)) ; use 'debug' from 'paip-aux'
+```
+
+- The syntax for `defpackage` allows multiple `export` clauses.
+Use this feature to visually group related symbols.
+
+``` cl
+(defpackage #:myproject
+  (:use #:cl)
+  ;; Web stuff
+  (:export #:fetch
+           #:parse-url
+           #:status)
+  ;; File utilities
+  (:export #:lines
+           #:first-line
+           #:touch)
+  ...)
+```
 - Because packages are used by the reader, a package must be defined before you can LOAD or COMPILE-FILE a file
 that contains an IN-PACKAGE expression switching to that package.
 - Use ASDF to manage loading and compiling files in the right order.
@@ -178,6 +203,14 @@ written as a single quote followed by the desired character.
   * Prefix parameter of **v** causes FORMAT to consume one format argument
 ``` cl
 (format t "~v$" 3 pi) ;=> 3.142
+```
+- You can break up long format control strings with ~ at the end of a line.
+
+``` cl
+(format t "It was the best of times, ~
+             it was the worst of times.")
+It was the best of times, it was the worst of times.
+NIL
 ```
   * Prefix parameter of **#** will be evaluated as the number of remaining format arguments
 ``` cl
