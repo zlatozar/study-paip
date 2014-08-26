@@ -54,7 +54,7 @@
     - [print1](#print)
     - [printc](#printc)
     - [read](#read)
-    - [cerror)(#cerror)
+    - [cerror](#cerror)
 - [Chapter-4](#chapter-4)
     - [push](#push)
 - [Koans](#koans)

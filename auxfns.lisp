@@ -516,6 +516,20 @@ with duplicates removed."
 
 ;;; ____________________________________________________________________________
 
+(defun declare-ignore (&rest args)
+  "Ignore the arguments."
+  (declare (ignore args))
+  nil)
+
+(defun true (&rest args) "Always return true." (declare (ignore args)) t)
+
+(defun false (&rest args) "Always return false." (declare (ignore args)) nil)
+
+(defun nothing (&rest args)
+  "Don't do anything, and return nil."
+  (declare (ignore args))
+  nil)
+
 (defun not-null (x) (not (null x)))
 
 (defun first-or-nil (x)

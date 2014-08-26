@@ -7,17 +7,17 @@
 ;;; ____________________________________
 ;;;                               Tools
 
-(defpackage #:tools
+(defpackage #:inspect
   (:documentation "This package is not part of the book.
 It contains functions that are collected from other places and
 could help during coding sessions.")
   (:use #:common-lisp)
   (:export #:??
            #:?a
-           #:?f
-           #:?s
-           #:?t
-           #:?v))
+           #:?p~
+           #:?p+
+           #:?p*
+           #:?p%))
 
 (defpackage #:pcl-test
   (:documentation "Use defined in the book 'Practical Common Lisp' test framework
@@ -40,6 +40,7 @@ to test chapter exercises.")
            #:dbg-indent
            #:find-all
            #:find-all-if
+           #:declare-ignore
            #:debug
            #:undebug
            #:dbg-indent))
@@ -67,7 +68,7 @@ only final is included.")
 (defpackage #:ch1
   (:documentation "Chapter 1: Introduction to Lisp")
   (:use #:common-lisp
-        #:tools
+        #:inspect
         #:paip-aux
         #:tutor)
   (:shadowing-import-from #:common-lisp :debug))
@@ -81,7 +82,7 @@ only final is included.")
 (defpackage #:ch2
   (:documentation "Chapter 2: A Simple Lisp Program")
   (:use #:common-lisp
-        #:tools
+        #:inspect
         #:paip-aux
         #:tutor)
   (:shadowing-import-from #:common-lisp :debug))
@@ -95,7 +96,7 @@ only final is included.")
 (defpackage #:ch3
   (:documentation "Chapter 3: Overview of Lisp")
   (:use #:common-lisp
-        #:tools
+        #:inspect
         #:paip-aux
         #:tutor)
   (:shadowing-import-from #:common-lisp :debug))
@@ -104,7 +105,9 @@ only final is included.")
   (:documentation "Selected exercises form Chapter 3")
   (:use #:common-lisp
         #:ch3
-        #:pcl-test))
+        #:paip-aux
+        #:pcl-test)
+  (:shadowing-import-from #:common-lisp :debug))
 
 
 ;;; PART II "Early AI Programs"
@@ -113,7 +116,7 @@ only final is included.")
 (defpackage #:ch4-first
   (:documentation "Chapter 4: GPS: The General Problem Solver (first version)")
   (:use #:common-lisp
-        #:tools
+        #:inspect
         #:tutor
         #:paip-aux)
   (:shadowing-import-from #:common-lisp :debug))
@@ -121,7 +124,7 @@ only final is included.")
 (defpackage #:ch4-final
   (:documentation "Chapter 4: GPS: The General Problem Solver (final version)")
   (:use #:common-lisp
-        #:tools
+        #:inspect
         #:paip-aux
         #:tutor)
   (:shadowing-import-from #:paip-aux :debug)

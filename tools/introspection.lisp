@@ -2,69 +2,69 @@
 
 ;;;; File introspection.lisp: Miscellaneous functions that could be used to understand PAIP code.
 
-(in-package #:tools)
+(in-package #:inspect)
 
 ;;; ____________________________________________________________________________
 ;;;                                                             Examine symbols
 
-(defun ?a (&optional (substring ""))
-  "Return a list of all symbols containing SUBSTRING as a substring."
-  (sort (apropos-list substring) #'string-lessp))
+(defvar *system-packages*
+  '("SB-" "SWANK" "UIOP""QL-" "ASDF" "QUICKLISP"
+    "BORDEAUX-" "HTML-TEMPLATE" "::"))
 
-;;; The ?X functions retrieve some informations about specific symbols
+(defun system-symbol-p (aprop-symbol)
+  (let ((system-list *system-packages*))
+    (some 'numberp (mapcar #'(lambda (x) (search x (format nil "~S" aprop-symbol)))
+                           system-list))))
+
+(defun start-with-p (aprop-symbol)
+  (eql (search ":" (format nil "~S" aprop-symbol)) 0))
+
+(defun spec-constraint-p (aprop-symbol)
+  (or (system-symbol-p aprop-symbol)
+      (start-with-p aprop-symbol)))
+
+(defun ?a (&optional (sub-string ""))
+  "Return a list of all symbols containing `sub-string' as a substring."
+  (format t "~{~S,~% ~}" (sort
+                          (remove-if #'spec-constraint-p (apropos-list sub-string))
+                          #'string-lessp)))
 
 (defun ?? (some-symbol)
-  "Verbosely describe a symbol using #'describe"
+  "Verbosely describe a symbol"
   (describe some-symbol))
-
-(defun ?f (some-function)
-  "Documentation string of a function"
-  (documentation some-function 'function))
-
-(defun ?v (some-variable)
-  "Documentation string of a variable"
-  (documentation some-variable 'variable))
-
-(defun ?t (some-type)
-  (documentation some-type 'type))
-
-(defun ?s (some-structure)
-  (documentation some-structure 'structure))
 
 ;;; ____________________________________________________________________________
 ;;;                                                            Examine packages
 
-;;; This is a helper macro for the followig PACKAGE-*-SYMBOLS functions.
+(defun ?p~ (&optional (package (package-name *package*)))
+  "Return a list of internal symbols in `package' name.
+If `package' is not specified, internal symbols of current
+package will be displayed."
+  (let ((rslt nil))
+    (do-symbols (s package)
+      (when (eq (second
+                 (multiple-value-list
+                  (find-symbol (symbol-name s) package)))
+                :internal)
+        (push s rslt)))
+    (format t "~{~S,~% ~}" (sort rslt #'string-lessp))))
 
-(defmacro loop-as-package (package symbol-type)
-  `(loop
-      for symname being each ,symbol-type of ,package
-      collect symname into reslist
-      finally
-        (return (setf reslist
-                      (sort reslist #'string-lessp)))))
+(defun ?p+ (&optional (package (package-name *package*)))
+  "Return a list of external symbols in `package' name.
+If `package' is not specified, external symbols of current
+package will be displayed."
+  (let ((rslt nil))
+    (do-external-symbols (s package)
+      (push s rslt))
+    (format t "~{~S,~% ~}" (sort rslt #'string-lessp))))
 
-(defun package-all-symbols (&optional (package "COMMON-LISP-USER"))
-  "Return a list of symbols in PACKAGE name."
-  (loop-as-package package symbol))
-
-(defun package-internal-symbols (&optional (package "COMMON-LISP-USER"))
-  "Return a list of internal symbols in PACKAGE name."
-  (loop-as-package package present-symbol))
-
-(defun package-external-symbols (&optional (package "COMMON-LISP-USER"))
-  "Return a list of external symbols in PACKAGE name."
-  (loop-as-package package external-symbol))
-
-;;; NAME-ALL-PACKAGES returns a list of ALL available package (names).
-
-(defun name-all-packages ()
+(defun ?p* ()
   "Return a list of all package names."
   (let ((reslist (mapcar #'package-name
                          (list-all-packages))))
-    (sort reslist #'string-lessp)))
+    (format t "~{~S,~% ~}" (sort reslist #'string-lessp))))
 
-(defun package-describe-string (&optional (package "COMMON-LISP-USER"))
-  "Return a non-portable description for PACKAGE name, via DESCRIBE."
+(defun ?p% (&optional (package (package-name *package*)))
+  "Return a non-portable description for `package' name, via DESCRIBE."
   (with-output-to-string (sstream)
     (describe (find-package package) sstream)))
