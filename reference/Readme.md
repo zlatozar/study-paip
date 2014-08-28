@@ -553,8 +553,8 @@ Argument description:
 - _start_         - bounding index
 - _end_           - bounding index
 
-REDUCE applies function fn to its previous result and next element. The result
-is what fn returned in last call. For the first call fn is called with either
+REDUCE (a.k.a accumulate) applies function fn to its previous result and next element.
+The result is what fn returned in last call. For the first call fn is called with either
 initial-value and first element or first two elements.
 
 See also MAPCAR, MAPCAN, MAP.

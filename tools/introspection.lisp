@@ -8,18 +8,22 @@
 ;;;                                                             Examine symbols
 
 (defvar *system-packages*
-  '("SB-" "SWANK" "UIOP""QL-" "ASDF" "QUICKLISP"
-    "BORDEAUX-" "HTML-TEMPLATE" "::"))
+  '("SB-" "SWANK" "UIOP""QL-" "ASDF" "QUICKLISP" "BORDEAUX-" "HTML-TEMPLATE" "::")
+  "Packages that are not helpful during PAIP study.")
 
 (defun system-symbol-p (aprop-symbol)
+  "Checks if `aprop-symbol' is exposed and if it is part of system
+packages."
   (let ((system-list *system-packages*))
     (some 'numberp (mapcar #'(lambda (x) (search x (format nil "~S" aprop-symbol)))
                            system-list))))
 
 (defun start-with-p (aprop-symbol)
+  "Checks if `aprop-symbol' is a keyword."
   (eql (search ":" (format nil "~S" aprop-symbol)) 0))
 
 (defun spec-constraint-p (aprop-symbol)
+  "Predicate used to filter 'apropos-list."
   (or (system-symbol-p aprop-symbol)
       (start-with-p aprop-symbol)))
 

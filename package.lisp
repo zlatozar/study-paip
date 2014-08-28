@@ -1,6 +1,7 @@
 ;;; -*- Mode: Lisp; Syntax: Common-Lisp; -*-
 
-;;;; package.lisp: Define PAIP packages. Every chapter is a package.
+;;;; package.lisp: Define PAIP packages. Every chapter is a package or
+;;;; set of packages.
 
 (in-package :cl-user)
 
