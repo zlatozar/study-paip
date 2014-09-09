@@ -3,7 +3,6 @@
 CL ?= sbcl --noinform --disable-debugger
 
 clean:
-	@find . -name ".fasls" | xargs rm -rf
-	@find . \( -name "*.dfsl" -o -name "*.fasl" -o -name "*.fas" -o -name "*.lib" -o -name "*.x86f" -o -name "*.ppcf" -o -name "*.nfasl" -o -name "*.fsl" \) -exec rm {} \;
+	@find . -iname '*.fasl' -exec rm {} \;
 
 .PHONY: clean

@@ -346,7 +346,7 @@ Argument description:
 INCF macro modifies a place with numeric value. Its value is incremented by
 increment number. **Default increment is 1.**
 
-See also DECF
+See also 1+, DECF and 1-
 
 ``` cl
 (let ((a 10)) (incf a) a) => 11
