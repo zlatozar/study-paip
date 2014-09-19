@@ -17,14 +17,15 @@ consisting of the type of the structure and alternating pairs of slot names and 
 - Structures are more efficient than lists - less place and single step access.
 - `when` and `unless` are preferred when there is only one possibility, `if` when there are
 two, and `cond` when there are more than two.
-- `setf` is a **generic setter**. From book p. 75
+- `setf` is a **generic setter**. `setf` understands place structures! From book p. 75
 ``` cl
 (setf (get 'AL 'state) 'Alabama) ; (get 'AL 'state) => NIL
 ```
 Basically, the `setf` command asks itself the question,
 **"Where did the item in my first argument originally come from?"**
-In this case, the value came from the *state* with key *AL*. Therefore, if we try to `setf` this location,
-the source variable, *'state*, is modified in response. Now we can access Alabama with key 'AL.
+In this case, the value came from the *state* with key *AL*. Therefore, if we try to
+`setf` this location, the source variable, *'state*, is modified in response. Now we can
+access Alabama with key 'AL.
 - In Lisp, the user can extend the expressions that are allowed in a `setf` form using the
 special forms `defsetf` or `define-setf-method`.
 - Some kinds of data, like binary trees, are hard to deal with in anything but a
@@ -44,6 +45,21 @@ object. Next, `eql` tests for objects that are either `eq` or are equivalent num
 `equal` tests for objects that are either `eql` or are lists or strings with `eql`
 elements. Finally, `equalp` is like `equal` except it also matches upper and lowercase
 characters and numbers of different types.
+- From Lisp Koans:
+  * (eq x y) is true if and only if x and y are the same identical object
+    eq is like comparing pointers in C. If the values are EQ, any non-nil
+    value may be returned.
+  * Additionally, Lisp also provides the type-specific predicates.
+    For example, STRING= and STRING-EQUAL are predicates for strings.
+
+- _#*0011_ defines a bit vector literal with four elements, 0, 0, 1 and 1
+``` cl
+(make-array '4 :element-type 'bit) ;=> #*0000
+```
+- How to create empty vector?
+``` cl
+(make-array 5 :fill-pointer 0 :adjustable t) ;=> #()
+```
 - The `association list` is a type of list used to implement tables.
 - Hash tables are created with `make-hash-table`.
 - The keys to hash tables are not restricted; they can be any Lisp object.
@@ -113,7 +129,8 @@ would interpret it as two symbols, not one string.
 or `(step foo)` to start debugging from the very begging.
 - Antibugging code checks for errors and possibly takes corrective action.
 - `assert` could be very fancy.
-*ASSERT* is ideal for those situations where your program's state must pass some test -- an assertion.
+*ASSERT* is ideal for those situations where your program's state must pass some test --
+ an assertion.
 
 ``` cl
  (defun my-divide (numerator denominator)
@@ -129,10 +146,10 @@ whose values you might want to change to correct the problem.
     (assert (not (zerop denominator)) (numerator denominator))
     (/ numerator denominator))
 ```
-One last refinement to ASSERT lets you specify your own message to use when an assertion fails.
-By default, ASSERT may display the test form, but it is not required to do so. By specifying a condition
-designator and arguments following the list of places, you can be assured that you know what message
-will be printed upon an assertion failure.
+One last refinement to ASSERT lets you specify your own message to use when an assertion
+fails.  By default, ASSERT may display the test form, but it is not required to do so. By
+specifying a condition designator and arguments following the list of places, you can be
+assured that you know what message will be printed upon an assertion failure.
 
 ``` cl
 (defun my-divide (numerator denominator)

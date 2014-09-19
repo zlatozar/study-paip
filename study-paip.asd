@@ -36,8 +36,8 @@
                  ;; first version
                  (:file "ch04/gps1")
                  (:file "ch04/examples-gps1" :depends-on ("tutor" "ch04/gps1"))
-                 ;; final version
+                 ;; final version and exercises
                  (:file "ch04/gps" :depends-on ("ch04/gps1"))
                  (:file "ch04/examples-gps" :depends-on ("tutor" "ch04/gps"))
-
+                 (:file "ch04/exercises" :depends-on ("tools/test"))
                  ))

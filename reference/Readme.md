@@ -57,6 +57,7 @@
     - [cerror](#cerror)
 - [Chapter-4](#chapter-4)
     - [push](#push)
+    - [fresh-line](#fresh-line)
 - [Koans](#koans)
 
 ## Chapter-1
@@ -887,10 +888,24 @@ construct the result. _list2_ is not destroyed.
 (**union** _list1_ _list2_ :test :test-not :key) => list<br/>
 (**nunion** _list1_ _list2_ :test :test-not :key) => list
 
+Argument description:
+- _list1_    - list to be joined
+- _list2_    - other list to be joined
+- _key_      - function for extracting value before test
+- _test_     - function for comparison of two values
+- _test-not_ - function for comparison of two values
+
 Combine _list1_ and _list2_ using a set-union operation.
 The resulting list contains all items that appear in either _list1_ or _list2_.
 This is a non-destructive function; it makes a copy of the data if necessary
 to avoid corrupting the original _list1_ and _list2_.
+
+``` cl
+(union '(1 2 3) '(2 3 4)) => (1 2 3 4)
+(union '((1) (2) (3)) '((2) (3) (4))) => ((3) (2) (1) (2) (3) (4))
+(union '((1) (2) (3)) '((2) (3) (4)) :test #'equal) => ((1) (2) (3) (4))
+(union '((1) (2) (3)) '((2) (3) (4)) :key #'first) => ((1) (2) (3) (4))
+```
 
 ### set-difference
 ### nset-difference
@@ -898,10 +913,26 @@ to avoid corrupting the original _list1_ and _list2_.
 (**set-difference** _list1_ _list2_ :test :test-not :key)<br/>
 (**nset-difference** _list1_ _list2_ :test :test-not :key)
 
-Combine _list1_ and _list2_ using a set-difference operation.
-The resulting list contains all items that appear in _list1_ but not _list2_.
-This is a non-destructive function; it makes a copy of the data if necessary
-to avoid corrupting the original _list1_ and _list2_.
+Argument description:
+- _list1_ - a list
+- _list2_ - a list
+- _key_   - function for extracting value before test
+- _test_  - function key and item comparison
+
+SET-DIFFERENCE function computes set difference, that is a list of elements that appear in
+_list1_ but do not appear in _list2_. Test argument specifies comparison operator. **Default
+comparison operator is EQL**. _Key_ argument specifies function for extracting relevant
+value from list items. Resulting item order is not specified.
+
+See also SET-EXCLUSIVE-OR, UNION and INTERSECTION.
+
+``` cl
+(set-difference '(a b c) '(b c d)) => (A)
+(set-difference '("a" "b" "c") '("b" "c" "d")) => ("c" "b" "a")
+(set-difference '("a" "b" "c") '("b" "c" "d") :test #'equal) => ("a")
+(set-difference '((a . 2) (b . 3) (c . 1))
+                '((b . 1) (c . 2) (d . 4)) :key #'car) => ((A . 2))
+```
 
 ### subsetp
 
@@ -985,7 +1016,7 @@ See also: READ-LINE, WRITE and WRITE-LINE
 
 ### cerror
 
-(**cerror** _continue-format-control_ _error-format-string_  _arguments?_) => NIL
+(**cerror** _continue-format-control_ _error-format-string_ _arguments?_) => NIL
 
 CERROR has two required arguments. The first argument is a format control string
 that you'll use to tell the program's user what will happen upon continuing
@@ -1025,6 +1056,14 @@ See also PUSH-NEW, ACONS and POP.
 (let ((x '(3 2 1))) (push 4 x) x) => (4 3 2 1)
 (let ((x '((a b c) (3 2 1) (e f g)))) (push 4 (second x)) x) => ((A B C) (4 3 2 1) (E F G))
 ```
+
+### fresh-line
+
+(**fresh-line** &optional stream) => T or NIL
+
+FRESH-LINE writes a newline unless it can determine that the output stream is already at
+the beginning of a new line; FRESH-LINE returns T if it actually wrote a newline, and NIL
+otherwise.
 
 ## Koans
 

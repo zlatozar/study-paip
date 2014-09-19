@@ -267,22 +267,3 @@ sorted by the number of unfulfilled preconditions."
                  (count-if #'(lambda (precond)
                                (not (member-equal precond state)))
                            (op-preconds op)))))
-
-;;; ____________________________________________________________________________
-;;;                                                                 See ex. 4.2
-
-(defun permutations (bag)
-  "Return a list of all the permutations of the input."
-  ;; If the input is nil, there is only one permutation:
-  ;; nil itself
-  (if (null bag)
-      '(())
-      ;; Otherwise, take an element, e, out of the bag.
-      ;; Generate all permutations of the remaining elements,
-      ;; And add e to the front of each of these.
-      ;; Do this for all possible e to generate all permutations.
-      (mapcan #'(lambda (e)
-                  (mapcar #'(lambda (p) (cons e p))
-                          (permutations
-                           (remove e bag :count 1 :test #'eq))))
-              bag)))

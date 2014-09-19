@@ -166,7 +166,6 @@ specified with #+ or possibly #- marks."
   "The rest of a `list' after the first THREE elements."
   (cdddr list))
 
-
 ;;; ____________________________________________________________________________
 ;;;                                                         Auxiliary Functions
 

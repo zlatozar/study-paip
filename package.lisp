@@ -132,6 +132,11 @@ only final is included.")
   ;; Expose final version
   (:export #:gps))
 
+(defpackage #:ch4-exercises
+  (:documentation "Selected exercises form Chapter 4")
+  (:use #:common-lisp
+        #:pcl-test))
+
 ;;; ____________________________________
 ;;;                             Exposed
 
