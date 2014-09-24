@@ -58,6 +58,9 @@
 - [Chapter-4](#chapter-4)
     - [push](#push)
     - [fresh-line](#fresh-line)
+    - [mapcan](#mapcan)
+    - [consp](#consp)
+    - [copy-list](#copy-list)
 - [Koans](#koans)
 
 ## Chapter-1
@@ -1064,6 +1067,54 @@ See also PUSH-NEW, ACONS and POP.
 FRESH-LINE writes a newline unless it can determine that the output stream is already at
 the beginning of a new line; FRESH-LINE returns T if it actually wrote a newline, and NIL
 otherwise.
+
+### mapcan
+
+(**mapcan** _fn_ _lists+_) => list
+
+Argument description:
+- _fn_     - function that takes as many arguments as there are lists
+- _lists+_ - lists(one or more) which elements are processed in parallel
+
+MAPCAN applies function FN to elements of lists with same index. Each application result
+is **concatenated** into resulting list.
+
+See MAPCAR.
+
+``` cl
+(mapcan (lambda (x) (list (+ x 10) 'x)) '(1 2 3 4)) => (11 X 12 X 13 X 14 X)
+(mapcan #'list '(a b c d)) => (A B C D)
+(mapcan (lambda (x) (if (> x 0) (list x) nil)) '(-4 6 -23 1 0 12 )) => (6 1 12)
+```
+
+### consp
+
+(**consp** _object_) => T or NIL
+
+CONSP function returns true if the argument refers to cons cell, otherwise it returns
+false.
+
+See CONS and LIST.
+
+``` cl
+(consp nil) => NIL
+(consp "moo") => NIL
+(consp (cons 1 2)) => T
+(consp '(1 . 2)) => T
+(consp '(1 2 3 4)) => T
+(consp (list 1 2 3 4)) => T
+```
+
+### copy-list
+
+(**copy-list** _list_) => copy of the list
+
+This returns a list that is equal to list, but not eq. **Only the top level of list
+structure is copied**; that is, copy-list copies in the cdr direction but not in the car
+direction.
+
+See also: COPY-SEQ and COPY-TREE.
+
 
 ## Koans
 
