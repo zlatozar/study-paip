@@ -33,11 +33,20 @@
                  (:file "ch03/examples" :depends-on ("tutor" "ch03/overview"))
                  (:file "ch03/exercises" :depends-on ("tools/test" "ch03/overview"))
 
-                 ;; first version
+                 ;; GPS: first version
                  (:file "ch04/gps1")
                  (:file "ch04/examples-gps1" :depends-on ("tutor" "ch04/gps1"))
-                 ;; final version and exercises
+                 ;; GPS: final version and exercises
                  (:file "ch04/gps" :depends-on ("ch04/gps1"))
                  (:file "ch04/examples-gps" :depends-on ("tutor" "ch04/gps"))
                  (:file "ch04/exercises" :depends-on ("tools/test"))
+
+                 ;; ELIZA: first version
+                 (:file "ch05/eliza1")
+                 (:file "ch05/examples-eliza1" :depends-on ("tutor" "ch05/eliza1"))
+                 ;; ELIZA: final version and exercises
+                 (:file "ch05/eliza" :depends-on ("ch05/eliza1"))
+                 (:file "ch05/examples-eliza" :depends-on ("tutor"))
+                 (:file "ch05/exercises" :depends-on ("tools/test"))
+
                  ))

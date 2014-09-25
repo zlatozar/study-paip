@@ -271,7 +271,7 @@ Like mapcon, but uses append instead of nconc."
       (reduce #'funcall functions :from-end t :initial-value x)))
 
 ;;; ____________________________________________________________________________
-;;;                                               The Debugging Output Facility
+;;;                                   The Debugging Output Facility (Chapter 4)
 
 (defvar *dbg-ids* nil "Identifiers used by dbg")
 
@@ -298,7 +298,7 @@ Like mapcon, but uses append instead of nconc."
                       (set-difference *dbg-ids* ids))))
 
 ;;; ____________________________________________________________________________
-;;;                                                   Pattern Matching Facility
+;;;                                       Pattern Matching Facility (Chapter 5)
 
 (defconstant fail nil)
 (defvar no-bindings '((t . t)))

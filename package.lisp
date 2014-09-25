@@ -38,13 +38,17 @@ to test chapter exercises.")
 
   (:export #:starts-with
            #:mappend
-           #:dbg-indent
            #:find-all
            #:find-all-if
            #:declare-ignore
+           ;; ch04
            #:debug
            #:undebug
-           #:dbg-indent))
+           #:dbg-indent
+           ;; ch05
+           #:no-bindings
+           #:fail
+           #:match-variable))
 
 ;;; ____________________________________
 ;;;                        Run examples
@@ -134,6 +138,29 @@ only final is included.")
 
 (defpackage #:ch4-exercises
   (:documentation "Selected exercises form Chapter 4")
+  (:use #:common-lisp
+        #:pcl-test))
+
+(defpackage #:ch5-first
+  (:documentation "Chapter 5: Eliza: Dialog with a Machine (first version)")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor
+        #:paip-aux)
+  (:shadowing-import-from #:common-lisp :debug))
+
+(defpackage #:ch5-final
+  (:documentation "Chapter 5: Eliza: Dialog with a Machine (final version)")
+  (:use #:common-lisp
+        #:inspect
+        #:paip-aux
+        #:tutor)
+  (:shadowing-import-from #:common-lisp :debug)
+  ;; Expose final version
+  )
+
+(defpackage #:ch5-exercises
+  (:documentation "Selected exercises form Chapter 5")
   (:use #:common-lisp
         #:pcl-test))
 
