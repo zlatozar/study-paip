@@ -76,6 +76,8 @@ how to apply an operator:
 - else,
   - return failure
 ```
+- In GPS, _state_ means a description of any situation or state of affairs. Each state may
+have several neighbors, so there will be a choice of how to search.
 
 - Common Lisp idiom to assign to variable:
 ```cl

@@ -380,6 +380,7 @@ COUNT may limit the number of removed elements.
 See also REMOVE-IF, DELETE, DELETE-IF, SUBSEQ, and REMOVE-DUPLICATES.
 
 ``` cl
+(remove 10 '(1 2 3 10) :count 1 :test #'eq) => (1 2 3)
 (remove #\s "Sample string sequence") => "Sample tring equence"
 (remove #\s "Sample string sequence" :count 1) => "Sample tring sequence"
 (remove #\s "Sample string sequence" :test #'char-equal) => "ample tring equence"
@@ -1079,11 +1080,17 @@ Argument description:
 MAPCAN applies function FN to elements of lists with same index. Each application result
 is **concatenated** into resulting list.
 
+MAPCAN and MAPCON work like MAPCAR and MAPLIST except for the way they build up their
+result. While MAPCAR and MAPLIST build a completely new list to hold the results of the
+function calls, MAPCAN and MAPCON build their result by splicing together the results -
+which must be lists - as if by NCONC.
+
 See MAPCAR.
 
 ``` cl
 (mapcan (lambda (x) (list (+ x 10) 'x)) '(1 2 3 4)) => (11 X 12 X 13 X 14 X)
 (mapcan #'list '(a b c d)) => (A B C D)
+(mapcan #'(lambda (x) (if (= x 10) nil (list x))) list) => ;; the same as (remove 10 list)
 (mapcan (lambda (x) (if (> x 0) (list x) nil)) '(-4 6 -23 1 0 12 )) => (6 1 12)
 ```
 

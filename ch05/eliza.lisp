@@ -39,12 +39,6 @@
 
 ;;; ____________________________________________________________________________
 
-(defun mappend (fn &rest lists)
-  "Apply fn to each element of lists and append the results."
-  (apply #'append (apply #'mapcar fn lists)))
-
-;;; ____________________________________________________________________________
-
 (defparameter *eliza-rules*
   '((((?* ?x) hello (?* ?y))
      (How do you do.  Please state your problem.))

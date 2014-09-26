@@ -31,14 +31,14 @@
         (t fail)))
 
 (defun segment-pattern-p (pattern)
-  "Is this a segment matching pattern: ((?* var) . pat)"
+  "Is this a segment matching `pattern': ((?* var) . pat)"
   (and (consp pattern)
        (starts-with (first pattern) '?*)))
 
 ;;; ____________________________________________________________________________
 
 (defun segment-match (pattern input bindings &optional (start 0))
-  "Match the segment pattern ((?* var) . pat) against input."
+  "Match the segment `pattern' ((?* var) . pat) against `input'."
   (let ((var (second (first pattern)))
         (pat (rest pattern)))
     (if (null pat)
@@ -59,7 +59,7 @@
 ;;; ____________________________________________________________________________
 
 (defun segment-match (pattern input bindings &optional (start 0))
-  "Match the segment pattern ((?* var) . pat) against input."
+  "Match the segment `pattern' ((?* var) . pat) against `input'."
   (let ((var (second (first pattern)))
         (pat (rest pattern)))
     (if (null pat)
@@ -115,7 +115,7 @@
      (write (flatten (use-eliza-rules (read))) :pretty t)))
 
 (defun use-eliza-rules (input)
-  "Find some rule with which to transform the input."
+  "Find some rule with which to transform the `input'."
   (some #'(lambda (rule)
             (let ((result (pat-match (rule-pattern rule) input)))
               (if (not (eq result fail))
@@ -130,8 +130,10 @@
 
 ;;; ____________________________________________________________________________
 
+;; Also defined in ../auxfns.lisp
+
 (defun flatten (the-list)
-  "Append together elements (or lists) in the list."
+  "Append together elements (or lists) in `the-list'."
   (mappend #'mklist the-list))
 
 (defun mklist (x)
@@ -141,7 +143,7 @@
       (list x)))
 
 (defun mappend (fn the-list)
-  "Apply fn to each element of list and append the results."
+  "Apply `fn' to each element of `the-list' and append the results."
   (apply #'append (mapcar fn the-list)))
 
 (defun random-elt (choices)
