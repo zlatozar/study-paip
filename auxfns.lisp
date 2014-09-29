@@ -3,174 +3,54 @@
 ;;;; Code from Paradigms of AI Programming
 ;;;; Copyright (c) 1991, 1996 Peter Norvig
 
-;;;; File auxfns.lisp: Auxiliary functions
+;;;; File auxfns.lisp: Auxiliary functions used by all other programs
 
 (in-package #:paip-aux)
 
-;;; File auxfns.lisp: Auxiliary functions used by all other programs
-
-;;;; Implementation-Specific Details
-
-(eval-when (eval compile load)
-  ;; Make it ok to place a function definition on a built-in LISP symbol.
-  #+(or Allegro EXCL)
-  (dolist (pkg '(excl common-lisp common-lisp-user))
-    (setf (excl:package-definition-lock (find-package pkg)) nil))
-
-  ;; Don't warn if a function is defined in multiple files --
-  ;; this happens often since we refine several programs.
-  #+Lispworks
-  (setq *PACKAGES-FOR-WARN-ON-REDEFINITION* nil)
-
-  #+LCL
-  (compiler-options :warnings nil)
-  )
-
-;;;; REQUIRES
-
-;;; The function REQUIRES is used in subsequent files to state dependencies
-;;; between files.  The current definition just loads the required files,
-;;; assumming they match the pathname specified in *PAIP-DIRECTORY*.
-;;; You should change that to match where you have stored the files.
-;;; A more sophisticated REQUIRES would only load it if it has not yet
-;;; been loaded, and would search in different directories if needed.
-
-;; NOTE: examples.lips will be removed during reading
-(defvar *paip-files*
-  `("auxfns" "tutor" "examples"
-             "ch01/intro" "ch01/examples" "ch02/simple" "ch02/examples" "ch03/overview" "ch03/examples"
-             "ch04/gps1" "ch04/gps" "ch04/examples" "eliza1" "eliza" "patmatch"
-             "eliza-pm" "search" "gps-srch" "student" "macsyma" "macsymar" "unify"
-             "prolog1" "prolog" "prologc1" "prologc2" "prologc" "prologcp"
-             "clos" "krep1" "krep2" "krep" "cmacsyma" "mycin" "mycin-r" "waltz"
-             "othello" "othello2" "syntax1" "syntax2" "syntax3" "unifgram"
-             "grammar" "lexicon" "interp1" "interp2" "interp3"
-             "compile1" "compile2" "compile3" "compopt"))
-
-(defparameter *paip-directory*
-  (make-pathname :name nil :type nil
-                 :defaults (or (and (boundp '*load-truename*) *load-truename*)
-                               (truename ""))) ;;??? Maybe Change this
-  "The location of the source files for this book. If things don't work,
-  change it to reflect the location of the files on your computer.")
-
-(defparameter *paip-source*
-  (make-pathname :name nil :type "lisp" ;;???  Maybe Change this
-                 :defaults *paip-directory*))
-
-(defparameter *paip-binary*
-  (make-pathname
-   :name nil
-   :type (first (list #+LCL (first *load-binary-pathname-types*)
-                      #+Lispworks system::*binary-file-type*
-                      #+MCL "fasl"
-                      #+Allegro excl:*fasl-default-type*
-                      #+(or AKCL KCL) "o"
-                      #+CMU "sparcf"
-                      #+CLISP "fas"
-                      "bin"))  ;;???  Maybe Change this
-   :directory (append (pathname-directory *paip-source*) '("bin"))
-   :defaults *paip-directory*))
-
-(defun paip-pathname (name &optional (type :lisp))
-  (make-pathname :name name
-                 :defaults (ecase type
-                             ((:lisp :source) *paip-source*)
-                             ((:binary :bin) *paip-binary*))))
-
-(defun compile-paip-file (name)
-  (let ((path (paip-pathname name :lisp)))
-    (load path)
-    (compile-file path :output-file (paip-pathname name :binary))))
-
-(defun compile-all-paip-files ()
-  (mapc #'compile-paip-file *paip-files*))
-
-(defun load-paip-file (file)
-  "Load the binary file if it exists and is newer, else load the source."
-  ;;(let* ((src (paip-pathname file :lisp))
-  ;;   (src-date (file-write-date src))
-  ;;  (bin (paip-pathname file :binary))
-  ;;   (bin-date (file-write-date bin)))
-  ;;  (load (if (and (probe-file bin) src-date bin-date (>= bin-date src-date))
-  ;;        bin
-  ;;      src))))
-  (load file))
-
-(defun requires (&rest files)
-  "The arguments are files that are required to run an application."
-  (mapc #'load-paip-file files))
-
-;;;; Macros (formerly in auxmacs.lisp: that file no longer needed)
-
-(eval-when (load eval compile)
-  (defmacro once-only (variables &rest body)
-    "Returns the code built by BODY. If any of VARIABLES
-might have side effects, they are evaluated once and stored
-in temporary variables that are then passed to BODY."
-    (assert (every #'symbolp variables))
-    (let ((temps nil))
-      (dotimes (i (length variables)) (push (gensym) temps))
-      `(if (every #'side-effect-free? (list .,variables))
-           (progn .,body)
-           (list 'let
-                 ,`(list ,@(mapcar #'(lambda (tmp var)
-                                       `(list ',tmp ,var))
-                                   temps variables))
-                 (let ,(mapcar #'(lambda (var tmp) `(,var ',tmp))
-                               variables temps)
-                   .,body)))))
+(proclaim '(inline mappend random-elt starts-with member-equal
+            mklist flatten compose last1 length=1
+            rest2 rest3 symbol old-symbol reuse-cons
+            queue-contents make-queue enqueue dequeue
+            front empty-queue-p queue-nconc))
 
 ;;; ____________________________________________________________________________
+;;;                                                                   Chapter 1
 
-  (defun starts-with (list x)
-    "Is x a list whose first element is x?"
-    (and (consp list) (eql (first list) x)))
-
-  (defun side-effect-free? (exp)
-    "Is `exp' a constant, variable, or function,
-or of the form (THE type x) where x is side-effect-free?"
-    (or (atom exp) (constantp exp)
-        (starts-with exp 'function)
-        (and (starts-with exp 'the)
-             (side-effect-free? (third exp)))))
-
-  (defmacro funcall-if (fn arg)
-    (once-only (fn)
-      `(if ,fn (funcall ,fn ,arg) ,arg)))
-
-  (defmacro read-time-case (first-case &rest other-cases)
-    "Do the first case, where normally cases are
-specified with #+ or possibly #- marks."
-    (declare (ignore other-cases))
-    first-case)
-
-  (defun rest2 (x)
-    "The rest of a list after the first TWO elements."
-    (rest (rest x)))
-
-  (defun find-anywhere (item tree)
-    "Does `item' occur anywhere in `tree'?"
-    (if (atom tree)
-        (if (eql item tree) tree)
-        (or (find-anywhere item (first tree))
-            (find-anywhere item (rest tree))))))
+;; p. 19
+(defun mappend (fn list)
+  "Append the results of calling `fn' on each element of `list'.
+Like mapcon, but uses append instead of nconc."
+  (apply #'append (mapcar fn list)))
 
 ;;; ____________________________________________________________________________
+;;;                                                                   Chapter 2
 
-(defun length=1 (x)
-  "Is x a list of length 1?"
-  (and (consp x) (null (cdr x))))
-
-(defun rest3 (list)
-  "The rest of a `list' after the first THREE elements."
-  (cdddr list))
+;; p. 36
+(defun random-elt (seq)
+  "Pick a random element out of a sequence."
+  (elt seq (random (length seq))))
 
 ;;; ____________________________________________________________________________
-;;;                                                         Auxiliary Functions
+;;;                                                                   Chapter 3
 
+(defun declare-ignore (&rest args)
+  "Ignore the arguments."
+  (declare (ignore args))
+  nil)
+
+;; p. 60
+(defun true (&rest args)
+  "Always return true."
+  (declare (ignore args)) t)
+
+(defun false (&rest args)
+  "Always return false."
+  (declare (ignore args)) nil)
+
+;; How to create function alias p. 100
 (setf (symbol-function 'find-all-if) #'remove-if-not)
 
+;; p. 101
 (defun find-all (item sequence &rest keyword-args
                  &key (test #'eql) test-not &allow-other-keys)
   "Find all those elements of `sequence' that match `item',
@@ -180,6 +60,136 @@ according to the keywords. Doesn't alter sequence."
              :test-not (complement test-not) keyword-args)
       (apply #'remove item sequence
              :test (complement test) keyword-args)))
+
+;;; ____________________________________________________________________________
+;;;                                                                   Chapter 4
+
+;;; The Debugging Output Facility p. 124
+
+(defvar *dbg-ids* nil "Identifiers used by dbg")
+
+(defun dbg (id format-string &rest args)
+  "Print debugging info if (DEBUG ID) has been specified."
+  (when (member id *dbg-ids*)
+    (fresh-line *debug-io*)
+    (apply #'format *debug-io* format-string args)))
+
+(defun dbg-indent (id indent format-string &rest args)
+  "Print indented debugging info if (DEBUG ID) has been specified."
+  (when (member id *dbg-ids*)
+    (fresh-line *debug-io*)
+    (dotimes (i indent) (princ "  " *debug-io*))
+    (apply #'format *debug-io* format-string args)))
+
+(defun debug (&rest ids)
+  "Start dbg output on the given `ids'."
+  (setf *dbg-ids* (union ids *dbg-ids*)))
+
+(defun undebug (&rest ids)
+  "Stop dbg on the `ids'. With no ids, stop dbg altogether."
+  (setf *dbg-ids* (if (null ids) nil
+                      (set-difference *dbg-ids* ids))))
+
+;; p. 126
+(defun starts-with (list x)
+  "Is x a list whose first element is x?"
+  (and (consp list) (eql (first list) x)))
+
+;; p. 129
+(defun member-equal (item list)
+  (member item list :test #'equal))
+
+;;; ____________________________________________________________________________
+;;;                                                                   Chapter 5
+
+;; p. 165
+(defun mklist (x)
+  "If x is a list return it, otherwise return the list of x"
+  (if (listp x)
+      x
+      (list x)))
+
+(defun flatten (the-list)
+  "Append together elements (or lists - one level only)
+in `the-list'"
+  (mappend #'mklist the-list))
+
+;;; Pattern Matching Facility p. 155
+
+(defun variable-p (x)
+  "Is x a variable (a symbol beginning with `?')?"
+  (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
+
+(defconstant fail nil "Indicates pat-match failure")
+
+(defvar no-bindings '((t . t))
+  "Indicates pat-match success, with no variables")
+
+(defun get-binding (var bindings)
+  "Find a (variable . value) pair in a binding list."
+  (assoc var bindings))
+
+(defun make-binding (var val)
+  (cons var val))
+
+(defun binding-val (binding)
+  "Get the value part of a single binding."
+  (cdr binding))
+
+(defun binding-var (binding)
+  "Get the variable part of a single binding."
+  (car binding))
+
+(defun lookup (var bindings)
+  "Get the value part (for `var') from a binding list."
+  (binding-val (get-binding var bindings)))
+
+(defun match-variable (var input bindings)
+  "Does VAR match input? Uses (or updates) and returns bindings."
+  (let ((binding (get-binding var bindings)))
+    (cond ((not binding) (extend-bindings var input bindings))
+          ((equal input (binding-val binding)) bindings)
+          (t fail))))
+
+(defun extend-bindings (var val bindings)
+  "Add a (var . value) pair to a binding list."
+  (cons (cons var val)
+        ;; Once we add a "real" binding,
+        ;; we can get rid of the dummy no-bindings
+        (if (eq bindings no-bindings)
+            nil
+            bindings)))
+
+(defun pat-match (pattern input &optional (bindings no-bindings))
+  "Match `pattern' against `input' in the context of the bindings"
+  (cond ((eq bindings fail) fail)
+        ((variable-p pattern) (match-variable pattern input bindings))
+        ((eql pattern input) bindings)
+        ((and (consp pattern) (consp input))
+         (pat-match (rest pattern) (rest input)
+                    (pat-match (first pattern) (first input) bindings)))
+        (t fail)))
+
+;;; ____________________________________________________________________________
+
+(defun rest2 (x)
+  "The rest of a list after the first TWO elements."
+  (rest (rest x)))
+
+(defun find-anywhere (item tree)
+  "Does `item' occur anywhere in `tree'?"
+  (if (atom tree)
+      (if (eql item tree) tree)
+      (or (find-anywhere item (first tree))
+          (find-anywhere item (rest tree)))))
+
+(defun length=1 (x)
+  "Is x a list of length 1?"
+  (and (consp x) (null (cdr x))))
+
+(defun rest3 (list)
+  "The rest of a `list' after the first THREE elements."
+  (cdddr list))
 
 (defun partition-if (pred list)
   "Return 2 values: elements of `list' that satisfy `pred',
@@ -242,114 +252,10 @@ the pop-lists/aref-vectors strategy."
 
 ;;; ____________________________________________________________________________
 
-(defun mappend (fn list)
-  "Append the results of calling `fn' on each element of `list'.
-Like mapcon, but uses append instead of nconc."
-  (apply #'append (mapcar fn list)))
-
-(defun mklist (x)
-  "If x is a list return it, otherwise return the list of x"
-  (if (listp x) x (list x)))
-
-(defun flatten (exp)
-  "Get rid of imbedded lists (to one level only)."
-  (mappend #'mklist exp))
-
-(defun random-elt (seq)
-  "Pick a random element out of a sequence."
-  (elt seq (random (length seq))))
-
-;;; ____________________________________________________________________________
-
-(defun member-equal (item list)
-  (member item list :test #'equal))
-
-;;; ____________________________________________________________________________
-
 (defun compose (&rest functions)
   #'(lambda (x)
       (reduce #'funcall functions :from-end t :initial-value x)))
 
-;;; ____________________________________________________________________________
-;;;                                   The Debugging Output Facility (Chapter 4)
-
-(defvar *dbg-ids* nil "Identifiers used by dbg")
-
-(defun dbg (id format-string &rest args)
-  "Print debugging info if (DEBUG ID) has been specified."
-  (when (member id *dbg-ids*)
-    (fresh-line *debug-io*)
-    (apply #'format *debug-io* format-string args)))
-
-(defun dbg-indent (id indent format-string &rest args)
-  "Print indented debugging info if (DEBUG ID) has been specified."
-  (when (member id *dbg-ids*)
-    (fresh-line *debug-io*)
-    (dotimes (i indent) (princ "  " *debug-io*))
-    (apply #'format *debug-io* format-string args)))
-
-(defun debug (&rest ids)
-  "Start dbg output on the given `ids'."
-  (setf *dbg-ids* (union ids *dbg-ids*)))
-
-(defun undebug (&rest ids)
-  "Stop dbg on the `ids'. With no ids, stop dbg altogether."
-  (setf *dbg-ids* (if (null ids) nil
-                      (set-difference *dbg-ids* ids))))
-
-;;; ____________________________________________________________________________
-;;;                                       Pattern Matching Facility (Chapter 5)
-
-(defconstant fail nil)
-(defvar no-bindings '((t . t)))
-
-(defun get-binding (var bindings)
-  "Find a (variable . value) pair in a binding list."
-  (assoc var bindings))
-
-(defun extend-bindings (var val bindings)
-  "Add a (var . value) pair to a binding list."
-  (cons (cons var val)
-        ;; Once we add a "real" binding,
-        ;; we can get rid of the dummy no-bindings
-        (if (eq bindings no-bindings)
-            nil
-            bindings)))
-
-(defun binding-val (binding)
-  "Get the value part of a single binding."
-  (cdr binding))
-
-(defun match-variable (var input bindings)
-  "Does VAR match input? Uses (or updates) and returns bindings."
-  (let ((binding (get-binding var bindings)))
-    (cond ((not binding) (extend-bindings var input bindings))
-          ((equal input (binding-val binding)) bindings)
-          (t fail))))
-
-(defun variable-p (x)
-  "Is x a variable (a symbol beginning with `?')?"
-  (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
-
-(defun pat-match (pattern input &optional (bindings no-bindings))
-  "Match `pattern' against `input' in the context of the bindings"
-  (cond ((eq bindings fail) fail)
-        ((variable-p pattern) (match-variable pattern input bindings))
-        ((eql pattern input) bindings)
-        ((and (consp pattern) (consp input))
-         (pat-match (rest pattern) (rest input)
-                    (pat-match (first pattern) (first input) bindings)))
-        (t fail)))
-
-(defun make-binding (var val) (cons var val))
-
-(defun binding-var (binding)
-  "Get the variable part of a single binding."
-  (car binding))
-
-(defun lookup (var bindings)
-  "Get the value part (for `var') from a binding list."
-  (binding-val (get-binding var bindings)))
 
 ;;; ____________________________________________________________________________
 ;;;                                                    The Memoization Facility
@@ -515,15 +421,6 @@ with duplicates removed."
 
 ;;; ____________________________________________________________________________
 
-(defun declare-ignore (&rest args)
-  "Ignore the arguments."
-  (declare (ignore args))
-  nil)
-
-(defun true (&rest args) "Always return true." (declare (ignore args)) t)
-
-(defun false (&rest args) "Always return false." (declare (ignore args)) nil)
-
 (defun nothing (&rest args)
   "Don't do anything, and return nil."
   (declare (ignore args))
@@ -538,178 +435,3 @@ with duplicates removed."
 (defun first-or-self (x)
   "The first element of x, if it is a list; else x itself."
   (if (consp x) (first x) x))
-
-
-;;; ____________________________________________________________________________
-;;;                                             CLtL2 and ANSI CL Compatibility
-
-(unless (fboundp 'defmethod)
-  (defmacro defmethod (name args &rest body)
-    `(defun ',name ',args ,@body))
-  )
-
-(unless (fboundp 'map-into)
-  (defun map-into (result-sequence function &rest sequences)
-    "Destructively set elements of RESULT-SEQUENCE to the results
-  of applying FUNCTION to respective elements of SEQUENCES."
-    (let ((arglist (make-list (length sequences)))
-          (n (if (listp result-sequence)
-                 most-positive-fixnum
-                 (array-dimension result-sequence 0))))
-      ;; arglist is made into a list of args for each call
-      ;; n is the length of the longest vector
-      (when sequences
-        (setf n (min n (loop for seq in sequences
-                          minimize (length seq)))))
-      ;; Define some shared functions:
-      (flet
-          ((do-one-call (i)
-             (loop for seq on sequences
-                for arg on arglist
-                do (if (listp (first seq))
-                       (setf (first arg)
-                             (pop (first seq)))
-                       (setf (first arg)
-                             (aref (first seq) i))))
-             (apply function arglist))
-           (do-result (i)
-             (if (and (vectorp result-sequence)
-                      (array-has-fill-pointer-p result-sequence))
-                 (setf (fill-pointer result-sequence)
-                       (max i (fill-pointer result-sequence))))))
-        (declare (inline do-one-call))
-        ;; Decide if the result is a list or vector,
-        ;; and loop through each element
-        (if (listp result-sequence)
-            (loop for i from 0 to (- n 1)
-               for r on result-sequence
-               do (setf (first r)
-                        (do-one-call i))
-               finally (do-result i))
-            (loop for i from 0 to (- n 1)
-               do (setf (aref result-sequence i)
-                        (do-one-call i))
-               finally (do-result i))))
-      result-sequence))
-
-  )
-
-(unless (fboundp 'complement)
-  (defun complement (fn)
-    "If FN returns y, then (complement FN) returns (not y)."
-    #'(lambda (&rest args) (not (apply fn args))))
-  )
-
-(unless (fboundp 'with-compilation-unit)
-  (defmacro with-compilation-unit (options &body body)
-    "Do the body, but delay compiler warnings until the end."
-    ;; That way, undefined function warnings that are really
-    ;; just forward references will not be printed at all.
-    ;; This is defined in Common Lisp the Language, 2nd ed.
-    (declare (ignore options))
-    `(,(read-time-case
-        #+Lispm 'compiler:compiler-warnings-context-bind
-        #+Lucid 'with-deferred-warnings
-        'progn)
-       .,body))
-  )
-
-;;; ____________________________________________________________________________
-;;;                                                                      Reduce
-
-(when nil ;; Change this to T if you need REDUCE with :key keyword.
-
-  (defun reduce* (fn seq from-end start end key init init-p)
-    (funcall (if (listp seq) #'reduce-list #'reduce-vect)
-             fn seq from-end (or start 0) end key init init-p))
-
-  (defun reduce (function sequence &key from-end start end key
-                                     (initial-value nil initial-value-p))
-    (reduce* function sequence from-end start end
-             key initial-value initial-value-p))
-
-  (defun reduce-vect (fn seq from-end start end key init init-p)
-    (if (null end) (setf end (length seq)))
-    (assert (<= 0 start end (length seq)) (start end)
-            "Illegal subsequence of ~a --- :start ~d :end ~d"
-            seq start end)
-    (case (- end start)
-      (1 (if init-p
-             (funcall fn init (funcall-if key (aref seq start)))
-             (funcall-if key (aref seq start))))
-      (0 (if init-p init (funcall fn)))
-      (t (if (not from-end)
-             (let ((result
-                    (if init-p
-                        (funcall
-                         fn init
-                         (funcall-if key (aref seq start)))
-                        (funcall
-                         fn
-                         (funcall-if key (aref seq start))
-                         (funcall-if key (aref seq (+ start 1)))))))
-               (loop for i from (+ start (if init-p 1 2))
-                  to (- end 1)
-                  do (setf result
-                           (funcall
-                            fn result
-                            (funcall-if key (aref seq i)))))
-               result)
-             (let ((result
-                    (if init-p
-                        (funcall
-                         fn
-                         (funcall-if key (aref seq (- end 1)))
-                         init)
-                        (funcall
-                         fn
-                         (funcall-if key (aref seq (- end 2)))
-                         (funcall-if key (aref seq (- end 1)))))))
-               (loop for i from (- end (if init-p 2 3)) downto start
-                  do (setf result
-                           (funcall
-                            fn
-                            (funcall-if key (aref seq i))
-                            result)))
-               result)))))
-
-  (defun reduce-list (fn seq from-end start end key init init-p)
-    (if (null end) (setf end (length seq)))
-    (cond ((> start 0)
-           (reduce-list fn (nthcdr start seq) from-end 0
-                        (- end start) key init init-p))
-          ((or (null seq) (eql start end))
-           (if init-p init (funcall fn)))
-          ((= (- end start) 1)
-           (if init-p
-               (funcall fn init (funcall-if key (first seq)))
-               (funcall-if key (first seq))))
-          (from-end
-           (reduce-vect fn (coerce seq 'vector) t start end
-                        key init init-p))
-          ((null (rest seq))
-           (if init-p
-               (funcall fn init (funcall-if key (first seq)))
-               (funcall-if key (first seq))))
-          (t (let ((result
-                    (if init-p
-                        (funcall
-                         fn init
-                         (funcall-if key (pop seq)))
-                        (funcall
-                         fn
-                         (funcall-if key (pop seq))
-                         (funcall-if key (pop seq))))))
-               (if end
-                   (loop repeat (- end (if init-p 1 2)) while seq
-                      do (setf result
-                               (funcall
-                                fn result
-                                (funcall-if key (pop seq)))))
-                   (loop while seq
-                      do (setf result
-                               (funcall
-                                fn result
-                                (funcall-if key (pop seq))))))
-               result))))
-  )

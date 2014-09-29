@@ -3,7 +3,7 @@
 ;;; Code from Paradigms of Artificial Intelligence Programming
 ;;; Copyright (c) 1991 Peter Norvig
 
-;;;; File tutor.lisp
+;;;; File tutor.lisp: An interactive application for running the examples
 
 (in-package #:tutor)
 
@@ -22,9 +22,8 @@
     (chapter number) ; If given a chapter, just return it.
     (t (find number *chapters* :key #'chapter-number))))
 
-;;;; GUI Implementation
-
-;;; We started to implement guis in UNUSED/gui-*
+;;; ____________________________________________________________________________
+;;;                                                          GUI Implementation
 
 ;;; If you want to write a GUI for the tutor, you need to do four things:
 
@@ -34,10 +33,10 @@
 ;;; (2) Define the function PAIP-TUTOR which should start up the interface.
 
 ;;; (3) Implement the following six methods on your interface:
-;;; SET-CHAPTER, SET-PAGE, SET-EXAMPLE,
-;;; DISPLAY-EXAMPLE, DISPLAY-SECTION, OUTPUT-STREAM
+;;;     OUTPUT-STREAM, SET-CHAPTER, SET-PAGE, SET-EXAMPLE,
+;;;     DISPLAY-EXAMPLE, DISPLAY-SECTION
 
-;;; (4) Edit the file "auxfns.lisp" to include your files.
+;;; ____________________________________________________________________________
 
 ;;; Below we show an implementation for the five methods that is good
 ;;; for output streams (without any fancy window GUI).
@@ -68,8 +67,10 @@
   ;; Display the string describing this section somewhere
   (format (output-stream interface) "~2&Section ~A~%" section))
 
+;;; ____________________________________________________________________________
+
 (defun nearly-equal (x y)
-  "Are two objects nearly equal?  Like equal, except floating point numbers
+  "Are two objects nearly equal? Like equal, except floating point numbers
   need only be within epsilon of each other."
   (let ((epsilon 0.001)) ;; could be more mathematically sophisticated
     (typecase x
