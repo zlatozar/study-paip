@@ -55,6 +55,7 @@
     - [printc](#printc)
     - [read](#read)
     - [cerror](#cerror)
+    - [nconc](#nconc)
 - [Chapter-4](#chapter-4)
     - [push](#push)
     - [fresh-line](#fresh-line)
@@ -1037,6 +1038,21 @@ can be supplied.
     (setq n (- n))
     (cerror "Return sqrt(~D) instead." "Tried to take sqrt(-~D)." n))
   (sqrt n))
+```
+
+### nconc
+
+(**nconc** &rest list\*) => changed list
+
+Like APPEND, NCONC returns a concatenation of its list arguments, but it builds its result
+in the following way: for each nonempty list it's passed, NCONC sets the CDR of the list's
+last cons cell to point to the first cons cell of the next nonempty list. It then returns
+the first list, which is now the head of the spliced-together result. Thus:
+
+```cl
+(defparameter *x* (list 1 2 3))
+(nconc *x* (list 4 5 6)) => (1 2 3 4 5 6)
+*x* => (1 2 3 4 5 6)
 ```
 
 ## Chapter-4

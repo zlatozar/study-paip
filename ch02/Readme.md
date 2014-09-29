@@ -27,7 +27,7 @@ the solution that is written directly in Lisp.
 - The advantage of representing information in a declarative form—as rules or facts
 rather than as Lisp functions—is that it can be easier to use the information for multiple
 purposes.
-- Try to understand `combine-all` function.
+- Try to understand `combine-all` function on p.45.
 
 Here is how function should work:
 ``` cl
