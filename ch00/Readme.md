@@ -84,10 +84,15 @@ Use this feature to visually group related symbols.
            #:touch)
   ...)
 ```
-- Because packages are used by the reader, a package must be defined before you can LOAD or COMPILE-FILE a file
-that contains an IN-PACKAGE expression switching to that package.
-- Use ASDF to manage loading and compiling files in the right order.
+- If packages are confusing, this is the main reason why; they’re not based on objects,
+  but on names.
+Every package that uses common-lisp imports the name _cons_, because common-lisp includes
+a function with that name. But in consequence a **variable** called _cons_ would also be
+visible every package that used common-lisp.
 
+- Because packages are used by the reader, a package must be defined before you can LOAD
+or COMPILE-FILE a file that contains an IN-PACKAGE expression switching to that package.
+- Use ASDF to manage loading and compiling files in the right order.
 ``` cl
 (asdf:defsystem #:study-paip
     :serial t
@@ -95,7 +100,17 @@ that contains an IN-PACKAGE expression switching to that package.
                  (:file "auxfns" :depends-on ("package"))
                  ))
 ```
-
+- Usually two expressions typed into the toplevel are equivalent to the same two
+  expressions enclosed within a single progn. Not in this case. If we try saying:
+```
+MINE> (progn (in-package ’common-lisp-user)
+             (export ’bar))
+>>Error: MINE::BAR is not accessible in COMMON-LISP-USER.
+```
+we get an error instead. **This happens because the whole progn expression is processed by
+read before being evaluated.** When read is called, the current package is mine, so bar is
+taken to be mine:bar. It is as if we had asked to export this symbol, instead of
+common-lisp-user:bar, from the user package.
 - Package names live in a flat namespace—package names are just strings, and different
   packages must have textually distinct names. Java style naming is not bad.
 - How to communicate between packages?
@@ -110,6 +125,44 @@ the corresponding arguments ...
 finitely enumerable set of names to be selected between. For example, if there were two
 states of a light switch, they might be called **:on** and **:off**.
 ```
+The way packages are defined makes it a **nuisance** to write programs which use symbols as
+data. For example, if we define noise as follows:
+
+```cl
+(in-package ’other :use ’common-lisp)
+(defpackage other
+    (:use common-lisp)
+    (:export noise))
+(defun noise (animal) (case animal
+    (dog ’woof)
+    (cat ’meow)
+    (pig ’oink)))
+```
+then if we call noise from another package with an unqualified symbol as an argument, it
+will usually fall off the end of the case clauses and return nil:
+```
+OTHER> (in-package ’common-lisp-user)
+#<Package "COMMON-LISP-USER" 4CD15E>
+> (other:noise ’pig)
+NIL
+```
+
+That’s because what we passed as an argument was _common-lisp-user:pig_ (no offense
+intended), while the case key is _other:pig_. To make noise work as one would expect, we
+would have to export all six symbols used within it, and import them into any package from
+which we intended to call noise.
+  In this case, we could evade the problem by using keywords instead of ordinary
+symbols. If noise had been defined:
+
+```cl
+(defun noise (animal)
+    (case animal
+        (:dog :woof)
+        (:cat :meow)
+        (:pig :oink)))
+```
+Keywords are like gold: universal and self-evaluating. They are visible every- where, and
+they never have to be quoted.
 
 - **Gotchas**:
 
