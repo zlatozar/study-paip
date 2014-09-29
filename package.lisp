@@ -18,7 +18,8 @@ could help during coding sessions.")
            #:?p~
            #:?p+
            #:?p*
-           #:?p%))
+           #:?p%
+           #:?mac))
 
 (defpackage #:pcl-test
   (:documentation "Use defined in the book 'Practical Common Lisp' test framework
@@ -36,8 +37,8 @@ to test chapter exercises.")
   (:shadow #:symbol
            #:debug)
 
-  (:export #:starts-with
-           #:mappend
+  (:export #:mappend
+           ;; ch03
            #:find-all
            #:find-all-if
            #:declare-ignore
@@ -46,6 +47,7 @@ to test chapter exercises.")
            #:undebug
            #:dbg-indent
            ;; ch05
+           #:starts-with
            #:no-bindings
            #:fail
            #:match-variable))

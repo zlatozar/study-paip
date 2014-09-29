@@ -72,3 +72,10 @@ package will be displayed."
   "Return a non-portable description for `package' name, via DESCRIBE."
   (with-output-to-string (sstream)
     (describe (find-package package) sstream)))
+
+;;; ____________________________________________________________________________
+;;;                                                              Examine macros
+
+(defmacro ?mac (expr)
+  "Pretty-print the results of calling macroexpand-1 on `expr'."
+  `(pprint (macroexpand-1 ',expr)))
