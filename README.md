@@ -1,17 +1,17 @@
-##Paradigms of AI Programming Source Code##
+## Paradigms of AI Programming Source Code
 
 This project contains the Lisp source code for the book **"Paradigms of
 Artificial Intelligence Programming"** by [Peter Norvig](http://norvig.com). The
-code is offered as open source freeware under this [License](LICENSE.md).  In
+code is offered as open source freeware under this [License](#License).  In
 addition, code was divided into packages and additional comments was added.
 
-####Installation Instructions####
+#### Installation Instructions
 
-- ```git clone``` the source code from the github repository.
+- `git clone` the source code from the github repository.
 
 - You must have a lisp compiler/interpreter.
 
-- ```quicklisp``` should be configured
+- `quicklisp` should be configured
 
 - To test all the code, start lisp in the project directory and do the
   following at the interactive prompt:
@@ -25,7 +25,7 @@ This should print out a long list of inputs and outputs, and the last
 output should be the total number of errors. If all goes well, this should be *"0"*.
 
 If you would like to run the examples for just a given chapter, you can do that
-as well. For instance, once you have done ``(ql:quickload :study-paip)``, this will
+as well. For instance, once you have done `(ql:quickload :study-paip)`, this will
 execute the examples for _Chapter 3_:
 
 ``` cl
@@ -60,11 +60,11 @@ have to go to the chapter first. For example _Chapter 4_:
 (tutor:do-examples 4)
 ```
 
-####Typical Study Session####
+#### Typical Study Session
 
 _(to be added)_
 
-####Git Tags (work in progress)####
+#### Git Tags (work in progress)
 
 Every chapter is a git tag(s):
 
@@ -72,7 +72,7 @@ Every chapter is a git tag(s):
 
 will give you only files needed for chapter one.
 
-###What Lessons are in PAIP?###
+### What Lessons are in PAIP?
 _by Peter Norvig_
 
 ```
@@ -176,7 +176,7 @@ _by Peter Norvig_
 52. A word to the wise: don't get carried away with macros [p. 855].
 ```
 
-####Errata####
+#### Errata
 
 Page *285*: Replace definition of `filter` function with:
 
@@ -189,3 +189,32 @@ Page *285*: Replace definition of `filter` function with:
       (make-pipe (head pipe) (filter pred (tail pipe)))
       (filter pred (tail pipe)))))
 ```
+
+
+## License
+
+Software License Agreement
+
+Copyright © 1998-2002 by Peter Norvig.
+
+Permission is granted to anyone to use this software, in source or object code
+form, on any computer system, and to modify, compile, decompile, run, and
+redistribute it to anyone else, subject to the following restrictions:
+
+- The author makes no warranty of any kind, either expressed or implied,
+  about the suitability of this software for any purpose.
+
+- The author accepts no liability of any kind for damages or other
+  consequences of the use of this software, even if they arise from defects in
+  the software.
+
+- The origin of this software must not be misrepresented, either by explicit
+  claim or by omission.
+
+- Altered versions must be plainly marked as such, and must not be
+  misrepresented as being the original software. Altered versions may be
+  distributed in packages under other licenses (such as the GNU license).
+
+If you find this software useful, it would be nice if you let me
+(peter@norvig.com) know about it, and nicer still if you send me modifications
+that you are willing to share. However, you are not required to do so.
