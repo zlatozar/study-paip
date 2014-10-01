@@ -1,0 +1,59 @@
+------------------------------------------------------
+
+Selected books from Bibliography with editions updated
+------------------------------------------------------
+
+1. Abelson, Harold, and Gerald J. Sussman, with Julie Sussman. "Structure and
+   Interpretation of Computer Programs". 2d ed. MIT Press. (free online)
+
+2. Bratko,Ivan. "Prolog Programming for Artificial Intelligence". 4th ed. Addison-Wesley.
+
+3. Charniak, Eugene, Christopher Riesbeck, Drew McDermott, and James Meehan.
+   (1987) "Artificial Intelligence Programming". 2d ed. Lawrence Erlbaum.
+
+4. Coelho, Helder, and Jose C. Cotta. (1988) "Prolog by Example". Springer-Verlag.
+
+5. Hofstader, Douglas R. "Godel, Escher, Bach: An Eternal Golden Braid". Vintage.
+
+6. Jackson, Peter. "Introduction to Expert Systems". 3d ed. Addison-Wesley.
+
+7. Kernighan, B. W., and P. J. Plauger. (1974) "The Elements of Programming Style".
+   McGraw-Hill.
+
+8. Keene, Sonya. (1989) "Object-Oriented Programming in Common Lisp: A Programmer's
+   Guide to CLOS". Addison-Wesley.
+
+9. Miller, Molly M., and Eric Benson. (1990) "Lisp Style & Design". Digital Press.
+
+10. Mueller, Robert A., and Rex L. Page. (1988) "Symbolic Computing with
+    Lisp and Prolog". Wiley.
+
+11. Sangal, Rajeev. (1991) "Programming Paradigms in Lisp". McGrawHill.
+
+12. Sedgewick, Robert. "Algorithms". 4th ed. Addison-Wesley.
+
+13. Steele, Guy "Common Lisp the Language". 2d ed. Digital Press.
+
+14. Tanimoto, Steven. "The Elements of Artificial Intelligence using Common Lisp".
+    2d ed. Computer Science Press.
+
+15. Walker, Adrian, Michael McCord, John F. Sowa, and Walter G. Wilson.
+    "Knowledge Systems and Prolog". 2d ed. Addison-Wesley.
+
+16. Waterman, David A. (1986) "A Guide to Expert Systems". Addison-Wesley.
+
+17. Winston, Patrick H. "Artificial Intelligence". 3d ed. Addison-Wesley.
+
+
+NOT IN BIBLIOGRAPHY
+--------------------------------
+
+18. Kiczales, Gregor. (1991) "The Art of the Metaobject Protocol". MIT Press
+
+19. Graham, Paul. (1993) "On Lisp: Advanced Techniques for Common Lisp Perfect Paperback".
+    Prentice Hall. (free online)
+
+20. Seibel, Peter. (2005) "Practical Common Lisp". Prentice Hall (free online)
+
+21. Stuart Russell, Peter Norvig. "Artificial Intelligence: A Modern Approach"
+    3d ed. Prentice Hall.

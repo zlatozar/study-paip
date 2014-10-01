@@ -1,6 +1,9 @@
-;;; -*- Mode: Lisp; Syntax: Common-Lisp; -*-
+;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: INSPECT; Base: 10 -*-
 
-;;;; File introspection.lisp: Miscellaneous functions that could be used to understand PAIP code.
+;;;; Copyright (c) 2014, 2015 Zlatozar Zhelyazkov
+
+;;;; File introspection.lisp: Miscellaneous functions that could be used to understand
+;;;; PAIP code.
 
 (in-package #:inspect)
 
@@ -76,6 +79,17 @@ package will be displayed."
 ;;; ____________________________________________________________________________
 ;;;                                                              Examine macros
 
+(defun ensure-unquoted (form)
+  "If form is quoted, remove one level of quoting. Otherwise return form.
+This is a useful for defining convenience for macros which may be passed a
+quoted or unquoted symbol."
+  (if (and (listp form) (eq (car form) 'cl:quote))
+      (second form)
+      form))
+
 (defmacro ?mac (expr)
-  "Pretty-print the results of calling macroexpand-1 on `expr'."
-  `(pprint (macroexpand-1 ',expr)))
+  "Bind *gensym-counter* to 0, macroexpand-1 the form, pprint result.
+  If expression starts with a quotation, unquotes it first."
+  `(let ((*gensym-counter* 0)
+	 (*print-case* :downcase))
+     (pprint (macroexpand-1 ',(ensure-unquoted expr)))))

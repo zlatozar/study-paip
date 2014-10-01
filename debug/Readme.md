@@ -156,7 +156,7 @@ Type it when you are in REPL. It will clear the buffer like *C-l* in shell.
 - **C-c C-b** - slime-interrupt
 - **C-x C-e** - slime-eval-last-expression
 Evaluates form immediately preceding cursor
-- **C-c RET** - slime-macroexpand-1
+- **C-c C-m** - slime-macroexpand-1
 Place the cursor on the opening parenthesis of a macro form in your source code
 - **M-.** - jumps to source definition (try it from: Debugger, REPL and source file)
 - **C-c <** - slime-list-callers

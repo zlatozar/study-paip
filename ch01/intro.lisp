@@ -1,9 +1,9 @@
-;;; -*- Mode: Lisp; Syntax: Common-Lisp; -*-
+;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CH1; Base: 10 -*-
 
 ;;; Code from Paradigms of Artificial Intelligence Programming
 ;;; Copyright (c) 1991 Peter Norvig
 
-;;;; File intro.lisp: Miscellaneous functions from the introduction.
+;;;; File intro.lisp: Miscellaneous functions from the book introduction.
 
 (in-package #:ch1)
 

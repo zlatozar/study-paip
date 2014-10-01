@@ -1,5 +1,7 @@
 ####Chapter 2####
 
+**"Use the most natural notation available to solve a problem."**
+
 - If you want to trace whole program path pass all function and it's helper one to `trace`.
 ``` cl
 (trace sentence noun-phrase verb-phrase article noun verb)

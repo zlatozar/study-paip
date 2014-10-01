@@ -1,4 +1,6 @@
-;;; -*- Mode: Lisp; Syntax: Common-Lisp; -*-
+;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-USER; Base: 10 -*-
+
+;;;; Copyright (c) 2014, 2015 Zlatozar Zhelyazkov
 
 ;;;; package.lisp: Define PAIP packages. Every chapter is a package or
 ;;;; set of packages.
@@ -29,7 +31,7 @@ to test chapter exercises.")
            #:check))
 
 ;;; ____________________________________
-;;;               Book helper functions
+;;;      Helper functions form the book
 
 (defpackage #:paip-aux
   (:documentation "Useful functions defined in the book.")
@@ -174,3 +176,17 @@ only final is included.")
 used in projects.")
   (:use #:common-lisp
         #:ch4-final))
+
+;;; ____________________________________
+;;;                                Help
+
+(format *debug-io* "~&To run all examples:
+    (tutor:do-examples :all)
+
+To run examples from particular chapter:
+    (tutor:do-examples <chapter number>)
+
+GPS function:
+    (ch4-final:gps <state> <goals> &optional <available operators>)
+
+Loading is done. Happy hacking!")

@@ -1,6 +1,8 @@
-##Lisp Style##
+## Lisp Style
 
-####Widely used "need-to-know" conventions####
+#### Read 25.15 A Style guide to Lisp on p. 887
+
+#### Widely used "need-to-know" conventions
 
 | Example           | Description                                         |
 | :---------------- | :--------------------------------                   |
@@ -24,7 +26,7 @@
 | foo-to-bar        | converting FOO to BAR                               |
 | <class-name>      | Surround class name with "<" and ">"                |
 
-####Comments####
+#### Comments
 
 **80 column** maximum width
 
@@ -33,7 +35,7 @@
 ;;;   for between function comment<br/>
 ;;;;   for section header
 
-###Multi-Line Strings###
+### Multi-Line Strings
 
 In case of a multi-line string as a literal constant consider
 instead using read-time evaluation and a call to format:

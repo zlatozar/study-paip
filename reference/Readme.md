@@ -111,7 +111,7 @@ See also LIST-LENGTH
 (length str) => 2
 ```
 
-### mapcar
+### mapcar (aka transform)
 
 (**mapcar** _fn_ _list+_) => list
 
@@ -119,9 +119,9 @@ Argument description:
 - _fn_    - function that takes as many arguments as there are lists
 - _list+_ - lists which elements are processed in **parallel**
 
-MAPCAR applies function FN to elements of lists with same index.
-Each application result is put into resulting list. Length of resulting list
-is the length of the shortest list argument.
+MAPCAR (closest to Scheme MAP) applies function FN to elements of lists with same index.
+Each application result is put into resulting list. Length of resulting list is the length
+of the shortest list argument.
 
 See also MAPCAN and MAPPEND(from the book)
 
@@ -559,7 +559,7 @@ Argument description:
 - _start_         - bounding index
 - _end_           - bounding index
 
-REDUCE (a.k.a accumulate) applies function fn to its previous result and next element.
+REDUCE (aka accumulate) applies function fn to its previous result and next element.
 The result is what fn returned in last call. For the first call fn is called with either
 initial-value and first element or first two elements.
 

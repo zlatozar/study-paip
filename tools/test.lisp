@@ -1,6 +1,8 @@
-;;; -*- Mode: Lisp; Syntax: Common-Lisp -*-
+;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: PCL-TEST; Base: 10 -*-
 
-;;; File test.lisp is taken from book "Practical Common Lisp" by Peter Siebel
+;;;; Copyright (c) Peter Siebel
+
+;;; File test.lisp is taken from book "Practical Common Lisp"
 
 (in-package #:pcl-test)
 

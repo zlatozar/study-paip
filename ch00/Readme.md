@@ -129,14 +129,14 @@ The way packages are defined makes it a **nuisance** to write programs which use
 data. For example, if we define noise as follows:
 
 ```cl
-(in-package ’other :use ’common-lisp)
+(in-package 'other :use 'common-lisp)
 (defpackage other
     (:use common-lisp)
     (:export noise))
 (defun noise (animal) (case animal
-    (dog ’woof)
-    (cat ’meow)
-    (pig ’oink)))
+    (dog 'woof)
+    (cat 'meow)
+    (pig 'oink)))
 ```
 then if we call noise from another package with an unqualified symbol as an argument, it
 will usually fall off the end of the case clauses and return nil:

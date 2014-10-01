@@ -1,4 +1,4 @@
-;;;; -*- Mode: Lisp; Syntax: Common-Lisp -*-
+;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: TUTOR; Base: 10 -*-
 
 ;;;; Code from Paradigms of AI Programming
 ;;;; Copyright (c) 1991, 1996 Peter Norvig
