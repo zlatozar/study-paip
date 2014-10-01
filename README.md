@@ -2,7 +2,7 @@
 
 This project contains the Lisp source code for the book **"Paradigms of
 Artificial Intelligence Programming"** by [Peter Norvig](http://norvig.com). The
-code is offered as open source freeware under this [License](#License).  In
+code is offered as open source freeware under this [License](#license).  In
 addition, code was divided into packages and additional comments was added.
 
 #### Installation Instructions
@@ -191,7 +191,7 @@ Page *285*: Replace definition of `filter` function with:
 ```
 
 
-## License
+### License
 
 Software License Agreement
 

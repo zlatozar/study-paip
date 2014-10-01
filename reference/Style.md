@@ -1,6 +1,6 @@
 ## Lisp Style
 
-#### Read 25.15 A Style guide to Lisp on p. 887
+Read also **25.15 A Style guide to Lisp** on p. 887
 
 #### Widely used "need-to-know" conventions
 
@@ -35,7 +35,7 @@
 ;;;   for between function comment<br/>
 ;;;;   for section header
 
-### Multi-Line Strings
+#### Multi-Line Strings
 
 In case of a multi-line string as a literal constant consider
 instead using read-time evaluation and a call to format:
@@ -46,9 +46,10 @@ instead using read-time evaluation and a call to format:
                                  and a haiku too.")))
 ```
 
-####Naming Functions And Variables####
+#### Naming Functions And Variables
 
-- Functions are usually actions. Therefore name them accordingly with a verb first then an object:
+- Functions are usually actions. Therefore name them accordingly with a verb first then an
+  object:
 `
     generate-first-deck
     pick-letter
@@ -76,7 +77,8 @@ in refactoring or code reading. Here are some variables examples:
     bad-word
     deck-letter
 `
-## Class
+
+#### Class
 
 Add `:type` to each slots
 
