@@ -14,12 +14,12 @@
     :maintainer "Zlatozar Zhelyazkov <zlatozar@gmail.com>"
 
     :serial t
-    :components ((:file "package")
+    :components ((:file "packages")
 
                  ;; Helper functions
-                 (:file "tools/introspection" :depends-on ("package"))
-                 (:file "tools/test" :depends-on ("package"))
-                 (:file "auxfns" :depends-on ("package"))
+                 (:file "tools/introspection" :depends-on ("packages"))
+                 (:file "tools/test" :depends-on ("packages"))
+                 (:file "auxfns" :depends-on ("packages"))
 
                  ;; Book examples runner
                  (:file "tutor" :depends-on ("auxfns"))

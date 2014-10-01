@@ -180,7 +180,8 @@ used in projects.")
 ;;; ____________________________________
 ;;;                                Help
 
-(format *debug-io* "~&To run all examples:
+(format *debug-io* "~&
+To run all examples:
     (tutor:do-examples :all)
 
 To run examples from particular chapter:
