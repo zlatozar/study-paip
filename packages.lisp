@@ -47,6 +47,7 @@ to test chapter exercises.")
            ;; ch04
            #:debug
            #:undebug
+           #:dbg
            #:dbg-indent
            ;; ch05
            #:flatten
@@ -71,6 +72,13 @@ only final is included.")
   (:export #:defexamples
            #:do-examples
            #:do-chapter))
+
+(format *debug-io* "~&
+To run all examples:
+    (tutor:do-examples :all)
+
+To run examples from particular chapter:
+    (tutor:do-examples <chapter number>)")
 
 ;;; ____________________________________
 ;;;            Book chapters with tools
@@ -153,7 +161,17 @@ only final is included.")
         #:paip-aux
         #:tutor)
   (:shadowing-import-from #:paip-aux :debug)
-  (:export #:gps))
+  ;; Final version of GPS
+  (:export #:gps)
+  ;; Utilities (needed for Chapter 6)
+  (:export #:make-block-ops
+           #:use
+           #:action-p
+           #:*ops*
+           #:op-preconds))
+
+(format *debug-io* "~2%To run GPS:
+    (ch4-final:gps <state> <goals> &optional <available operators>)")
 
 (defpackage #:ch4-exercises
   (:documentation "Selected exercises form Chapter 4")
@@ -183,12 +201,33 @@ only final is included.")
   (:shadowing-import-from #:common-lisp :debug)
   (:export #:eliza))
 
+(format *debug-io* "~2%To run ELIZA:
+    (ch5-final:eliza)
+and type bye to exit")
+
 (defpackage #:ch5-exercises
   (:documentation "Selected exercises form Chapter 5")
   (:use #:common-lisp
         #:pcl-test)
   (:export #:mappend
            #:test-mappend))
+
+(defpackage #:ch6
+  (:documentation "Chapter 6. Building Software Tools")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor
+        #:paip-aux
+        #:ch4-final
+        #:ch5-final)
+  (:shadowing-import-from #:paip-aux :debug)
+  )
+
+(defpackage #:ch6-exercises
+  (:documentation "Selected exercises form Chapter 6")
+  (:use #:common-lisp
+        #:pcl-test)
+  )
 
 ;;; ____________________________________
 ;;;                             Exposed
@@ -203,18 +242,4 @@ used in projects.")
 ;;; ____________________________________
 ;;;                                Help
 
-(format *debug-io* "~&
-To run all examples:
-    (tutor:do-examples :all)
-
-To run examples from particular chapter:
-    (tutor:do-examples <chapter number>)
-
-To run GPS:
-    (ch4-final:gps <state> <goals> &optional <available operators>)
-
-To run ELIZA:
-    (ch5-final:eliza)
-and type (good bye) to exit
-
-Loading is done. Happy hacking")
+(format *debug-io* "~2%Loading is done. Happy hacking.")

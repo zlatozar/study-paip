@@ -1,8 +1,8 @@
-##Chapter 0##
+## Chapter 0
 
 _(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
 
-###Packages###
+### Packages
 
 - Packages are fundamentally a part of the lisp `READER` and not the `EVALUATOR`.
   Packages control how the `READER` maps strings onto symbols.
@@ -200,7 +200,7 @@ symbols in a particular package so they can be used in defining forms such as DE
 DEFVAR, and DEFCLASS only when their home package is the current package. In others you have
 warning about **"redefining BAR, originally defined in...".**
 
-###Format###
+### Format
 
 ``` cl
 (format t "Price today is ~$" 1.5)
@@ -243,7 +243,7 @@ Directives are always introduced with a ~ character.
 |     ~S      |  READably, with escapes            |
 |     ~~      |  ~                                 |
 ```
-####FORMAT directives####
+#### FORMAT directives
 
 - All directives start with a *tilde* (~) and end with a single character that identifies the directive.
 - You can write the character in either upper- or lowercase.
@@ -278,7 +278,7 @@ comma for each unspecified parameter.
 which are placed after any prefix parameters and before the directive's identifying
 character. These modifiers change the behavior of the directive in small ways.
 
-####Basic Formatting####
+#### Basic Formatting
 
 - Directive is **~A**, which consumes one format argument of any type and outputs it in
 _aesthetic_ (human-readable) form.
@@ -290,7 +290,7 @@ which emits a fresh line. The difference between the two is that **~%** always e
 newline, while **~&** emits one only if it’s not already at the beginning of a line.
 
 
-####Character and Integer Directives####
+#### Character and Integer Directives
 
 - **~C** directive is used to emit characters.
 - With a colon modifier, **~:C** outputs nonprinting characters such as space, tab, and
@@ -319,7 +319,7 @@ and padding is always inserted before the number itself.
 (format nil "~4,'0d-~2,'0d-~2,'0d" 2005 6 10) ;=> "2005-06-10"
 ```
 
-####Floating-Point Directives####
+#### Floating-Point Directives
 
 - Four directives format floating-point values: **~F**, **~E**, **~G**, and **~$**.
 - The **~F** directive emits its argument, which should be a number, in decimal format,
@@ -331,10 +331,10 @@ large or small.
 parameter, while the second parameter controls the minimum number of digits to print
 before the decimal point.
 ``` cl
-(format nil "~2,4$" pi) ;=>􏰿 "0003.14"
+(format nil "~2,4$" pi) ;=> "0003.14"
 ```
 
-####English-Language Directives####
+#### English-Language Directives
 
 - The **~R** directive when used with no base specified, prints numbers as English words
 or _Roman numerals_.
@@ -364,7 +364,7 @@ format nil "~(~a~)" "tHe Quick BROWN foX") ;=> "the quick brown fox"
 (format nil "~:@(~a~)" "tHe Quick BROWN foX") ;=> "THE QUICK BROWN FOX"
 ```
 
-####Conditional Formatting####
+#### Conditional Formatting
 
 - FORMAT provides several directives that implement simple control constructs within the
 control string.
@@ -405,7 +405,7 @@ clause is otherwise.
 (format t "~:[FAIL~;pass~]" test-result)
 ```
 
-####Iteration####
+#### Iteration
 
 - **~{** directive tells FORMAT to iterate over the elements of a list or over the
 implicit list of the format arguments.
@@ -446,7 +446,7 @@ whatever items _remain_ in the list being iterated over by the outer **~{**.
 (format nil *english-list* '(1 2 3 4)) ;=> "1, 2, 3, and 4"
 ```
 
-####Hop, Skip, Jump####
+#### Hop, Skip, Jump
 
 - The `~*` directive allows you to jump around in the list of format arguments.
 - Without modifiers, it simply skips the next argument, consuming it _without emitting
@@ -462,7 +462,7 @@ instance, you could print only the keys of a plist like this:
 (format nil "~{~s~*~^ ~}" '(:a 10 :b 20)) ;=> ":A :B"
 ```
 
-###Macros###
+### Macros
 
 - Macros are simply programs which change/generate code, but this happens during compile
 time.
@@ -486,7 +486,7 @@ Possible solutions
 - Define help functions as local functions using labels.
 ```
 
-####Macro Expansion Time vs. Runtime####
+#### Macro Expansion Time vs. Runtime
 
 - When you write macros, you're writing programs that will be used by the compiler to
 generate the code that will then be compiled.
@@ -521,7 +521,7 @@ the expression in the place of the original macro call_.
 - The job of the macro is still to produce code that will do something rather than to do
   anything directly.
 
-####DEFMACRO####
+#### DEFMACRO
 
 - The basic skeleton of a DEFMACRO is quite similar to the skeleton of a DEFUN.
 ``` cl
@@ -539,7 +539,7 @@ the expression in the place of the original macro call_.
 3. Make sure the macro abstraction doesn't "leak"
 ```
 
-####A Sample Macro: do-primes####
+#### A Sample Macro: do-primes
 
 **The task**
 
@@ -630,7 +630,7 @@ the environment will be able to tell you more specifically the syntax of the mac
 (do-primes (var start end) &body body) ; for latest
 ```
 
-####Generating the Expansion####
+#### Generating the Expansion
 
 Backquoted expression is similar to a quoted expression except you can "unquote"
 particular subexpressions by preceding them with a comma, possibly followed by an **@**
@@ -667,7 +667,7 @@ and using `macroexpand-1`
 \*PRINT-PRETTY\* is NIL. If it is, evaluating `(setf *print-pretty* t)` should make the
 macro expansion easier to read.
 
-####Plugging the Leaks####
+#### Plugging the Leaks
 
 _3. Make sure the macro abstraction doesn't "leak"_
 
@@ -774,4 +774,4 @@ expansion.
 3 Use GENSYM at macroexpansion time to create variable names used in the expansion.
 ```
 
-That's it!
+_That's it!_

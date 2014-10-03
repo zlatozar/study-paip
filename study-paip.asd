@@ -53,4 +53,14 @@
                  (:file "ch05/examples-eliza" :depends-on ("tutor"))
                  (:file "ch05/exercises" :depends-on ("tools/test"))
 
+                 (:file "ch06/patmatch")
+                 (:file "ch06/eliza-pm")
+                 (:file "ch06/search")
+                 (:file "ch06/gps-srch")
+                 (:file "ch06/examples" :depends-on ("tutor" "ch06/patmatch"
+                                                             "ch06/eliza-pm"
+                                                             "ch06/search"
+                                                             "ch06/gps-srch"))
+                 (:file "ch06/exercises" :depends-on ("tools/test"))
+
                  ))
