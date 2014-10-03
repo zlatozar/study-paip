@@ -3,25 +3,71 @@
 ;;; Code from Paradigms of Artificial Intelligence Programming
 ;;; Copyright (c) 1991 Peter Norvig
 
-;;;; File eliza.lisp: Advanced version of Eliza.
+;;;; File eliza.lisp: Advanced version of Eliza. Has more rules, and accepts input
+;;;;                  without parens
 
 (in-package #:ch5-final)
 
-;;; Has more rules, and accepts input without parens
+;;; ____________________________________________________________________________
+;;;                                                Form previous implementation
+
+(defun use-eliza-rules (input)
+  "Find some rule with which to transform the `input'."
+  (some #'(lambda (rule)
+            (let ((result (pat-match (rule-pattern rule) input)))
+              (if (not (eq result fail))
+                  (sublis (switch-viewpoint result)
+                          (random-elt (rule-responses rule))))))
+        *eliza-rules*))
+
+(defun pat-match (pattern input &optional (bindings no-bindings))
+  "Match `pattern' against `input' in the context of the `bindings'"
+  (cond ((eq bindings fail) fail)
+        ((variable-p pattern)
+         (match-variable pattern input bindings))
+        ((eql pattern input) bindings)
+        ((segment-pattern-p pattern)                ; ***
+         (segment-match pattern input bindings))    ; ***
+        ((and (consp pattern) (consp input))
+         (pat-match (rest pattern) (rest input)
+                    (pat-match (first pattern) (first input)
+                               bindings)))
+        (t fail)))
+
+(defun variable-p (x)
+  "Is x a variable (a symbol beginning with `?')?"
+  (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
+
+(defun segment-match (pattern input bindings &optional (start 0))
+  "Match the segment `pattern' ((?* var) . pat) against `input'."
+  (let ((var (second (first pattern)))
+        (pat (rest pattern)))
+    (if (null pat)
+        (match-variable var input bindings)
+        ;; We assume that pat starts with a constant
+        ;; In other words, a pattern can't have 2 consecutive vars
+        (let ((pos (position (first pat) input
+                             :start start :test #'equal)))
+          (if (null pos)
+              fail
+              (let ((b2 (pat-match
+                         pat (subseq input pos)
+                         (match-variable var (subseq input 0 pos)
+                                         bindings))))
+                ;; If this match failed, try another longer one
+                (if (eq b2 fail)
+                    (segment-match pattern input bindings (+ pos 1))
+                    b2)))))))
+
+(defun segment-pattern-p (pattern)
+  "Is this a segment matching `pattern': ((?* var) . pat)"
+  (and (consp pattern)
+       (starts-with (first pattern) '?*)))
 
 ;;; ____________________________________________________________________________
+;;;                                 All improvements are suggested as exercises
 
-(defun read-line-no-punct ()
-  "Read an input line, ignoring punctuation."
-  (read-from-string
-   (concatenate 'string "(" (substitute-if #\space #'punctuation-p
-                                           (read-line))
-                ")")))
-
-(defun punctuation-p (char) (find char ".,;:`!?#-()\\\""))
-
-;;; ____________________________________________________________________________
-
+;; ex. 5.6 p. 171
 (defun eliza ()
   "Respond to user input using pattern matching rules."
   (loop
@@ -31,17 +77,32 @@
        (print-with-spaces response)
        (if (equal response '(good bye)) (RETURN)))))
 
+;; ex. 5.5 p. 170
+(defun read-line-no-punct ()
+  "Read an input line, ignoring punctuation."
+  (read-from-string
+   (concatenate 'string "(" (substitute-if #\space #'punctuation-p
+                                           (read-line))
+                ")")))
+
+(defun punctuation-p (char)
+  (find char ".,;:`!?#-()\\\""))
+
 (defun print-with-spaces (list)
   (mapc #'(lambda (x) (prin1 x) (princ " ")) list))
+
+;; or
 
 (defun print-with-spaces (list)
   (format t "~{~a ~}" list))
 
 ;;; ____________________________________________________________________________
+;;;                                                          Weizenbaum's rules
 
+;; ex. 5.19 p. 172
 (defparameter *eliza-rules*
   '((((?* ?x) hello (?* ?y))
-     (How do you do.  Please state your problem.))
+     (How do you do. Please state your problem.))
     (((?* ?x) computer (?* ?y))
      (Do computers worry you?) (What do you think about machines?)
      (Why do you mention computers?)
@@ -160,6 +221,8 @@
     (((?* ?x) are (?* ?y))
      (Did you think they might not be ?y)
      (Possibly they are ?y))
+    ((bye)
+     (good bye))
     (((?* ?x))
      (Very interesting) (I am not sure I understand you fully)
      (What does that suggest to you?) (Please continue) (Go on)

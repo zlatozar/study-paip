@@ -11,7 +11,7 @@
   (:section "5.4 The Eliza Program: A Rule-Based Translator")
 
   "We can't show you an interactive ELIZA session, because the replies are"
-  "random, and thus change every time.  You can experiment on your own by"
+  "random, and thus change every time. You can experiment on your own by"
   "evaluating (ELIZA) and typing in your end of the conversation."
   ""
-  "Type (good bye) when you are done.")
+  "Type bye when you are done.")

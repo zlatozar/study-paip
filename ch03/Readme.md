@@ -1,4 +1,4 @@
-####Chapter 3####
+#### Chapter 3
 
 - Lisp Style Guide
   * Be specific

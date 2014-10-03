@@ -38,7 +38,7 @@ This executes in O(log n) time, because of the check for even n."
 
 (defun count-all-atoms (exp &optional (if-null 1))
   "Return the total number of atoms in the expression,
-counting nil as an atom only in non-tail position."
+counting *nil* as an atom only in non-tail position."
   (cond ((null exp) if-null)
         ((atom exp) 1)
         (t (+ (count-all-atoms (first exp) 1)
@@ -68,6 +68,6 @@ counting nil as an atom only in non-tail position."
   "Compute the mathematical dot product of two vectors."
   (apply #'+ (mapcar #'* a b)))
 
-(deftest test-count-anywhere ()
+(deftest test-dot-product ()
   (check
     (= (dot-product '(10 20) '(3 4)) 110)))

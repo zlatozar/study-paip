@@ -62,6 +62,8 @@
     - [mapcan](#mapcan)
     - [consp](#consp)
     - [copy-list](#copy-list)
+- [Chapter-5](#chapter-5)
+    - [read-from-string](#read-from-string)
 - [Koans](#koans)
 
 ## Chapter-1
@@ -159,17 +161,37 @@ See also MEMBER-IF, POSITION, POSITION-IF, FIND, FIND-IF and FIND-ALL(from the b
 
 ### apply
 
-(**apply** _fn_ _args\*_) => value
+(**apply** _fn_ _args\+_) => value
 
 Argument description:
 - _fn_    - a function designator
 - _args_  - call arguments
 
-APPLY function call supplied function with specified arguments.
+Common Lisp provides two functions for invoking a function through a function object:
+FUNCALL and APPLY. They differ only in how they obtain the arguments to pass to the
+function. Loosely say: `(apply fn '(1 2 3 4 5))` is `(fn 1 2 3 4 5)`
+
+APPLY takes a function, plus one more argument which must **evaluate to a list.**
+
+It so happens that apply can do one additional trick. Alternatively, APPLY can look like
+this: `(apply fn arg1 arg2 ... list-arg)`
+The last argument must evaluate to a list. Here, APPLY builds a list before passing it to
+the function. This list is built by taking each of the _arg1_, _arg2_, arguments and
+concatenating their values to the front of the list returned by _list-arg_.
 Argument list is constructed as
 ``` cl
-(append (but last args) (first (last args))) ;; see second example
+(append (all but list-arg) (first (last list-arg)))
 ```
+
+For example, in
+`
+(apply #'+ 1 2 3 '(4 5 6)), the concatenation results in the list '(1 2 3 4 5 6). Thus
+(apply #'+ 1 2 3 '(4 5 6)) is the same thing as
+(apply #'+ '(1 2 3 4 5 6)) which is the same thing as
+(apply #'+ 1 2 3 4 5 6 '()) which of course is the same thing as
+(apply #'+ 1 2 3 4 5 6 nil)
+`
+
 Note that there is limitation of maximal number of arguments,
 see CALL-ARGUMENTS-LIMIT constant.
 
@@ -1006,12 +1028,12 @@ Argument description:
 - _eof-value_    - an object that is returned as EOF value
 - _recursive-p_  - flag to note recursive processing
 
-READ function reads arbitrary readable lisp object from input stream.
+READ function reads arbitrary readable Lisp object(reads Lisp code) from input stream.
 Reading process uses \*read-table\*.
 
-Note that \*read-eval\* global variable controls read-time evaluation (#. macro).
+Note that \*read-eval\* global variable controls read-time evaluation.
 
-See also: READ-LINE, WRITE and WRITE-LINE
+See also: READ-LINE, READ-FROM-STRING, WRITE and WRITE-LINE
 
 ``` cl
 (let ((s (make-string-input-stream "(1 2 3)"))) (read s)) => (1 2 3)
@@ -1137,6 +1159,14 @@ structure is copied**; that is, copy-list copies in the cdr direction but not in
 direction.
 
 See also: COPY-SEQ and COPY-TREE.
+
+### read-from-string
+
+(**read** _string_ _eof-error-p?_ _eof-value?_ &key _start_ _end_ _preserve-whitespace_)
+=> an object, position
+
+READ-FROM-STRING works just like READ, but lets us read a syntax expression (or any other
+basic Lisp datatype) from a string instead of directly from the console.
 
 
 ## Koans

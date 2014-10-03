@@ -3,21 +3,26 @@
 ;;; Code from Paradigms of Artificial Intelligence Programming
 ;;; Copyright (c) 1991 Peter Norvig
 
-;;;; File eliza1.lisp: Basic version of the Eliza program
+;;;; File eliza1.lisp: Basic version of the Eliza program.
+;;;;                   See also ../ auxfns.lisp section Chapter 5
 
 (in-package #:ch5-first)
 
-;;; The basic are in auxfns.lisp; look for "PATTERN MATCHING FACILITY"
-
-;;; ____________________________________________________________________________
-;;;                             New version of pat-match with segment variables
+;; There is no 'variable type' in Common Lisp. There is now way to distinguish them like
+;; in Prolog where they begin with capital letter. Let's use symbols with some name
+;; convention then. In particular, symbols have names, which are strings and are
+;; accessible through the 'symbol-name' function. Strings in turn have elements that are
+;; characters, accessible through the function char. The character '?' is denoted by the
+;; self-evaluating escape sequence #\?.
 
 (defun variable-p (x)
   "Is x a variable (a symbol beginning with `?')?"
   (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
 
+;;; New version of 'pat-match' (see old in ../auxfns.lisp) with segment variables
+
 (defun pat-match (pattern input &optional (bindings no-bindings))
-  "Match pattern against input in the context of the bindings"
+  "Match `pattern' against `input' in the context of the `bindings'"
   (cond ((eq bindings fail) fail)
         ((variable-p pattern)
          (match-variable pattern input bindings))
@@ -37,6 +42,10 @@
 
 ;;; ____________________________________________________________________________
 
+;; In writing segment-match, the important question is how much of the input the
+;; segment variable should match.
+
+;; First version
 (defun segment-match (pattern input bindings &optional (start 0))
   "Match the segment `pattern' ((?* var) . pat) against `input'."
   (let ((var (second (first pattern)))
@@ -49,6 +58,8 @@
                              :start start :test #'equal)))
           (if (null pos)
               fail
+              ;; Pattern occurs but first we have to see if the rest of the
+              ;; pattern matches the rest of the input
               (let ((b2 (pat-match pat (subseq input pos) bindings)))
                 ;; If this match failed, try another longer one
                 ;; If it worked, check that the variables match
@@ -56,8 +67,8 @@
                     (segment-match pattern input bindings (+ pos 1))
                     (match-variable var (subseq input 0 pos) b2))))))))
 
-;;; ____________________________________________________________________________
 
+;; Better one
 (defun segment-match (pattern input bindings &optional (start 0))
   "Match the segment `pattern' ((?* var) . pat) against `input'."
   (let ((var (second (first pattern)))
@@ -85,6 +96,7 @@
 (defun rule-responses (rule) (rest rule))
 
 ;;; ____________________________________________________________________________
+;;;                                                    Simple rules for testing
 
 (defparameter *eliza-rules*
   '((((?* ?x) hello (?* ?y))
@@ -107,12 +119,15 @@
      (What other feelings do you have?))))
 
 ;;; ____________________________________________________________________________
+;;;                                                           Run first version
 
 (defun eliza ()
   "Respond to user input using pattern matching rules."
   (loop
      (print 'eliza>)
      (write (flatten (use-eliza-rules (read))) :pretty t)))
+
+;; Do you remember how sublis works? p. 76 if not.
 
 (defun use-eliza-rules (input)
   "Find some rule with which to transform the `input'."
@@ -130,43 +145,21 @@
 
 ;;; ____________________________________________________________________________
 
-;; Also defined in ../auxfns.lisp
-
-(defun flatten (the-list)
-  "Append together elements (or lists) in `the-list'."
-  (mappend #'mklist the-list))
-
-(defun mklist (x)
-  "Return x if it is a list, otherwise (x)."
-  (if (listp x)
-      x
-      (list x)))
-
-(defun mappend (fn the-list)
-  "Apply `fn' to each element of `the-list' and append the results."
-  (apply #'append (mapcar fn the-list)))
-
-(defun random-elt (choices)
-  "Choose an element from a list at random."
-  (elt choices (random (length choices))))
-
-;;; ____________________________________________________________________________
-
-;;;> (eliza)
-;;;ELIZA> (hello there)
-;;;(HOW DO YOU DO. PLEASE STATE YOUR PROBLEM.)
-;;;ELIZA> (i want to test this program)
-;;;(WHAT WOULD IT MEAN IF YOU GOT TO TEST THIS PROGRAM)
-;;;ELIZA> (i could see if it works)
-;;;(DO YOU REALLY THINK ITS LIKELY THAT IT WORKS)
-;;;ELIZA> (no not really)
-;;;(ARE YOU SAYING "NO" JUST TO BE NEGATIVE?)
-;;;ELIZA> (no)
-;;;(ARE YOU SAYING "NO" JUST TO BE NEGATIVE?)
-;;;ELIZA> (forget it-- i was wondering how general the program is)
-;;;(WHY DO YOU TELL ME YOU WERE WONDERING HOW GENERAL THE PROGRAM IS NOW?)
-;;;ELIZA> (i felt like it)
-;;;(WHAT OTHER FEELINGS DO YOU HAVE?)
-;;;ELIZA> (i feel this is enough)
-;;;(DO YOU OFTEN FEEL THIS IS ENOUGH ?)
-;;;ELIZA> [Abort]
+;;; ch5-first> (eliza)
+;;; ELIZA> (hello there)
+;;; (HOW DO YOU DO. PLEASE STATE YOUR PROBLEM.)
+;;; ELIZA> (i want to test this program)
+;;; (WHAT WOULD IT MEAN IF YOU GOT TO TEST THIS PROGRAM)
+;;; ELIZA> (i could see if it works)
+;;; (DO YOU REALLY THINK ITS LIKELY THAT IT WORKS)
+;;; ELIZA> (no not really)
+;;; (ARE YOU SAYING "NO" JUST TO BE NEGATIVE?)
+;;; ELIZA> (no)
+;;; (ARE YOU SAYING "NO" JUST TO BE NEGATIVE?)
+;;; ELIZA> (forget it-- i was wondering how general the program is)
+;;; (WHY DO YOU TELL ME YOU WERE WONDERING HOW GENERAL THE PROGRAM IS NOW?)
+;;; ELIZA> (i felt like it)
+;;; (WHAT OTHER FEELINGS DO YOU HAVE?)
+;;; ELIZA> (i feel this is enough)
+;;; (DO YOU OFTEN FEEL THIS IS ENOUGH ?)
+;;; ELIZA> [Abort. Use C-c C-c in SLIME then pick up [Abort]]

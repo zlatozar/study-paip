@@ -1,4 +1,4 @@
-####Chapter 2####
+#### Chapter 2
 
 **"Use the most natural notation available to solve a problem."**
 

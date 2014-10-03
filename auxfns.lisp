@@ -144,31 +144,40 @@ in `the-list'"
   "Get the value part (for `var') from a binding list."
   (binding-val (get-binding var bindings)))
 
+;; If both pattern and input are lists, we first call 'pat-match' recursively on the first
+;; element of each list. This returns a binding list (or 'fail'), which we use to match
+;; the rest of the lists.
+
+;; Basic version
+(defun pat-match (pattern input &optional (bindings no-bindings))
+  "Match `pattern' against `input' in the context of the `bindings'"
+  (cond ((eq bindings fail) fail)
+        ((variable-p pattern) (match-variable pattern input bindings))
+        ((eql pattern input) bindings)
+        ((and (consp pattern) (consp input))     ; ***
+         (pat-match (rest pattern) (rest input)
+                    (pat-match (first pattern) (first input) bindings)))
+        (t fail)))
+
 (defun match-variable (var input bindings)
-  "Does VAR match input? Uses (or updates) and returns bindings."
+  "Does `var' match `input'? Uses (or updates) and returns `bindings'."
   (let ((binding (get-binding var bindings)))
     (cond ((not binding) (extend-bindings var input bindings))
           ((equal input (binding-val binding)) bindings)
           (t fail))))
 
+;; Following function is a good example of conditional consing/adding. It show also how to
+;; use list-consing recursion. 'pat-match' has as a parameter 'bindings' - it is CONS
+;; parameter. As each recursive call returns, we (possibly) add to this CONS parameter.
+
 (defun extend-bindings (var val bindings)
   "Add a (var . value) pair to a binding list."
   (cons (cons var val)
         ;; Once we add a "real" binding,
-        ;; we can get rid of the dummy no-bindings
+        ;; we can get rid of the dummy 'no-bindings' (aka (T . T))
         (if (eq bindings no-bindings)
             nil
             bindings)))
-
-(defun pat-match (pattern input &optional (bindings no-bindings))
-  "Match `pattern' against `input' in the context of the bindings"
-  (cond ((eq bindings fail) fail)
-        ((variable-p pattern) (match-variable pattern input bindings))
-        ((eql pattern input) bindings)
-        ((and (consp pattern) (consp input))
-         (pat-match (rest pattern) (rest input)
-                    (pat-match (first pattern) (first input) bindings)))
-        (t fail)))
 
 ;;; ____________________________________________________________________________
 

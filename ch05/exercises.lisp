@@ -9,12 +9,27 @@
 
 ;;; ____________________________________________________________________________
 
+;; From PAIP and 'On Lisp'
 (defun mappend (fn &rest lists)
-  "Apply fn to each element of lists and append the results."
+  "Apply `fn' to each element of `lists' and append the results."
   (apply #'append (apply #'mapcar fn lists)))
 
+;; From AIMA
+(defun mappend2 (fn &rest lists)
+  "Apply `fn' to respective elements of list(s), and append results."
+  (reduce #'append (apply #'mapcar fn lists) :from-end t))
+
 ;;; TEST
+
+(deftest test-mappend ()
+  (check
+    (equal (mappend #'list '(a b c) '(1 2 3 4)) '(A 1 B 2 C 3))))
 
 
 ;;; ____________________________________________________________________________
 ;;;                                                                    My notes
+
+;; REMEMBER: 'mappend' offers a nondestructive alternative to 'mapcan'!
+
+;; Loosely (apply #'mapcar fn lists) is (mapcar fn list1 list2 ... listN) then collect
+;; results with 'append' or 'reduce/append'

@@ -1,4 +1,4 @@
-####Chapter 1####
+#### Chapter 1
 
 - With @ in `examples.lisp`, page in the book is referred - with => expected result
 e.g. `((+ 2 2) => 4 @ 4)`.
@@ -33,6 +33,7 @@ expressions that start with them, like `(setf x 3)`.
   function-body...)
 ```
 - The funny #' notation maps from the name of a function to the function itself.
+It denotes function when this function is not in 'functional position' (first in a list)
 - Use `C-c C-d C-d` to see documentation with Slime or in REPL `(?? '<symbol>)`
 - Only the value `nil` is considered false; all other values are considered true.
 - Use `trace` to see passed values to the function then `untrace`
@@ -94,5 +95,5 @@ And do not forget parenthesis around lambda e.g.
     * Switch to `lisp-koans` package
     * Fill the blanks
     * Send s-expression to REPL to see result `C-c C-j`. If it is correct should return `T`
-    * When finish with koan file reload ``contemplate` (choose _[CONTINUE]_ Go ahead and
+    * When finish with koan file reload `contemplate` (choose _[CONTINUE]_ Go ahead and
 change the value.). In this way next koan file will be suggested.

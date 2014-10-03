@@ -49,6 +49,9 @@ to test chapter exercises.")
            #:undebug
            #:dbg-indent
            ;; ch05
+           #:flatten
+           #:mklist
+           #:random-elt
            #:starts-with
            #:no-bindings
            #:fail
@@ -75,7 +78,7 @@ only final is included.")
 ;;; PART I "Introduction to Common Lisp"
 
 (defpackage #:ch1
-  (:documentation "Chapter 1: Introduction to Lisp")
+  (:documentation "Chapter 1. Introduction to Lisp")
   (:use #:common-lisp
         #:inspect
         #:paip-aux
@@ -86,10 +89,19 @@ only final is included.")
   (:documentation "Selected exercises form Chapter 1")
   (:use #:common-lisp
         #:ch1
-        #:pcl-test))
+        #:pcl-test)
+  (:export #:power
+           #:test-power
+           #:count-atoms
+           #:test-count-atoms
+           #:count-all-atoms
+           #:count-anywhere
+           #:test-count-anywhere
+           #:dot-product
+           #:test-dot-product))
 
 (defpackage #:ch2
-  (:documentation "Chapter 2: A Simple Lisp Program")
+  (:documentation "Chapter 2. A Simple Lisp Program")
   (:use #:common-lisp
         #:inspect
         #:paip-aux
@@ -100,10 +112,12 @@ only final is included.")
   (:documentation "Selected exercises form Chapter 2")
   (:use #:common-lisp
         #:ch2
-        #:pcl-test))
+        #:pcl-test)
+  (:export #:cross-product
+           #:test-cross-product))
 
 (defpackage #:ch3
-  (:documentation "Chapter 3: Overview of Lisp")
+  (:documentation "Chapter 3. Overview of Lisp")
   (:use #:common-lisp
         #:inspect
         #:paip-aux
@@ -116,14 +130,16 @@ only final is included.")
         #:ch3
         #:paip-aux
         #:pcl-test)
-  (:shadowing-import-from #:common-lisp :debug))
+  (:shadowing-import-from #:common-lisp :debug)
+  (:export #:length-r
+           #:test-length-r))
 
 
 ;;; PART II "Early AI Programs"
 
 
 (defpackage #:ch4-first
-  (:documentation "Chapter 4: GPS: The General Problem Solver (first version)")
+  (:documentation "Chapter 4. GPS: The General Problem Solver (first version)")
   (:use #:common-lisp
         #:inspect
         #:tutor
@@ -131,42 +147,48 @@ only final is included.")
   (:shadowing-import-from #:common-lisp :debug))
 
 (defpackage #:ch4-final
-  (:documentation "Chapter 4: GPS: The General Problem Solver (final version)")
+  (:documentation "Chapter 4. GPS: The General Problem Solver (final version)")
   (:use #:common-lisp
         #:inspect
         #:paip-aux
         #:tutor)
   (:shadowing-import-from #:paip-aux :debug)
-  ;; Expose final version
   (:export #:gps))
 
 (defpackage #:ch4-exercises
   (:documentation "Selected exercises form Chapter 4")
   (:use #:common-lisp
-        #:pcl-test))
+        #:pcl-test)
+  (:export #:permutations
+           #:test-permutations))
 
 (defpackage #:ch5-first
-  (:documentation "Chapter 5: Eliza: Dialog with a Machine (first version)")
+  (:documentation "Chapter 5. ELIZA: Dialog with a Machine (first version)")
   (:use #:common-lisp
         #:inspect
         #:tutor
         #:paip-aux)
-  (:shadowing-import-from #:common-lisp :debug))
+  (:shadowing-import-from #:common-lisp :debug)
+  (:export #:rule-pattern
+           #:rule-responses
+           #:switch-viewpoint))
 
 (defpackage #:ch5-final
-  (:documentation "Chapter 5: Eliza: Dialog with a Machine (final version)")
+  (:documentation "Chapter 5. ELIZA: Dialog with a Machine (final version)")
   (:use #:common-lisp
         #:inspect
         #:paip-aux
-        #:tutor)
+        #:tutor
+        #:ch5-first)
   (:shadowing-import-from #:common-lisp :debug)
-  ;; Expose final version
-  )
+  (:export #:eliza))
 
 (defpackage #:ch5-exercises
   (:documentation "Selected exercises form Chapter 5")
   (:use #:common-lisp
-        #:pcl-test))
+        #:pcl-test)
+  (:export #:mappend
+           #:test-mappend))
 
 ;;; ____________________________________
 ;;;                             Exposed
@@ -175,7 +197,8 @@ only final is included.")
   (:documentation "Expose functions from PAIP book that could be
 used in projects.")
   (:use #:common-lisp
-        #:ch4-final))
+        #:ch4-final
+        #:ch5-final))
 
 ;;; ____________________________________
 ;;;                                Help
@@ -187,7 +210,11 @@ To run all examples:
 To run examples from particular chapter:
     (tutor:do-examples <chapter number>)
 
-GPS function:
+To run GPS:
     (ch4-final:gps <state> <goals> &optional <available operators>)
 
-Loading is done. Happy hacking!")
+To run ELIZA:
+    (ch5-final:eliza)
+and type (good bye) to exit
+
+Loading is done. Happy hacking")
