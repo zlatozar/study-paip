@@ -17,6 +17,7 @@
 
 ;;; ____________________________________________________________________________
 
+;; p. 57
 (defstruct player (score 0) (wins 0))
 
 (defun determine-winner (players)
@@ -25,6 +26,7 @@
                                   :key #'player-score)))))
 
 ;;; ____________________________________________________________________________
+;;;                                                     Various LENGTH versions
 
 (defun length1 (list)
   (let ((len 0))               ; start with LEN=0
@@ -33,15 +35,11 @@
       (incf len))              ; increment LEN by 1
     len))                      ; and return LEN
 
-;;; ____________________________________________________________________________
-
 (defun length1.1 (list)        ; alternate version:
   (let ((len 0))               ; (not my preference)
     (dolist (element list len) ; uses len as result here
       (declare (ignorable element))
       (incf len))))
-
-;;; ____________________________________________________________________________
 
 (defun length2 (list)
   (let ((len 0))               ; start with LEN=0
@@ -51,14 +49,10 @@
           list)
     len))                      ; and return LEN
 
-;;; ____________________________________________________________________________
-
 (defun length3 (list)
   (do ((len 0 (+ len 1))       ; start with LEN=0, increment
        (l list (rest l)))      ; ... on each iteration
       ((null l) len)))         ; (until the end of the list)
-
-;;; ____________________________________________________________________________
 
 (defun length4 (list)
   (loop for element in list    ; go through each element
@@ -75,8 +69,6 @@
      do (incf len)             ;  increment LEN by 1
      finally (return len)))    ; and return LEN
 
-;;; ____________________________________________________________________________
-
 (defun true (x)
   (declare (ignorable x))
   t)
@@ -84,15 +76,11 @@
 (defun length7 (list)
   (count-if #'true list))
 
-
-;;; ____________________________________________________________________________
-
 (defun length8 (list)
   (if (null list)
       0
       (+ 1 (position-if #'true list :from-end t))))
 
-;;; ____________________________________________________________________________
 
 (defun length9 (list)
   (if (null list)
@@ -125,6 +113,7 @@
 
 ;;; ____________________________________________________________________________
 
+;; p. 65
 (defun product (numbers)
   "Multiply all the `numbers' together to compute their product."
   (let ((prod 1))
@@ -134,21 +123,19 @@
           (setf prod (* n prod))))))
 
 ;;; ____________________________________________________________________________
+;;;                                                        WHILE implementation
 
+;; p. 67
 (defmacro while (test &rest body)
-  "Repeat body while test is true."
+  "Repeat `body' while `test' is true."
   (list* 'loop
          (list 'unless test '(return nil))
          body))
-
-;;; ____________________________________________________________________________
 
 (defmacro while (test &rest body)
   "Repeat `body' while `test' is true."
   (let ((code '(loop (unless test (return nil)) . body)))
     (subst test 'test (subst body 'body code))))
-
-;;; ____________________________________________________________________________
 
 (defmacro while (test &rest body)
   "Repeat `body' while `test' is true."
@@ -157,37 +144,14 @@
 
 ;;; ____________________________________________________________________________
 
-(defun dprint (x)
-  "Print an expression in dotted pair notation."
-  (cond ((atom x) (princ x))
-        (t (princ "(")
-           (dprint (first x))
-           (pr-rest (rest x))
-           (princ ")")
-           x)))
-
-(defun pr-rest (x)
-  (princ " . ")
-  (dprint x))
-
-;;; ____________________________________________________________________________
-
-(defun pr-rest (x)
-  (cond ((null x))
-        ((atom x) (princ " . ") (princ x))
-        (t (princ " ") (dprint (first x)) (pr-rest (rest x)))))
-
-;;; ____________________________________________________________________________
-
 (defun true (&rest ignore)
   (declare (ignorable ignore))
   t)
 
+;; p. 76
 (defun same-shape-tree (a b)
   "Are two trees the same except for the leaves?"
   (tree-equal a b :test #'true))
-
-;;; ____________________________________________________________________________
 
 (defun english->french (words)
   (sublis '((are . va) (book . libre) (friend . ami)
@@ -197,44 +161,12 @@
 
 ;;; ____________________________________________________________________________
 
-(defstruct node
-  name
-  (yes nil)
-  (no nil))
-
-(defvar *db*
-  (make-node :name 'animal
-             :yes (make-node :name 'mammal)
-             :no (make-node
-                  :name 'vegetable
-                  :no (make-node :name 'mineral))))
-
-(defun give-up ()
-  (format t "~&I give up - what is it? ")
-  (make-node :name (read)))
-
-(defun questions (&optional (node *db*))
-  (format t "~&Is it a ~a? " (node-name node))
-  (case (read)
-    ((y yes) (if (not (null (node-yes node)))
-                 (questions (node-yes node))
-                 (setf (node-yes node) (give-up))))
-    ((n no)  (if (not (null (node-no node)))
-                 (questions (node-no node))
-                 (setf (node-no node) (give-up))))
-    (it 'aha!)
-    (t (format t "Reply with YES, NO, or IT if I have guessed it.")
-       (questions node))))
-
-;;; ____________________________________________________________________________
-
+;; p. 87
 (defun average (numbers)
   (if (null numbers)
       (error "Average of the empty list is undefined.")
       (/ (reduce #'+ numbers)
          (length numbers))))
-
-;;; ____________________________________________________________________________
 
 (defun average (numbers)
   (if (null numbers)
@@ -247,19 +179,16 @@
 
 ;;; ____________________________________________________________________________
 
+;; p. 88
 (defun sqr (x)
   "Multiply x by itself."
   (check-type x number)
   (* x x))
 
-;;; ____________________________________________________________________________
-
 (defun sqr (x)
   "Multiply x by itself."
   (assert (numberp x))
   (* x x))
-
-;;; ____________________________________________________________________________
 
 (defun sqr (x)
   "Multiply x by itself."
@@ -268,6 +197,7 @@
 
 ;;; ____________________________________________________________________________
 
+;; Pseudo code:
 ;; (defun eat-porridge (bear)
 ;;   (assert (< too-cold (temperature (bear-porridge bear)) too-hot)
 ;;           (bear (bear-porridge bear))
@@ -276,12 +206,12 @@
 ;;   (eat (bear-porridge bear)))
 
 ;;; ____________________________________________________________________________
+;;;                                                                    Closures
 
+;; p. 92
 (defun adder (c)
   "Return a function that adds c to its argument."
   #'(lambda (x) (+ x c)))
-
-;;; ____________________________________________________________________________
 
 (defun bank-account (balance)
   "Open a bank account starting with the given balance."
@@ -292,6 +222,12 @@
 
 ;;; ____________________________________________________________________________
 
+;; p. 97
+(defun math-quiz (op range n)
+  "Ask the user a series of math problems."
+  (dotimes (i n)
+    (problem (random range) op (random range))))
+
 (defun problem (x op y)
   "Ask a math problem, read a reply, and say if it is correct."
   (format t "~&How much is ~d ~a ~d?" x op y)
@@ -299,19 +235,12 @@
       (princ "Correct!")
       (princ "Sorry, that's not right.")))
 
-(defun math-quiz (op range n)
-  "Ask the user a series of math problems."
-  (dotimes (i n)
-    (problem (random range) op (random range))))
-
 ;;; ____________________________________________________________________________
 
 (defun math-quiz (&optional (op '+) (range 100) (n 10))
   "Ask the user a series of math problems."
   (dotimes (i n)
     (problem (random range) op (random range))))
-
-;;; ____________________________________________________________________________
 
 (defun math-quiz (&key (op '+) (range 100) (n 10))
   "Ask the user a series of math problems."
@@ -324,33 +253,17 @@
 
 ;;; ____________________________________________________________________________
 
+;; p. 102
 (defmacro while2 (test &body body)
   "Repeat `body' while `test' is true."
   `(loop (if (not ,test) (return nil))
       . ,body))
 
-;;; ____________________________________________________________________________
+;; STYLE: &aux can be used to bind a new local variable or variables, as if bound with
+;; let*. Because &aux variables are not parameters at all and thus have no place in a
+;; parameter list they should be clearly distinguished as local variables with a let.
 
 (defun length14 (list &aux (len 0))
   (dolist (element list len)
     (declare (ignorable element))
     (incf len)))
-
-;;; ____________________________________________________________________________
-;;;                                                                 See ex. 3.9
-
-(defun length-r (list)
-  (reduce #'+ (mapcar #'(lambda (x)
-                          (declare (ignorable x))
-                          1) list)))
-
-(defun length-r (list)
-  (reduce #'(lambda (x y)
-              (declare (ignorable y))
-              (+ x 1)) list
-              :initial-value 0))
-
-(defun length-r (list)
-  (reduce #'+ list :key #'(lambda (x)
-                            (declare (ignorable x))
-                            1)))

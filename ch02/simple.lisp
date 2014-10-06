@@ -8,6 +8,7 @@
 ;;; ____________________________________________________________________________
 ;;;                                                    Straightforward solution
 
+;; p. 36
 (defun sentence ()    (append (noun-phrase) (verb-phrase)))
 (defun noun-phrase () (append (Article) (Noun)))
 (defun verb-phrase () (append (Verb) (noun-phrase)))
@@ -25,6 +26,7 @@
 
 ;;; ____________________________________________________________________________
 
+;; p. 38
 (defun Adj* ()
   (if (= (random 2) 0)
       nil
@@ -60,6 +62,7 @@
 ;;; ____________________________________________________________________________
 ;;;                                                            Helper functions
 
+;; p. 40
 (defun rule-lhs (rule)
   "The left hand side of a `rule'."
   (first rule))
@@ -106,7 +109,7 @@
 
 (defun generate-tree (phrase)
   "Generate a random sentence or phrase,
-  with a complete parse tree."
+with a complete parse tree."
   (cond ((listp phrase)
          (mapcar #'generate-tree phrase))
         ((rewrites phrase)
@@ -117,6 +120,7 @@
 ;;; ____________________________________________________________________________
 ;;;                                      Use the Same Data for Several Programs
 
+;; p. 44
 (defun generate-all (phrase)
   "Generate a list of all possible expansions of this `phrase'."
   (cond ((null phrase) (list nil))
@@ -131,7 +135,7 @@
 
 (defun combine-all (xlist ylist)
   "Return a list of lists formed by appending a y to an x.
-  E.g., (combine-all '((a) (b)) '((1) (2))) -> ((A 1) (B 1) (A 2) (B 2))."
+E.g., (combine-all '((a) (b)) '((1) (2))) -> ((A 1) (B 1) (A 2) (B 2))."
   (mappend #'(lambda (y)
                (mapcar #'(lambda (x) (append x y)) xlist))
            ylist))

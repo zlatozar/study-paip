@@ -8,8 +8,8 @@
 (in-package #:ch6)
 
 (defun tree-search (states goal-p successors combiner)
-  "Find a state that satisfies goal-p.  Start with states,
-  and search according to successors and combiner."
+  "Find a state that satisfies `goal-p'. Start with `states',
+and search according to `successors' and `combiner'."
   (dbg :search "~&;; Search: ~a" states)
   (cond ((null states) fail)
         ((funcall goal-p (first states)) (first states))
@@ -35,17 +35,17 @@
 
 (defun finite-binary-tree (n)
   "Return a successor function that generates a binary tree
-  with n nodes."
+with n nodes."
   #'(lambda (x)
       (remove-if #'(lambda (child) (> child n))
                  (binary-tree x))))
 
 (defun diff (num)
-  "Return the function that finds the difference from num."
+  "Return the function that finds the difference from `num'."
   #'(lambda (x) (abs (- x num))))
 
 (defun sorter (cost-fn)
-  "Return a combiner function that sorts according to cost-fn."
+  "Return a combiner function that sorts according to `cost-fn'."
   #'(lambda (new old)
       (sort (append new old) #'< :key cost-fn)))
 
@@ -54,15 +54,15 @@
   (tree-search (list start) goal-p successors (sorter cost-fn)))
 
 (defun price-is-right (price)
-  "Return a function that measures the difference from price,
-  but gives a big penalty for going over price."
+  "Return a function that measures the difference from `price',
+but gives a big penalty for going over `price'."
   #'(lambda (x) (if (> x price)
                     most-positive-fixnum
                     (- price x))))
 
 (defun beam-search (start goal-p successors cost-fn beam-width)
   "Search highest scoring states first until goal is reached,
-  but never consider more than beam-width states at a time."
+but never consider more than `beam-width' states at a time."
   (tree-search (list start) goal-p successors
                #'(lambda (old new)
                    (let ((sorted (funcall (sorter cost-fn) old new)))
@@ -93,11 +93,11 @@
                *cities*))
 
 (defun city (name)
-  "Find the city with this name."
+  "Find the city with this `name'."
   (assoc name *cities*))
 
 (defun trip (start dest)
-  "Search for a way from the start to dest."
+  "Search for a way from the `start' to `dest'."
   (beam-search start (is dest) #'neighbors
                #'(lambda (c) (air-distance c dest))
                1))
@@ -106,7 +106,7 @@
   state (previous nil) (cost-so-far 0) (total-cost 0))
 
 (defun trip (start dest &optional (beam-width 1))
-  "Search for the best path from the start to dest."
+  "Search for the best path from the `start' to `dest'."
   (beam-search
    (make-path :state start)
    (is dest :key #'path-state)
@@ -127,7 +127,7 @@
 
 (defun xyz-coords (city)
   "Returns the x,y,z coordinates of a point on a sphere.
-  The center is (0 0 0) and the north pole is (0 0 1)."
+The center is (0 0 0) and the north pole is (0 0 1)."
   (let ((psi (deg->radians (city-lat city)))
         (phi (deg->radians (city-long city))))
     (list (* (cos psi) (cos phi))
@@ -136,7 +136,7 @@
 
 (defun distance (point1 point2)
   "The Euclidean distance between two points.
-  The points are coordinates in n-dimensional space."
+The points are coordinates in n-dimensional space."
   (sqrt (reduce #'+ (mapcar #'(lambda (a b) (expt (- a b) 2))
                             point1 point2))))
 
@@ -145,7 +145,7 @@
   (* (+ (truncate deg) (* (rem deg 1) 100/60)) pi 1/180))
 
 (defun is (value &key (key #'identity) (test #'eql))
-  "Returns a predicate that tests for a given value."
+  "Returns a predicate that tests for a given `value'."
   #'(lambda (path) (funcall test value (funcall key path))))
 
 (defun path-saver (successors cost-fn cost-left-fn)
@@ -170,7 +170,7 @@
           (path-state path) (path-total-cost path)))
 
 (defun show-city-path (path &optional (stream t))
-  "Show the length of a path, and the cities along it."
+  "Show the length of a `path', and the cities along it."
   (format stream "#<Path ~,1f km: ~{~:(~a~)~^ - ~}>"
           (path-total-cost path)
           (reverse (map-path #'city-name path)))
@@ -186,7 +186,7 @@
 (defun iter-wide-search (start goal-p successors cost-fn
                          &key (width 1) (max 100))
   "Search, increasing beam width from width to max.
-  Return the first solution found at any width."
+Return the first solution found at any width."
   (dbg :search "; Width: ~d" width)
   (unless (> width max)
     (or (beam-search start goal-p successors cost-fn width)
@@ -195,9 +195,9 @@
 
 (defun graph-search (states goal-p successors combiner
                      &optional (state= #'eql) old-states)
-  "Find a state that satisfies goal-p.  Start with states,
-  and search according to successors and combiner.
-  Don't try the same state twice."
+  "Find a state that satisfies `goal-p'. Start with `states',
+and search according to `successors' and `combiner'.
+Don't try the same state twice."
   (dbg :search "~&;; Search: ~a" states)
   (cond ((null states) fail)
         ((funcall goal-p (first states)) (first states))
@@ -222,10 +222,10 @@
 
 (defun a*-search (paths goal-p successors cost-fn cost-left-fn
                   &optional (state= #'eql) old-paths)
-  "Find a path whose state satisfies goal-p.  Start with paths,
-  and expand successors, exploring least cost first.
-  When there are duplicate states, keep the one with the
-  lower cost and discard the other."
+  "Find a path whose state satisfies `goal-p'. Start with `paths',
+and expand `successors', exploring least cost first.
+When there are duplicate states, keep the one with the
+lower cost and discard the other."
   (dbg :search ";; Search: ~a" paths)
   (cond
     ((null paths) fail)
@@ -270,11 +270,10 @@
 
 (defun insert-path (path paths)
   "Put path into the right position, sorted by total cost."
-  ;; MERGE is a built-in function
   (merge 'list (list path) paths #'< :key #'path-total-cost))
 
 (defun path-states (path)
-  "Collect the states along this path."
+  "Collect the states along this `path'."
   (if (null path)
       nil
       (cons (path-state path)

@@ -7,10 +7,8 @@
 
 (in-package #:ch6)
 
-;; (requires "gps" "search")
-
 (defun search-gps (start goal &optional (beam-width 10))
-  "Search for a sequence of operators leading to goal."
+  "Search for a sequence of operators leading to `goal'."
   (find-all-if
    #'action-p
    (beam-search

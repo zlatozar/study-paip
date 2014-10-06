@@ -91,11 +91,6 @@
                     b2)))))))
 
 ;;; ____________________________________________________________________________
-
-(defun rule-pattern (rule) (first rule))
-(defun rule-responses (rule) (rest rule))
-
-;;; ____________________________________________________________________________
 ;;;                                                    Simple rules for testing
 
 (defparameter *eliza-rules*
@@ -121,13 +116,16 @@
 ;;; ____________________________________________________________________________
 ;;;                                                           Run first version
 
+(defun rule-pattern (rule) (first rule))
+(defun rule-responses (rule) (rest rule))
+
 (defun eliza ()
   "Respond to user input using pattern matching rules."
   (loop
      (print 'eliza>)
      (write (flatten (use-eliza-rules (read))) :pretty t)))
 
-;; Do you remember how sublis works? p. 76 if not.
+;; Do you remember how sublis works? See p. 76 if not.
 
 (defun use-eliza-rules (input)
   "Find some rule with which to transform the `input'."

@@ -190,6 +190,18 @@ Page *285*: Replace definition of `filter` function with:
       (filter pred (tail pipe)))))
 ```
 
+Page *185*:
+
+``` cl
+(defun first-match-pos (pat1 input start)
+  "Find the first position that pat1 could possibly match input,
+starting at position start.  If pat1 is non-constant, then just
+return start."
+  (cond ((and (atom pat1) (not (variable-p pat1)))
+         (position pat1 input :start start :test #'equal))
+        ((<= start (length input)) start) ; *** fix (in book p. 185 is <)
+        (t nil)))
+```
 
 ### License
 

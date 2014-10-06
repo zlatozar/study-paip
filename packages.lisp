@@ -3,7 +3,7 @@
 ;;;; Copyright (c) 2014, 2015 Zlatozar Zhelyazkov
 
 ;;;; package.lisp: Define PAIP packages. Every chapter is a package or
-;;;; set of packages.
+;;;;               set of packages.
 
 (in-package :cl-user)
 
@@ -130,7 +130,9 @@ To run examples from particular chapter:
         #:inspect
         #:paip-aux
         #:tutor)
-  (:shadowing-import-from #:common-lisp :debug))
+  (:shadowing-import-from #:common-lisp :debug)
+  (:export #:while
+           #:while2))
 
 (defpackage #:ch3-exercises
   (:documentation "Selected exercises form Chapter 3")
@@ -139,7 +141,10 @@ To run examples from particular chapter:
         #:paip-aux
         #:pcl-test)
   (:shadowing-import-from #:common-lisp :debug)
-  (:export #:length-r
+  (:export #:dprint
+           #:pr-rest
+           #:questions
+           #:length-r
            #:test-length-r))
 
 

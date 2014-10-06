@@ -7,8 +7,6 @@
 
 (in-package #:ch6)
 
-;; (requires "patmatch" "eliza")
-
 (defun eliza ()
   "Respond to user input using pattern matching rules."
   (loop
