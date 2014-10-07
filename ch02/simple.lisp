@@ -122,7 +122,7 @@ with a complete parse tree."
 
 ;; p. 44
 (defun generate-all (phrase)
-  "Generate a list of all possible expansions of this `phrase'."
+  "Generate a list of all possible expansions of this PHRASE."
   (cond ((null phrase) (list nil))
         ((listp phrase)
          (combine-all (generate-all (first phrase))

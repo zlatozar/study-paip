@@ -31,7 +31,7 @@ to test chapter exercises.")
            #:check))
 
 ;;; ____________________________________
-;;;      Helper functions form the book
+;;;      Helper functions from the book
 
 (defpackage #:paip-aux
   (:documentation "Useful functions defined in the book.")
@@ -96,8 +96,8 @@ To run examples from particular chapter:
 (defpackage #:ch1-exercises
   (:documentation "Selected exercises form Chapter 1")
   (:use #:common-lisp
-        #:ch1
-        #:pcl-test)
+        #:pcl-test
+        #:ch1)
   (:export #:power
            #:test-power
            #:count-atoms
@@ -119,10 +119,12 @@ To run examples from particular chapter:
 (defpackage #:ch2-exercises
   (:documentation "Selected exercises form Chapter 2")
   (:use #:common-lisp
-        #:ch2
-        #:pcl-test)
+        #:pcl-test
+        #:paip-aux)
+  (:shadowing-import-from #:common-lisp :debug)
   (:export #:cross-product
-           #:test-cross-product))
+           #:combine-all
+           #:test-combine-all))
 
 (defpackage #:ch3
   (:documentation "Chapter 3. Overview of Lisp")
@@ -137,9 +139,9 @@ To run examples from particular chapter:
 (defpackage #:ch3-exercises
   (:documentation "Selected exercises form Chapter 3")
   (:use #:common-lisp
-        #:ch3
         #:paip-aux
-        #:pcl-test)
+        #:pcl-test
+        #:ch3)
   (:shadowing-import-from #:common-lisp :debug)
   (:export #:dprint
            #:pr-rest
@@ -155,8 +157,8 @@ To run examples from particular chapter:
   (:documentation "Chapter 4. GPS: The General Problem Solver (first version)")
   (:use #:common-lisp
         #:inspect
-        #:tutor
-        #:paip-aux)
+        #:paip-aux
+        #:tutor)
   (:shadowing-import-from #:common-lisp :debug))
 
 (defpackage #:ch4-final
@@ -189,8 +191,8 @@ To run examples from particular chapter:
   (:documentation "Chapter 5. ELIZA: Dialog with a Machine (first version)")
   (:use #:common-lisp
         #:inspect
-        #:tutor
-        #:paip-aux)
+        #:paip-aux
+        #:tutor)
   (:shadowing-import-from #:common-lisp :debug)
   (:export #:rule-pattern
            #:rule-responses
@@ -221,8 +223,8 @@ and type bye to exit")
   (:documentation "Chapter 6. Building Software Tools")
   (:use #:common-lisp
         #:inspect
-        #:tutor
         #:paip-aux
+        #:tutor
         #:ch4-final
         #:ch5-final)
   (:shadowing-import-from #:paip-aux :debug)
