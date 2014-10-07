@@ -73,7 +73,7 @@ only final is included.")
            #:do-examples
            #:do-chapter))
 
-(format *debug-io* "~&
+(format *debug-io* "~2&
 To run all examples:
     (tutor:do-examples :all)
 
