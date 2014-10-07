@@ -83,7 +83,7 @@
       (T (equal x y)))))
 
 (defun do-example (example interface)
-  "Run an example; print out what's happening unless `interface' is nil.
+  "Run an EXAMPLE; print out what's happening unless INTERFACE is nil.
 Return nil if there is a unexpected result."
   (let* ((stream (output-stream interface))
          (*print-pretty* t)

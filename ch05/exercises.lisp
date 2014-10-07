@@ -11,12 +11,12 @@
 
 ;; From PAIP and 'On Lisp'
 (defun mappend (fn &rest lists)
-  "Apply `fn' to each element of `lists' and append the results."
+  "Apply FN to each element of LISTS and append the results."
   (apply #'append (apply #'mapcar fn lists)))
 
 ;; From AIMA
 (defun mappend2 (fn &rest lists)
-  "Apply `fn' to respective elements of list(s), and append results."
+  "Apply FN to respective elements of list(s), and append results."
   (reduce #'append (apply #'mapcar fn lists) :from-end t))
 
 ;;; TEST

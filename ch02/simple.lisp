@@ -57,22 +57,22 @@
 
 (defvar *grammar* *simple-grammar*
   "The grammar used by generate. Initially, this is *simple-grammar*,
-  but we can switch to other grammars.")
+but we can switch to other grammars.")
 
 ;;; ____________________________________________________________________________
 ;;;                                                            Helper functions
 
 ;; p. 40
 (defun rule-lhs (rule)
-  "The left hand side of a `rule'."
+  "The left hand side of a RULE."
   (first rule))
 
 (defun rule-rhs (rule)
-  "The right hand side of a `rule'."
+  "The right hand side of a RULE."
   (rest (rest rule)))
 
 (defun rewrites (category)
-  "Return a list of the possible rewrites for this category."
+  "Return a list of the possible rewrites for this CATEGORY."
   (rule-rhs (assoc category *grammar*)))
 
 ;;; ____________________________________________________________________________

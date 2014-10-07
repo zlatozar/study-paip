@@ -16,7 +16,7 @@
 ;; self-evaluating escape sequence #\?.
 
 (defun variable-p (x)
-  "Is x a variable (a symbol beginning with `?')?"
+  "Is X a variable (a symbol beginning with `?')?"
   (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
 
 ;;; New version of 'pat-match' (see old in ../auxfns.lisp) with segment variables
@@ -36,7 +36,7 @@
         (t fail)))
 
 (defun segment-pattern-p (pattern)
-  "Is this a segment matching `pattern': ((?* var) . pat)"
+  "Is this a segment matching PATTERN: ((?* var) . pat)"
   (and (consp pattern)
        (starts-with (first pattern) '?*)))
 
@@ -47,7 +47,7 @@
 
 ;; First version
 (defun segment-match (pattern input bindings &optional (start 0))
-  "Match the segment `pattern' ((?* var) . pat) against `input'."
+  "Match the segment PATTERN ((?* var) . pat) against INPUT."
   (let ((var (second (first pattern)))
         (pat (rest pattern)))
     (if (null pat)
@@ -70,7 +70,7 @@
 
 ;; Better one
 (defun segment-match (pattern input bindings &optional (start 0))
-  "Match the segment `pattern' ((?* var) . pat) against `input'."
+  "Match the segment PATTERN ((?* var) . pat) against INPUT."
   (let ((var (second (first pattern)))
         (pat (rest pattern)))
     (if (null pat)
@@ -128,7 +128,7 @@
 ;; Do you remember how sublis works? See p. 76 if not.
 
 (defun use-eliza-rules (input)
-  "Find some rule with which to transform the `input'."
+  "Find some rule with which to transform the INPUT."
   (some #'(lambda (rule)
             (let ((result (pat-match (rule-pattern rule) input)))
               (if (not (eq result fail))

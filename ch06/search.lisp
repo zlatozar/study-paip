@@ -8,8 +8,8 @@
 (in-package #:ch6)
 
 (defun tree-search (states goal-p successors combiner)
-  "Find a state that satisfies `goal-p'. Start with `states',
-and search according to `successors' and `combiner'."
+  "Find a state that satisfies GOAL-P. Start with STATES,
+and search according to SUCCESSORS and COMBINER."
   (dbg :search "~&;; Search: ~a" states)
   (cond ((null states) fail)
         ((funcall goal-p (first states)) (first states))
@@ -27,7 +27,7 @@ and search according to `successors' and `combiner'."
 
 (defun is (value) #'(lambda (x) (eql x value)))
 
-(defun prepend (x y) "Prepend y to start of x" (append y x))
+(defun prepend (x y) "Prepend Y to start of X" (append y x))
 
 (defun breadth-first-search (start goal-p successors)
   "Search old states first until goal is reached."
@@ -35,17 +35,17 @@ and search according to `successors' and `combiner'."
 
 (defun finite-binary-tree (n)
   "Return a successor function that generates a binary tree
-with n nodes."
+with N nodes."
   #'(lambda (x)
       (remove-if #'(lambda (child) (> child n))
                  (binary-tree x))))
 
 (defun diff (num)
-  "Return the function that finds the difference from `num'."
+  "Return the function that finds the difference from NUM."
   #'(lambda (x) (abs (- x num))))
 
 (defun sorter (cost-fn)
-  "Return a combiner function that sorts according to `cost-fn'."
+  "Return a combiner function that sorts according to COST-FN."
   #'(lambda (new old)
       (sort (append new old) #'< :key cost-fn)))
 
@@ -54,15 +54,15 @@ with n nodes."
   (tree-search (list start) goal-p successors (sorter cost-fn)))
 
 (defun price-is-right (price)
-  "Return a function that measures the difference from `price',
-but gives a big penalty for going over `price'."
+  "Return a function that measures the difference from PRICE,
+but gives a big penalty for going over PRICE."
   #'(lambda (x) (if (> x price)
                     most-positive-fixnum
                     (- price x))))
 
 (defun beam-search (start goal-p successors cost-fn beam-width)
   "Search highest scoring states first until goal is reached,
-but never consider more than `beam-width' states at a time."
+but never consider more than BEAM-WIDTH states at a time."
   (tree-search (list start) goal-p successors
                #'(lambda (old new)
                    (let ((sorted (funcall (sorter cost-fn) old new)))
@@ -93,11 +93,11 @@ but never consider more than `beam-width' states at a time."
                *cities*))
 
 (defun city (name)
-  "Find the city with this `name'."
+  "Find the city with this NAME."
   (assoc name *cities*))
 
 (defun trip (start dest)
-  "Search for a way from the `start' to `dest'."
+  "Search for a way from the START to DEST."
   (beam-search start (is dest) #'neighbors
                #'(lambda (c) (air-distance c dest))
                1))
@@ -106,7 +106,7 @@ but never consider more than `beam-width' states at a time."
   state (previous nil) (cost-so-far 0) (total-cost 0))
 
 (defun trip (start dest &optional (beam-width 1))
-  "Search for the best path from the `start' to `dest'."
+  "Search for the best path from the START to DEST."
   (beam-search
    (make-path :state start)
    (is dest :key #'path-state)
@@ -145,7 +145,7 @@ The points are coordinates in n-dimensional space."
   (* (+ (truncate deg) (* (rem deg 1) 100/60)) pi 1/180))
 
 (defun is (value &key (key #'identity) (test #'eql))
-  "Returns a predicate that tests for a given `value'."
+  "Returns a predicate that tests for a given VALUE."
   #'(lambda (path) (funcall test value (funcall key path))))
 
 (defun path-saver (successors cost-fn cost-left-fn)
@@ -170,7 +170,7 @@ The points are coordinates in n-dimensional space."
           (path-state path) (path-total-cost path)))
 
 (defun show-city-path (path &optional (stream t))
-  "Show the length of a `path', and the cities along it."
+  "Show the length of a PATH, and the cities along it."
   (format stream "#<Path ~,1f km: ~{~:(~a~)~^ - ~}>"
           (path-total-cost path)
           (reverse (map-path #'city-name path)))
@@ -222,7 +222,7 @@ Don't try the same state twice."
 
 (defun a*-search (paths goal-p successors cost-fn cost-left-fn
                   &optional (state= #'eql) old-paths)
-  "Find a path whose state satisfies `goal-p'. Start with `paths',
+  "Find a path whose state satisfies GOAL-P. Start with PATHS,
 and expand `successors', exploring least cost first.
 When there are duplicate states, keep the one with the
 lower cost and discard the other."
@@ -265,15 +265,15 @@ lower cost and discard the other."
   (find state paths :key #'path-state :test state=))
 
 (defun better-path (path1 path2)
-  "Is path1 cheaper than path2?"
+  "Is PATH1 cheaper than PATH2?"
   (< (path-total-cost path1) (path-total-cost path2)))
 
 (defun insert-path (path paths)
-  "Put path into the right position, sorted by total cost."
+  "Put PATH into the right position, sorted by total cost."
   (merge 'list (list path) paths #'< :key #'path-total-cost))
 
 (defun path-states (path)
-  "Collect the states along this `path'."
+  "Collect the states along this PATH."
   (if (null path)
       nil
       (cons (path-state path)

@@ -12,11 +12,11 @@
 
 ;; p. 12
 (defun last-name (name)
-  "Select the last name from a `name' represented as a list."
+  "Select the last name from a NAME represented as a list."
   (first (last name)))
 
 (defun first-name (name)
-  "Select the first name from a `name' represented as a list."
+  "Select the first name from a NAME represented as a list."
   (first name))
 
 (setf names '((John Q Public) (Malcolm X)
@@ -29,7 +29,7 @@
   "A list of titles that can appear at the start of a name.")
 
 (defun first-name (name)
-  "Select the first name from a `name' represented as a list."
+  "Select the first name from a NAME represented as a list."
   (if (member (first name) *titles*)
       (first-name (rest name))
       (first name)))
@@ -38,7 +38,7 @@
 ;;;                                                        High order functions
 
 (defun number-and-negation (x)
-  "If x is a number, return a list of x and -x."
+  "If X is a number, return a list of x and -x."
   (if (numberp x)
       (list x (- x))
       nil))
@@ -51,7 +51,7 @@
 
 ;; p. 31
 (defun atomprint (exp &optional (depth 0))
-  "Print each atom in `exp', along with its depth of nesting."
+  "Print each atom in EXP, along with its depth of nesting."
   (if (atom exp)
       (format t "~&ATOM: ~a, DEPTH ~d" exp depth)
       (dolist (element exp)

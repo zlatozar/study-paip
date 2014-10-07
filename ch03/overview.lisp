@@ -8,7 +8,7 @@
 (in-package #:ch3)
 
 (defun tax-bracket (income)
-  "Determine what percent tax should be paid for this `income'."
+  "Determine what percent tax should be paid for this INCOME."
   (cond ((< income 10000.00) 0.00)
         ((< income 30000.00) 0.20)
         ((< income 50000.00) 0.25)
@@ -21,7 +21,7 @@
 (defstruct player (score 0) (wins 0))
 
 (defun determine-winner (players)
-  "Increment the WINS for the player with highest score."
+  "Increment the wins for the player with highest score."
   (incf (player-wins (first (sort players #'>
                                   :key #'player-score)))))
 
@@ -115,11 +115,11 @@
 
 ;; p. 65
 (defun product (numbers)
-  "Multiply all the `numbers' together to compute their product."
+  "Multiply all the NUMBERS together to compute their product."
   (let ((prod 1))
     (dolist (n numbers prod)
       (if (= n 0)
-          (RETURN 0)
+          (RETURN 0)     ;; style: return to be in upper case
           (setf prod (* n prod))))))
 
 ;;; ____________________________________________________________________________
@@ -127,18 +127,18 @@
 
 ;; p. 67
 (defmacro while (test &rest body)
-  "Repeat `body' while `test' is true."
+  "Repeat BODY while TEST is true."
   (list* 'loop
          (list 'unless test '(return nil))
          body))
 
 (defmacro while (test &rest body)
-  "Repeat `body' while `test' is true."
+  "Repeat BODY while TEST is true."
   (let ((code '(loop (unless test (return nil)) . body)))
     (subst test 'test (subst body 'body code))))
 
 (defmacro while (test &rest body)
-  "Repeat `body' while `test' is true."
+  "Repeat BODY while TEST is true."
   `(loop (unless ,test (return nil))
       ,@body))
 
@@ -181,7 +181,7 @@
 
 ;; p. 88
 (defun sqr (x)
-  "Multiply x by itself."
+  "Multiply X by itself."
   (check-type x number)
   (* x x))
 
@@ -197,7 +197,8 @@
 
 ;;; ____________________________________________________________________________
 
-;; Pseudo code:
+;; In pseudo code:
+;;
 ;; (defun eat-porridge (bear)
 ;;   (assert (< too-cold (temperature (bear-porridge bear)) too-hot)
 ;;           (bear (bear-porridge bear))
@@ -210,11 +211,11 @@
 
 ;; p. 92
 (defun adder (c)
-  "Return a function that adds c to its argument."
+  "Return a function that adds C to its argument."
   #'(lambda (x) (+ x c)))
 
 (defun bank-account (balance)
-  "Open a bank account starting with the given balance."
+  "Open a bank account starting with the given BALANCE."
   #'(lambda (action amount)
       (case action
         (deposit  (setf balance (+ balance amount)))
@@ -255,7 +256,7 @@
 
 ;; p. 102
 (defmacro while2 (test &body body)
-  "Repeat `body' while `test' is true."
+  "Repeat BODY while TEST is true."
   `(loop (if (not ,test) (return nil))
       . ,body))
 

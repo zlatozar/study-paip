@@ -12,7 +12,7 @@
 ;;;                                                Form previous implementation
 
 (defun use-eliza-rules (input)
-  "Find some rule with which to transform the `input'."
+  "Find some rule with which to transform the INPUT."
   (some #'(lambda (rule)
             (let ((result (pat-match (rule-pattern rule) input)))
               (if (not (eq result fail))
@@ -21,7 +21,7 @@
         *eliza-rules*))
 
 (defun pat-match (pattern input &optional (bindings no-bindings))
-  "Match `pattern' against `input' in the context of the `bindings'"
+  "Match PATTERN against INPUT in the context of the BINDINGS"
   (cond ((eq bindings fail) fail)
         ((variable-p pattern)
          (match-variable pattern input bindings))
@@ -35,11 +35,11 @@
         (t fail)))
 
 (defun variable-p (x)
-  "Is x a variable (a symbol beginning with `?')?"
+  "Is X a variable (a symbol beginning with `?')?"
   (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
 
 (defun segment-match (pattern input bindings &optional (start 0))
-  "Match the segment `pattern' ((?* var) . pat) against `input'."
+  "Match the segment PATTERN ((?* var) . pat) against INPUT."
   (let ((var (second (first pattern)))
         (pat (rest pattern)))
     (if (null pat)
@@ -60,7 +60,7 @@
                     b2)))))))
 
 (defun segment-pattern-p (pattern)
-  "Is this a segment matching `pattern': ((?* var) . pat)"
+  "Is this a segment matching PATTERN: ((?* var) . pat)"
   (and (consp pattern)
        (starts-with (first pattern) '?*)))
 

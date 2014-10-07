@@ -15,37 +15,37 @@
   "Packages that are not helpful during PAIP study.")
 
 (defun system-symbol-p (aprop-symbol)
-  "Checks if `aprop-symbol' is exposed and if it is part of system
+  "Checks if APROP-SYMBOL is exposed and if it is part of system
 packages."
   (let ((system-list *system-packages*))
     (some 'numberp (mapcar #'(lambda (x) (search x (format nil "~S" aprop-symbol)))
                            system-list))))
 
 (defun start-with-p (aprop-symbol)
-  "Checks if `aprop-symbol' is a keyword."
+  "Checks if APROP-SYMBOL is a keyword."
   (eql (search ":" (format nil "~S" aprop-symbol)) 0))
 
 (defun spec-constraint-p (aprop-symbol)
-  "Predicate used to filter 'apropos-list."
+  "Predicate used to filter apropos list."
   (or (system-symbol-p aprop-symbol)
       (start-with-p aprop-symbol)))
 
 (defun ?a (&optional (sub-string ""))
-  "Return a list of all symbols containing `sub-string' as a substring."
+  "Return a list of all symbols containing SUB-STRING as a substring."
   (format t "~{~S,~% ~}" (sort
                           (remove-if #'spec-constraint-p (apropos-list sub-string))
                           #'string-lessp)))
 
 (defun ?? (some-symbol)
-  "Verbosely describe a symbol"
+  "Verbosely describe a symbol."
   (describe some-symbol))
 
 ;;; ____________________________________________________________________________
 ;;;                                                            Examine packages
 
 (defun ?p~ (&optional (package (package-name *package*)))
-  "Return a list of internal symbols in `package' name.
-If `package' is not specified, internal symbols of current
+  "Return a list of internal symbols in PACKAGE name.
+If PACKAGE is not specified, internal symbols of current
 package will be displayed."
   (let ((rslt nil))
     (do-symbols (s package)
@@ -57,8 +57,8 @@ package will be displayed."
     (format t "~{~S,~% ~}" (sort rslt #'string-lessp))))
 
 (defun ?p+ (&optional (package (package-name *package*)))
-  "Return a list of external symbols in `package' name.
-If `package' is not specified, external symbols of current
+  "Return a list of external symbols in PACKAGE name.
+If PACKAGE is not specified, external symbols of current
 package will be displayed."
   (let ((rslt nil))
     (do-external-symbols (s package)
@@ -72,7 +72,7 @@ package will be displayed."
     (format t "~{~S,~% ~}" (sort reslist #'string-lessp))))
 
 (defun ?p% (&optional (package (package-name *package*)))
-  "Return a non-portable description for `package' name, via DESCRIBE."
+  "Return a non-portable description for PACKAGE name, via `describe'."
   (with-output-to-string (sstream)
     (describe (find-package package) sstream)))
 
@@ -80,7 +80,7 @@ package will be displayed."
 ;;;                                                              Examine macros
 
 (defun ensure-unquoted (form)
-  "If form is quoted, remove one level of quoting. Otherwise return form.
+  "If FORM is quoted, remove one level of quoting. Otherwise return FORM.
 This is a useful for defining convenience for macros which may be passed a
 quoted or unquoted symbol."
   (if (and (listp form) (eq (car form) 'cl:quote))
@@ -88,8 +88,8 @@ quoted or unquoted symbol."
       form))
 
 (defmacro ?mac (expr)
-  "Bind *gensym-counter* to 0, macroexpand-1 the form, pprint result.
-  If expression starts with a quotation, unquotes it first."
+  "Bind *gensym-counter* to 0, macroexpand-1 the EXPR and pprint result.
+If expression starts with a quotation, unquotes it first."
   `(let ((*gensym-counter* 0)
 	 (*print-case* :downcase))
      (pprint (macroexpand-1 ',(ensure-unquoted expr)))))

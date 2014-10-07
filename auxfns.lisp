@@ -18,8 +18,8 @@
 
 ;; p. 19
 (defun mappend (fn list)
-  "Append the results of calling `fn' on each element of `list'.
-Like mapcon, but uses append instead of nconc."
+  "Append the results of calling FN on each element of LIST.
+Like mapcon, but uses append instead of `nconc'."
   (apply #'append (mapcar fn list)))
 
 ;;; ____________________________________________________________________________
@@ -53,8 +53,8 @@ Like mapcon, but uses append instead of nconc."
 ;; p. 101
 (defun find-all (item sequence &rest keyword-args
                  &key (test #'eql) test-not &allow-other-keys)
-  "Find all those elements of `sequence' that match `item',
-according to the keywords. Doesn't alter sequence."
+  "Find all those elements of SEQUENCE that match ITEM,
+according to the keywords. Doesn't alter SEQUENCE."
   (if test-not
       (apply #'remove item sequence
              :test-not (complement test-not) keyword-args)
@@ -82,17 +82,17 @@ according to the keywords. Doesn't alter sequence."
     (apply #'format *debug-io* format-string args)))
 
 (defun debug (&rest ids)
-  "Start dbg output on the given `ids'."
+  "Start `dbg' output on the given IDS."
   (setf *dbg-ids* (union ids *dbg-ids*)))
 
 (defun undebug (&rest ids)
-  "Stop dbg on the `ids'. With no ids, stop dbg altogether."
+  "Stop `dbg' on the IDS. With no IDS, stop `dbg' altogether."
   (setf *dbg-ids* (if (null ids) nil
                       (set-difference *dbg-ids* ids))))
 
 ;; p. 126
 (defun starts-with (list x)
-  "Is x a list whose first element is x?"
+  "Is this a list whose first element is X?"
   (and (consp list) (eql (first list) x)))
 
 ;; p. 129
@@ -104,26 +104,26 @@ according to the keywords. Doesn't alter sequence."
 
 ;; p. 165
 (defun mklist (x)
-  "If x is a list return it, otherwise return the list of x"
+  "If X is a list return it, otherwise return the list of X"
   (if (listp x)
       x
       (list x)))
 
 (defun flatten (the-list)
   "Append together elements (or lists - one level only)
-in `the-list'"
+in a list"
   (mappend #'mklist the-list))
 
 ;;; Pattern Matching Facility p. 155
 
 (defun variable-p (x)
-  "Is x a variable (a symbol beginning with `?')?"
+  "Is X a variable (a symbol beginning with `?')?"
   (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
 
 (defconstant fail nil "Indicates pat-match failure")
 
 (defvar no-bindings '((t . t))
-  "Indicates pat-match success, with no variables")
+  "Indicates `pat-match' success, with no variables")
 
 (defun get-binding (var bindings)
   "Find a (variable . value) pair in a binding list."
@@ -141,7 +141,7 @@ in `the-list'"
   (car binding))
 
 (defun lookup (var bindings)
-  "Get the value part (for `var') from a binding list."
+  "Get the value part (for VAR) from a binding list."
   (binding-val (get-binding var bindings)))
 
 ;; If both pattern and input are lists, we first call 'pat-match' recursively on the first
@@ -150,7 +150,7 @@ in `the-list'"
 
 ;; Basic version
 (defun pat-match (pattern input &optional (bindings no-bindings))
-  "Match `pattern' against `input' in the context of the `bindings'"
+  "Match PATTERN against INPUT in the context of the BINDINGS"
   (cond ((eq bindings fail) fail)
         ((variable-p pattern) (match-variable pattern input bindings))
         ((eql pattern input) bindings)
@@ -160,7 +160,7 @@ in `the-list'"
         (t fail)))
 
 (defun match-variable (var input bindings)
-  "Does `var' match `input'? Uses (or updates) and returns `bindings'."
+  "Does VAR match INPUT? Uses (or updates) and returns BINDINGS."
   (let ((binding (get-binding var bindings)))
     (cond ((not binding) (extend-bindings var input bindings))
           ((equal input (binding-val binding)) bindings)
@@ -182,26 +182,26 @@ in `the-list'"
 ;;; ____________________________________________________________________________
 
 (defun rest2 (x)
-  "The rest of a list after the first TWO elements."
+  "The rest of a list after the first two elements."
   (rest (rest x)))
 
 (defun find-anywhere (item tree)
-  "Does `item' occur anywhere in `tree'?"
+  "Does ITEM occur anywhere in TREE?"
   (if (atom tree)
       (if (eql item tree) tree)
       (or (find-anywhere item (first tree))
           (find-anywhere item (rest tree)))))
 
 (defun length=1 (x)
-  "Is x a list of length 1?"
+  "Is X a list of length 1?"
   (and (consp x) (null (cdr x))))
 
 (defun rest3 (list)
-  "The rest of a `list' after the first THREE elements."
+  "The rest of a LIST after the first three elements."
   (cdddr list))
 
 (defun partition-if (pred list)
-  "Return 2 values: elements of `list' that satisfy `pred',
+  "Return 2 values: elements of LIST that satisfy PRED,
 and elements that don't."
   (let ((yes-list nil)
         (no-list nil))
@@ -213,8 +213,8 @@ and elements that don't."
 
 (defun maybe-add (op exps &optional if-nil)
   "For example, (maybe-add 'and exps t) returns
-t if exps is nil, exps if there is only one,
-and (and exp1 exp2...) if there are several exps."
+true if EXPS is nil, EXPS if there is only one,
+and (and exp1 exp2...) if there are several EXPS."
   (cond ((null exps) if-nil)
         ((length=1 exps) (first exps))
         (t (cons op exps))))
@@ -230,8 +230,8 @@ the pop-lists/aref-vectors strategy."
        (aref ,seq ,index)))
 
 (defun maybe-set-fill-pointer (array new-length)
-  "If this is an `array' with a fill pointer, set it to
-`new-length', if that is longer than the current length."
+  "If this is an ARRAY with a fill pointer, set it to
+NEW-LENGTH, if that is longer than the current length."
   (if (and (arrayp array)
            (array-has-fill-pointer-p array))
       (setf (fill-pointer array)
@@ -256,7 +256,7 @@ the pop-lists/aref-vectors strategy."
   (make-symbol (format nil "~{~a~}" args)))
 
 (defun last1 (list)
-  "Return the last element (not last cons cell) of `list'"
+  "Return the last element (not last cons cell) of LIST"
   (first (last list)))
 
 ;;; ____________________________________________________________________________
@@ -274,7 +274,7 @@ the pop-lists/aref-vectors strategy."
   `(memoize (defun ,fn ,args . ,body)))
 
 (defun memo (fn &key (key #'first) (test #'eql) name)
-  "Return a memo-function of `fn'."
+  "Return a memo-function of FN."
   (let ((table (make-hash-table :test test)))
     (setf (get name 'memo) table)
     #'(lambda (&rest args)
@@ -290,7 +290,7 @@ the pop-lists/aref-vectors strategy."
     (when table (clrhash table))))
 
 (defun memoize (fn-name &key (key #'first) (test #'eql))
-  "Replace `fn-name's global definition with a memoized version."
+  "Replace FN-NAME's global definition with a memoized version."
   (clear-memoize fn-name)
   (setf (symbol-function fn-name)
         (memo (symbol-function fn-name)
@@ -302,7 +302,7 @@ the pop-lists/aref-vectors strategy."
 (defstruct delay value (computed? nil))
 
 (defmacro delay (&rest body)
-  "A computation that can be executed later by FORCE."
+  "A computation that can be executed later by `force'."
   `(make-delay :value #'(lambda () . ,body)))
 
 (defun force (delay)
@@ -336,7 +336,7 @@ the pop-lists/aref-vectors strategy."
        ',name)))
 
 (defmacro with-resource ((var resource &optional protect) &rest body)
-  "Execute body with `var' bound to an instance of `resource'."
+  "Execute body with VAR bound to an instance of RESOURCE."
   (let ((allocate (symbol 'allocate- resource))
         (deallocate (symbol 'deallocate- resource)))
     (if protect
@@ -360,7 +360,7 @@ the pop-lists/aref-vectors strategy."
     (setf (car q) q)))
 
 (defun enqueue (item q)
-  "Insert `item' at the end of the queue."
+  "Insert ITEM at the end of the queue."
   (setf (car q)
         (setf (rest (car q))
               (cons item nil)))
@@ -377,7 +377,7 @@ the pop-lists/aref-vectors strategy."
 (defun empty-queue-p (q) (null (queue-contents q)))
 
 (defun queue-nconc (q list)
-  "Add the elements of `list' to the end of the queue."
+  "Add the elements of LIST to the end of the queue."
   (setf (car q)
         (last (setf (rest (car q)) list))))
 
@@ -388,14 +388,14 @@ the pop-lists/aref-vectors strategy."
   (sort (copy-seq seq) pred :key key))
 
 (defun reuse-cons (x y x-y)
-  "Return (cons x y), or reuse `x-y' if it is equal to (cons x y)"
+  "Return (cons x y), or reuse X-Y if it is equal to (cons x y)"
   (if (and (eql x (car x-y)) (eql y (cdr x-y)))
       x-y
       (cons x y)))
 
 (defun unique-find-if-anywhere (predicate tree
                                 &optional found-so-far)
-  "Return a list of leaves of `tree' satisfying `predicate',
+  "Return a list of leaves of TREE satisfying PREDICATE,
 with duplicates removed."
   (if (atom tree)
       (if (funcall predicate tree)
@@ -408,7 +408,7 @@ with duplicates removed."
                                 found-so-far))))
 
 (defun find-if-anywhere (predicate tree)
-  "Does `predicate' apply to any atom in the tree?"
+  "Does PREDICATE apply to any atom in the TREE?"
   (if (atom tree)
       (funcall predicate tree)
       (or (find-if-anywhere predicate (first tree))
@@ -438,9 +438,9 @@ with duplicates removed."
 (defun not-null (x) (not (null x)))
 
 (defun first-or-nil (x)
-  "The first element of x if it is a list; else nil."
+  "The first element of X if it is a list; else nil."
   (if (consp x) (first x) nil))
 
 (defun first-or-self (x)
-  "The first element of x, if it is a list; else x itself."
+  "The first element of X, if it is a list; else X itself."
   (if (consp x) (first x) x))

@@ -44,11 +44,12 @@
 ;; GPS return the resulting state.
 
 (defun executing-p (x)
-  "Is x of the form: (executing ...) ?"
+  "Is X of the form: (executing ...) ?"
   (starts-with x 'executing))
 
+;; also in ../auxfns.lisp
 (defun starts-with (list x)
-  "Is this a `list' whose first element is x?"
+  "Is this a LIST whose first element is X?"
   (and (consp list) (eql (first list) x)))
 
 ;; Each message is actually a condition, a list of the form - (executing operator)
@@ -56,7 +57,7 @@
 ;; if there is the possibility that some other program might ever want to use the value.
 
 (defun convert-op (op)
-  "Make `op' conform to the (EXECUTING op) convention."
+  "Make OP conform to the (EXECUTING op) convention."
   (unless (some #'executing-p (op-add-list op))
     (push (list 'executing (op-action op)) (op-add-list op)))
   op)
@@ -84,7 +85,7 @@
 ;; (start) condition, if nothing else.
 
 (defun GPS (state goals &optional (*ops* *ops*))
-  "General Problem Solver: from `state', achieve `goals' using *ops*."
+  "General Problem Solver: from STATE, achieve GOALS using *OPS*."
   (remove-if #'atom (achieve-all (cons '(start) state) goals nil)))
 
 ;;; ____________________________________________________________________________
@@ -94,7 +95,7 @@
 
 (defun achieve-all (state goals goal-stack)
   "Achieve each goal, and make sure they still hold at the end.
-Return T or current state."
+Return true or current state."
   (let ((current-state state))
     (if (and (every #'(lambda (g)
                         (setf current-state
@@ -107,7 +108,7 @@ Return T or current state."
 ;; appears as a subgoal of itself. This test is made in the second clause of 'achieve'.
 
 (defun achieve (state goal goal-stack)
-  "A `goal' is achieved if it already holds,
+  "A GOAL is achieved if it already holds,
 or if there is an appropriate op for it that is applicable."
   (dbg-indent :gps (length goal-stack) "Goal: ~a" goal)
   (cond ((member-equal goal state) state)
@@ -126,7 +127,7 @@ or if there is an appropriate op for it that is applicable."
 ;; this state by adding what's in the add-list and removing everything in the delete-list.
 
 (defun apply-op (state goal op goal-stack)
-  "Return a new, transformed state if `op' is applicable."
+  "Return a new, transformed state if OP is applicable."
   (dbg-indent :gps (length goal-stack) "Consider: ~a" (op-action op))
   (let ((state2 (achieve-all state (op-preconds op)
                              (cons goal goal-stack))))
@@ -143,13 +144,13 @@ or if there is an appropriate op for it that is applicable."
               (op-add-list op)))))
 
 (defun appropriate-p (goal op)
-  "An `op' is appropriate to a `goal' if it is in its add list."
+  "An OP is appropriate to a GOAL if it is in its add list."
   (member-equal goal (op-add-list op)))
 
 ;;; ____________________________________________________________________________
 
 (defun use (oplist)
-  "Use `oplist' as the default list of operators."
+  "Use OPLIST as the default list of operators."
   ;; Return something useful, but not too verbose:
   ;; the number of operators.
   (length (setf *ops* oplist)))
@@ -210,12 +211,12 @@ or if there is an appropriate op for it that is applicable."
 ;; and (EXECUTING action) forms. Let's fix it.
 
 (defun GPS (state goals &optional (*ops* *ops*))
-  "General Problem Solver: from `state', achieve `goals' using *ops*."
+  "General Problem Solver: from STATE, achieve GOALS using *OPS*."
   (find-all-if #'action-p
                (achieve-all (cons '(start) state) goals nil)))
 
 (defun action-p (x)
-  "Is x something that is (start) or (executing ...)?"
+  "Is X something that is (start) or (executing ...)?"
   (or (equal x '(start)) (executing-p x)))
 
 ;;; ____________________________________________________________________________
@@ -225,7 +226,7 @@ or if there is an appropriate op for it that is applicable."
 ;; just look at them. Suppose we wanted a function that gives us a path through a maze...
 
 (defun find-path (start end)
-  "Search a maze for a path from `start' to `end'."
+  "Search a maze for a path from START to END."
   (let ((results (GPS `((at ,start)) `((at ,end)))))
     (unless (null results)
       (cons start (mapcar #'destination
@@ -293,7 +294,7 @@ or if there is an appropriate op for it that is applicable."
 ;; Operators with all preconditions filled would always be tried before other operators.
 
 (defun achieve (state goal goal-stack)
-  "A `goal' is achieved if it already holds,
+  "A GOAL is achieved if it already holds,
 or if there is an appropriate op for it that is applicable."
   (dbg-indent :gps (length goal-stack) "Goal: ~a" goal)
   (cond ((member-equal goal state) state)

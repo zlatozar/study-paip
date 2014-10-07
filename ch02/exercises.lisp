@@ -14,7 +14,7 @@
 ;; you may want to do with it next.
 
 (defun cross-product (fn xlist ylist)
-  "Return a list of all (fn x y) values."
+  "Return a list of all (FN x y) values."
   (mappend #'(lambda (y)
                (mapcar #'(lambda (x) (funcall fn x y))
                        xlist))

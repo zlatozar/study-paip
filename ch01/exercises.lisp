@@ -8,8 +8,8 @@
 ;; power. For example: (power 3 2) = 3^2 = 9.
 
 (defun power (x n)
-  "Power raises x to the nth power. N must be an integer >= 0.
-This executes in O(log n) time, because of the check for even n."
+  "Power raises X to the nth power. N must be an integer >= 0.
+This executes in O(log n) time, because of the check for even N."
   (cond ((= n 0) 1)
         ((evenp n) (expt (power x (/ n 2)) 2))
         (t (* x (power x (- n 1))))))
@@ -49,7 +49,7 @@ counting *nil* as an atom only in non-tail position."
 ;; Example: (count-anywhere 'a '(a ((a) b) a)) => 3.
 
 (defun count-anywhere (item tree)
-  "Count the times item appears anywhere within tree."
+  "Count the times ITEM appears anywhere within TREE."
   (cond ((eql item tree) 1)
         ((atom tree) 0)
         (t (+ (count-anywhere item (first tree))

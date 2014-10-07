@@ -14,7 +14,7 @@
      (print (flatten (use-eliza-rules (read))))))
 
 (defun use-eliza-rules (input)
-  "Find some rule with which to transform the `input'."
+  "Find some rule with which to transform the INPUT."
   (rule-based-translator input *eliza-rules*
                          :action #'(lambda (bindings responses)
                                      (sublis (switch-viewpoint bindings)
