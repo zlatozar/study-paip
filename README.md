@@ -9,7 +9,7 @@ addition, code was divided into packages and additional comments was added.
 
 - `git clone` the source code from the github repository.
 
-- You must have a lisp compiler/interpreter.
+- You must have a lisp compiler/interpreter (project is tested with SBCL).
 
 - `quicklisp` should be configured
 
@@ -22,7 +22,8 @@ addition, code was divided into packages and additional comments was added.
 ```
 
 This should print out a long list of inputs and outputs, and the last
-output should be the total number of errors. If all goes well, this should be *"0"*.
+output should be the total number of errors. If all goes well, this should
+be *"0"* (zero).
 
 If you would like to run the examples for just a given chapter, you can do that
 as well. For instance, once you have done `(ql:quickload :study-paip)`, this will
@@ -62,7 +63,29 @@ have to go to the chapter first. For example _Chapter 4_:
 
 #### Typical Study Session
 
-_(to be added)_
+- Read chapter from end to end and try to follow author's thoughts:
+   * Why he choose to present data in this way?
+   * Why there is need to improve the implementation?
+   * How functions are tested?
+   * Search and try to remember Common Lisp idioms.
+   * Where ideas from the chapter could be used?
+
+- Go to the chapter package and run examples:
+   * Read how functions from chapter are called.
+   * After run read the examples output and notes.
+
+- Read my notes (_Readme.md_ file) in the chapter directory.
+
+- Read lisp implementation:
+   * Use **step** to understand how it works.
+   * Read author notes in lisp code.
+
+- Open _exercises.lisp_ and try to understand solutions:
+   * Choose some exercises from book and try solve it.
+   * Place your solutions in _exercises.lisp_ and use _pcl-test_
+     framework to test your solutions.
+
+- Search _reference/Readme.md_ for Common Lisp functions description.
 
 #### Git Tags (work in progress)
 
@@ -98,7 +121,7 @@ _by Peter Norvig_
 13. The main object of this book is to cause the reader to say to him or herself
     "I could have written that". [p. 152]
 14. If we left out the prompt, we could write a complete Lisp interpreter using
-    just four symbols.  Consider what we would have to do to write a Lisp (or
+    just four symbols. Consider what we would have to do to write a Lisp (or
     Java) interpreter in Java. [p. 176]
 15. Design patterns can be used informally, or can be abstracted into a formal
     function, macro, or data type (often involving higher-order

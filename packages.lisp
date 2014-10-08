@@ -206,7 +206,8 @@ To run examples from particular chapter:
         #:tutor
         #:ch5-first)
   (:shadowing-import-from #:common-lisp :debug)
-  (:export #:eliza))
+  (:export #:*eliza-rules*
+           #:eliza))
 
 (format *debug-io* "~2%To run ELIZA:
     (ch5-final:eliza)
