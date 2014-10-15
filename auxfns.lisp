@@ -19,7 +19,7 @@
 ;; p. 19
 (defun mappend (fn list)
   "Append the results of calling FN on each element of LIST.
-Like mapcon, but uses append instead of `nconc'."
+Like `mapcon', but uses `append' instead of `nconc'."
   (apply #'append (mapcar fn list)))
 
 ;;; ____________________________________________________________________________
@@ -110,8 +110,7 @@ according to the keywords. Doesn't alter SEQUENCE."
       (list x)))
 
 (defun flatten (the-list)
-  "Append together elements (or lists - one level only)
-in a list"
+  "Get rid of imbedded lists (to one level only)."
   (mappend #'mklist the-list))
 
 ;;; Pattern Matching Facility p. 155

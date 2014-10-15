@@ -7,13 +7,74 @@
 
 (in-package #:ch6)
 
+;; For recurent patthers alternative is to create an abstraction, in the form of functions
+;; and perhaps data structures, and refer explicitly to that abstraction in each new
+;; application— in other words, to capture the abstraction in the form of a useable
+;; software tool.
+;;
+;; Here is some examples:
+
+;; p. 177
+(defun compose (f g)
+  "Return the function that computes (f (g x))."
+  #'(lambda (x) (funcall f (funcall g x))))
+
+;; p. 178
+;; This version also allows the prompt to be either a string or a function of no
+;; arguments that will be called to print the prompt. See also ex. 6.3 p. 216
+
+(defun interactive-interpreter (prompt transformer)
+  "Read an expression, transform it, and print the result."
+  (loop
+     (handler-case                 ; try-catch analog
+         (progn
+           (if (stringp prompt)
+               (print prompt)
+               (funcall prompt))
+           (print (funcall transformer (read))))
+       ;; In case of error, do this:
+       (error (condition)
+         (format t "~&;; Error ~a ignored, back to top level."
+                 condition)))))
+
+(defun prompt-generator (&optional (num 0) (ctl-string "[~d] "))
+  "Return a function that prints prompts like [1], [2], etc."
+  #'(lambda () (format t ctl-string (incf num))))
+
 ;;; ____________________________________________________________________________
-;;;                                           Pattern matcher from Section 6.2
+;;;                                                             Pattern matcher
 
-(defun variable-p (x)
-  "Is X a variable (a symbol beginning with `?')?"
-  (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
+;; When the description of a problem gets this complicated, it is a good idea to
+;; attempt a more formal specification:
 
+;; pat         => var                  match any one expression
+;;                constant             match just this atom
+;;                segment-pat          match something against a sequence
+;;                single-pat           match something against one expression
+;;                (pat . pat)          match the first and the rest
+
+;; single-pat  => (?is  var predicate) test predicate on one expression
+;;                (?or  pat...)        match any pattern on one expression
+;;                (?and pat...)        match every pattern on one expression
+;;                (?not pat...)        succeed if pattern(s) do not match
+
+;; segment-pat => ((?* var)  ...)      match zero or more expressions
+;;                ((?+ var)  ...)      match one or more expressions
+;;                ((?? var)  ...)      match zero or one expression
+;;                ((?if exp) ...)      test if 'exp' (which may contain variables) is true
+
+;; var         => ?chars               a symbol starting with ?
+;; constant    => atom                 any nonvariable atom
+
+;; Examples:
+
+;; > (pat-match '(?x (?or < = >) ?y) '(3 < 4))
+;; ((?Y . 4) (?X . 3))
+
+;; > (pat-match '(x = (?and (?is ?n numberp) (?is ?n oddp))) '(x = 3))
+;; ((?N . 3))
+
+;; p. 181
 (defun pat-match (pattern input &optional (bindings no-bindings))
   "Match PATTERN against INPUT in the context of the BINDINGS"
   (cond ((eq bindings fail) fail)
@@ -30,7 +91,19 @@
                                bindings)))
         (t fail)))
 
+;; From previous chapter
+(defun variable-p (x)
+  "Is X a variable (a symbol beginning with `?')?"
+  (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
 
+;;; ____________________________________________________________________________
+
+;; The table would say "if you see ?* in the pattern, then use the function
+;; segment-match," and so on. This style of programming, where pattern/action pairs are
+;; stored in a table, is called 'data-driven programming'. It is a very flexible style that
+;; is appropriate for writing extensible systems.
+
+;; Define two property lists (tables): key and action function
 (setf (get '?is  'single-match) 'match-is)
 (setf (get '?or  'single-match) 'match-or)
 (setf (get '?and 'single-match) 'match-and)
@@ -53,6 +126,11 @@ E.g. (?is x predicate) (?and . patterns) (?or . patterns)."
   (and (consp pattern)
        (single-match-fn (first pattern))))
 
+;;; ____________________________________________________________________________
+
+;; A function that looks up a data-driven function and calls it (such as 'segment-matcher'
+;; and 'single-matcher') is called a dispatch function.
+
 (defun segment-matcher (pattern input bindings)
   "Call the right function for this kind of segment pattern."
   (funcall (segment-match-fn (first (first pattern)))
@@ -63,6 +141,8 @@ E.g. (?is x predicate) (?and . patterns) (?or . patterns)."
   (funcall (single-match-fn (first pattern))
            (rest pattern) input bindings))
 
+;;; Action taking functions
+
 (defun segment-match-fn (x)
   "Get the segment-match function for X,
 if it is a symbol that has one."
@@ -72,6 +152,8 @@ if it is a symbol that has one."
   "Get the single-match function for X,
 if it is a symbol that has one."
   (when (symbolp x) (get x 'single-match)))
+
+;;; Individual matching functions for SINGLE-MATCH table
 
 (defun match-is (var-and-pred input bindings)
   "Succeed and bind var if the INPUT satisfies pred,
@@ -109,6 +191,9 @@ This will never bind any variables."
       fail
       bindings))
 
+;;; Individual matching functions for SEGMENT-MATCH table
+
+;; Allow nonconstant patterns to follow segment variables.
 (defun segment-match (pattern input bindings &optional (start 0))
   "Match the segment pattern ((?* var) . pat) against INPUT."
   (let ((var (second (first pattern)))
@@ -147,13 +232,41 @@ return START."
     (or (pat-match (cons var pat) input bindings)
         (pat-match pat input bindings))))
 
+;; 'match-if' example:
+;;
+;; > (pat-match '(?x ?op ?y is ?z (?if (eql (funcall ?op ?x ?y) ?z))) '(3 + 4 is 7))
+;; (?Z . 7) (?Y . 4) (?0P . +) (?X . 3))
+
 (defun match-if (pattern input bindings)
   "Test an arbitrary expression involving variables.
 The PATTERN looks like ((?if code) . rest)."
-  (and (progv (mapcar #'car bindings)
-           (mapcar #'cdr bindings)
+  (and (progv
+           (mapcar #'car bindings) ; ***
+           (mapcar #'cdr bindings) ; ***
          (eval (second (first pattern))))
        (pat-match (rest pattern) input bindings)))
+
+;; The idea is that a call to 'match-if' gets called like:
+
+;; (match-if '((?if code) . rest) input ((v1 val1) (v2 val2) ...))
+
+;; and 'eval' is called with `(second (first pattern))`, which the value of
+;; `code`. However, 'eval' is called within the 'progv' that binds v1, v2, ..., to the
+;; corresponding val1, val2, ..., so that if any of those variables appear free in code,
+;; then they are bound when code is evaluated. Use (trace match-if) to see bindings.
+
+;;; ____________________________________________________________________________
+
+;; Second one is more readable right? p. 187
+;; (a (?* ?x) (?* ?y) d)
+;; (a ?x* ?y* d)
+
+;; Many readers find the second pattern easier to understand at a glance. We could
+;; change 'pat-match' to allow for patterns of the form ?x*, but that would mean
+;; 'pat-match' would have a lot more work to do on every match. An alternative is
+;; to leave 'pat-match' as is, but define another level of syntax for use by human readers
+;; only. That is, a programmer could type the second expression above, and have it
+;; translated into the first, which would then be processed by 'pat-match'.
 
 (defun pat-match-abbrev (symbol expansion)
   "Define SYMBOL as a macro standing for a pat-match pattern."
@@ -167,6 +280,24 @@ The PATTERN looks like ((?if code) . rest)."
         (t (cons (expand-pat-match-abbrev (first pat))
                  (expand-pat-match-abbrev (rest pat))))))
 
+;;; ____________________________________________________________________________
+;;;                                         Convert 'use-eliza-rules' into tool
+
+;; Here is what is needed (p. 188):
+
+;; What kind of rule to use. Every rule will be characterized by an if-part and a
+;; then-part, but the ways of getting at those two parts may vary.
+
+;; What list of rules to use. In general, each application will have its own list of
+;; rules.
+
+;; How to see if a rule matches. By default, we will use 'pat-match', but it should
+;; be possible to use other matchers.
+
+;; What to do when a rule matches. Once we have determined which rule to use,
+;; we have to determine what it means to use it. The default is just to substitute
+;; the bindings of the match into the then-part of the rule.
+
 (defun rule-based-translator
     (input rules &key (matcher 'pat-match)
                    (rule-if #'first) (rule-then #'rest) (action #'sublis))
@@ -179,3 +310,11 @@ and apply the action to that rule."
          (if (not (eq result fail))
              (funcall action result (funcall rule-then rule)))))
    rules))
+
+;; Using defined tools now we could use it for ELIZA.
+(defun use-eliza-rules (input)
+  "Find some rule with which to transform the input."
+  (rule-based-translator input *eliza-rules*
+                         :action #'(lambda (bindings responses)
+                                     (sublis (switch-viewpoint bindings)
+                                             (random-elt responses)))))

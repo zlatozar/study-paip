@@ -64,6 +64,9 @@
     - [copy-list](#copy-list)
 - [Chapter-5](#chapter-5)
     - [read-from-string](#read-from-string)
+- [Chapter-6](#chapter-6)
+    - [handler-case](#handler-case)
+    - [progv](#progv)
 - [Koans](#koans)
 
 ## Chapter-1
@@ -1168,6 +1171,49 @@ See also: COPY-SEQ and COPY-TREE.
 READ-FROM-STRING works just like READ, but lets us read a syntax expression (or any other
 basic Lisp datatype) from a string instead of directly from the console.
 
+## Chapter-6
+
+### handler-case
+
+A handler serves the simple purpose of tying a condition to a restart. This means that if
+that condition is raised, that restart will automatically be chosen, meaning that we don't
+get dumped into the debugger.
+
+Many condition handlers simply want to unwind the stack to the place where they were
+established and then run some code. The macro HANDLER-CASE establishes this kind
+of condition handler. The basic form of a HANDLER-CASE is as follows:
+``` cl
+(handler-case  expression
+   error-clause*)
+```
+where each error-clause is of the following form: `(condition-type ([var]) code)`.
+
+If the expression returns normally, then its value is returned by the HANDLER-CASE. The
+body of a HANDLER-CASE must be a single expression; you can use PROGN to combine several
+expressions into a single form. If, however, the expression signals a condition that's an
+instance of any of the condition-types specified in any error-clause, then the code in the
+appropriate error clause is executed and **its value returned** by the HANDLER-CASE. The
+`var`, if included, is the name of the variable that will hold the condition object when
+the handler code is executed. If the code doesn't need to access the condition object, you
+can omit the variable name.
+
+See also: HANDLER-BIND
+
+### progv
+
+PROGV creates new dynamic bindings for variables whose names are determined at runtime.
+This is mostly useful for implementing embedded interpreters for languages with
+dynamically scoped variables. The basic skeleton is as follows:
+
+``` cl
+(progv symbols-list values-list
+       body-form*)
+```
+where _symbols-list_ is a form that evaluates to a list of symbols and _values-list_ is a
+form that evaluates to a list of values. Each symbol is dynamically bound to the
+corresponding value, and then the _body-forms_ are evaluated. The difference between PROGV
+and LET is that because _symbols-list_ is evaluated at runtime, the names of the variables
+to bind can be determined dynamically.
 
 ## Koans
 

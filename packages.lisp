@@ -177,9 +177,6 @@ To run examples from particular chapter:
            #:*ops*
            #:op-preconds))
 
-(format *debug-io* "~2%To run GPS:
-    (ch4-final:gps <state> <goals> &optional <available operators>)")
-
 (defpackage #:ch4-exercises
   (:documentation "Selected exercises form Chapter 4")
   (:use #:common-lisp

@@ -226,6 +226,12 @@ return start."
         (t nil)))
 ```
 
+Page *186* add 'funcall':
+``` cl
+(pat-match '(?x ?op ?y is ?z (?if (eql (funcall ?op ?x ?y) ?z))) '(3 + 4 is 7))
+(pat-match '(?x ?op ?y (?if (funcall ?op ?x ?y)))
+```
+
 ### License
 
 Software License Agreement
