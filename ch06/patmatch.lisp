@@ -9,7 +9,7 @@
 
 ;; For recurent patthers alternative is to create an abstraction, in the form of functions
 ;; and perhaps data structures, and refer explicitly to that abstraction in each new
-;; application— in other words, to capture the abstraction in the form of a useable
+;; application - in other words, to capture the abstraction in the form of a useable
 ;; software tool.
 ;;
 ;; Here is some examples:
@@ -298,6 +298,7 @@ The PATTERN looks like ((?if code) . rest)."
 ;; we have to determine what it means to use it. The default is just to substitute
 ;; the bindings of the match into the then-part of the rule.
 
+;; See how can be used in eliza-pm.lisp
 (defun rule-based-translator
     (input rules &key (matcher 'pat-match)
                    (rule-if #'first) (rule-then #'rest) (action #'sublis))
@@ -310,11 +311,3 @@ and apply the action to that rule."
          (if (not (eq result fail))
              (funcall action result (funcall rule-then rule)))))
    rules))
-
-;; Using defined tools now we could use it for ELIZA.
-(defun use-eliza-rules (input)
-  "Find some rule with which to transform the input."
-  (rule-based-translator input *eliza-rules*
-                         :action #'(lambda (bindings responses)
-                                     (sublis (switch-viewpoint bindings)
-                                             (random-elt responses)))))

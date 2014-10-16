@@ -255,7 +255,7 @@
 ;;; ____________________________________________________________________________
 
 ;; p. 102
-(defmacro while2 (test &body body)
+(defmacro while (test &body body)
   "Repeat BODY while TEST is true."
   `(loop (if (not ,test) (return nil))
       . ,body))

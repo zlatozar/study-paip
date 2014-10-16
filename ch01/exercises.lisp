@@ -84,4 +84,5 @@ counting *nil* as an atom only in non-tail position."
 
 (deftest test-dot-product ()
   (check
+    ;; 10x3 + 20x4 = 110
     (= (dot-product '(10 20) '(3 4)) 110)))

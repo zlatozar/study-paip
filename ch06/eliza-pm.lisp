@@ -13,6 +13,7 @@
      (print 'eliza>)
      (print (flatten (use-eliza-rules (read))))))
 
+;; Using defined tools in patmatch.lisp now we could use it for ELIZA.
 (defun use-eliza-rules (input)
   "Find some rule with which to transform the INPUT."
   (rule-based-translator input *eliza-rules*

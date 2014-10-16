@@ -26,6 +26,13 @@
 
 ;;; TEST
 
+(deftest test-cross-product ()
+  (check
+    (equal (cross-product #'+ '(1 2 3) '(10 20 30))
+           '(11 12 13
+             21 22 23
+             31 32 33))))
+
 (deftest test-combine-all ()
   (check
     (equal (combine-all '((a) (b) (c)) '((1) (2) (3)))

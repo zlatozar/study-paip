@@ -16,7 +16,7 @@
 ;;; ____________________________________________________________________________
 ;;;                                                                   Chapter 1
 
-;; p. 19
+;; p. 19. See also ex. 5.14
 (defun mappend (fn list)
   "Append the results of calling FN on each element of LIST.
 Like `mapcon', but uses `append' instead of `nconc'."
@@ -89,6 +89,10 @@ according to the keywords. Doesn't alter SEQUENCE."
   "Stop `dbg' on the IDS. With no IDS, stop `dbg' altogether."
   (setf *dbg-ids* (if (null ids) nil
                       (set-difference *dbg-ids* ids))))
+
+;; Functions alias (to avoid name clash) that are exposed in PAIP package
+(setf (symbol-function 'debugit) #'debug)
+(setf (symbol-function 'undebugit) #'undebug)
 
 ;; p. 126
 (defun starts-with (list x)
@@ -181,6 +185,12 @@ according to the keywords. Doesn't alter SEQUENCE."
 ;;; ____________________________________________________________________________
 ;;;                                                                   Chapter 6
 
+;; More efficient version is on p. 217 (see ex. 6.5)
+(defun compose (&rest functions)
+  "Return the function that is the composition of all the args.
+i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
+  #'(lambda (x)
+      (reduce #'funcall functions :from-end t :initial-value x)))
 
 ;;; ____________________________________________________________________________
 
@@ -261,13 +271,6 @@ NEW-LENGTH, if that is longer than the current length."
 (defun last1 (list)
   "Return the last element (not last cons cell) of LIST"
   (first (last list)))
-
-;;; ____________________________________________________________________________
-
-(defun compose (&rest functions)
-  #'(lambda (x)
-      (reduce #'funcall functions :from-end t :initial-value x)))
-
 
 ;;; ____________________________________________________________________________
 ;;;                                                    The Memoization Facility

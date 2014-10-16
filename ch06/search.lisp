@@ -223,7 +223,7 @@ Don't try the same state twice."
 (defun a*-search (paths goal-p successors cost-fn cost-left-fn
                   &optional (state= #'eql) old-paths)
   "Find a path whose state satisfies GOAL-P. Start with PATHS,
-and expand `successors', exploring least cost first.
+and expand SUCCESSORS, exploring least cost first.
 When there are duplicate states, keep the one with the
 lower cost and discard the other."
   (dbg :search ";; Search: ~a" paths)

@@ -67,7 +67,6 @@
                  (:file "ch06/search")
                  (:file "ch06/gps-srch" :depends-on ("ch06/search" "ch04/gps"))
                  (:file "ch06/examples" :depends-on ("tutor" "ch06/patmatch"
-                                                             "ch06/eliza-pm"
                                                              "ch06/search"
                                                              "ch06/gps-srch"))
                  (:file "ch06/exercises" :depends-on ("tools/test"))

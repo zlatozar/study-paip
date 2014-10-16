@@ -44,11 +44,16 @@ to test chapter exercises.")
            #:find-all
            #:find-all-if
            #:declare-ignore
+           #:true
+           #:false
            ;; ch04
            #:debug
+           #:debugit
            #:undebug
+           #:undebugit
            #:dbg
            #:dbg-indent
+           #:member-equal
            ;; ch05
            #:flatten
            #:mklist
@@ -123,6 +128,7 @@ To run examples from particular chapter:
         #:paip-aux)
   (:shadowing-import-from #:common-lisp :debug)
   (:export #:cross-product
+           #:test-cross-product
            #:combine-all
            #:test-combine-all))
 
@@ -133,8 +139,7 @@ To run examples from particular chapter:
         #:paip-aux
         #:tutor)
   (:shadowing-import-from #:common-lisp :debug)
-  (:export #:while
-           #:while2))
+  (:export #:while))
 
 (defpackage #:ch3-exercises
   (:documentation "Selected exercises form Chapter 3")
@@ -144,7 +149,6 @@ To run examples from particular chapter:
         #:ch3)
   (:shadowing-import-from #:common-lisp :debug)
   (:export #:dprint
-           #:pr-rest
            #:questions
            #:length-r
            #:test-length-r))
@@ -207,7 +211,8 @@ To run examples from particular chapter:
            #:eliza))
 
 (format *debug-io* "~2%To run ELIZA:
-    (ch5-final:eliza)
+    (in-package :ch5-final)
+    (eliza)
 and type bye to exit")
 
 (defpackage #:ch5-exercises
@@ -223,26 +228,73 @@ and type bye to exit")
         #:inspect
         #:paip-aux
         #:tutor
-        #:ch4-final
-        #:ch5-final)
+        #:ch4-final)
+  (:import-from :ch5-final :*eliza-rules*)
   (:shadowing-import-from #:paip-aux :debug)
-  )
+  (:export #:tree-search
+           #:depth-first-search
+           #:breadth-first-search
+           #:finite-binary-tree
+           #:best-first-search
+           #:beam-search
+           #:is
+           #:a*-search
+           #:search-gps))
 
 (defpackage #:ch6-exercises
   (:documentation "Selected exercises form Chapter 6")
   (:use #:common-lisp
-        #:pcl-test)
-  )
+        #:pcl-test
+        #:ch6)
+  (:export #:compose))
 
 ;;; ____________________________________
-;;;                             Exposed
+;;;                              Public
 
 (defpackage #:paip
-  (:documentation "Expose functions from PAIP book that could be
-used in projects.")
+  (:documentation "Expose functions and complete programs from PAIP book.")
   (:use #:common-lisp
-        #:ch4-final
-        #:ch5-final))
+        #:inspect
+        #:pcl-test)
+  (:import-from :paip-aux
+                #:random-elt
+                #:declare-ignore
+                #:true
+                #:false
+                #:find-all
+                #:find-all-if
+                #:dbg
+                #:dbg-indent
+                #:debugit
+                #:undebugit
+                #:starts-with
+                #:member-equal
+                #:flatten)
+  (:import-from :ch1-exercises
+                #:power
+                #:count-anywhere
+                #:dot-product)
+  (:import-from :ch2-exercises
+                #:cross-product
+                #:combine-all)
+  (:import-from :ch3
+                #:while)
+  (:import-from :ch4-exercises
+                #:permutations)
+  (:import-from :ch5-exercises
+                #:mappend)
+  (:import-from :ch6
+                #:tree-search
+                #:depth-first-search
+                #:breadth-first-search
+                #:finite-binary-tree
+                #:best-first-search
+                #:beam-search
+                #:is
+                #:a*-search
+                #:search-gps)
+  (:import-from :ch6-exercises
+                #:compose))
 
 ;;; ____________________________________
 ;;;                                Help
