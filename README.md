@@ -176,7 +176,7 @@ _by Peter Norvig_
 40. Memoization can turn an inefficient program into an efficient one [p. 662].
 41. It is often easier to deal with preferences among competing interpretations
     of inputs, rather than trying to strictly rule one interpretation in or out
-    [p 670].
+    [p. 670].
 42. Logic programs have a simple way to express grammars [p. 685].
 43. Handling quantifiers in natural languiage can be tricky [p. 696].
 44. Handling long-distance dependencies in natural language can be tricky

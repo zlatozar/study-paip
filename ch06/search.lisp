@@ -7,6 +7,29 @@
 
 (in-package #:ch6)
 
+;;; ____________________________________________________________________________
+;;;                                                                   Utilities
+
+(defun binary-tree (x) (list (* 2 x) (+ 1 (* 2 x))))
+
+(defun finite-binary-tree (n)
+  "Return a successor function that generates a binary tree
+with N nodes."
+  #'(lambda (x)
+      (remove-if #'(lambda (child) (> child n))
+                 (binary-tree x))))
+
+(defun is (value) #'(lambda (x) (eql x value)))
+
+(defun prepend (x y) "Prepend Y to start of X" (append y x))
+
+(defun diff (num)
+  "Return the function that finds the difference from NUM."
+  #'(lambda (x) (abs (- x num))))
+
+;;; ____________________________________________________________________________
+;;;                                                                 Tree search
+
 (defun tree-search (states goal-p successors combiner)
   "Find a state that satisfies GOAL-P. Start with STATES,
 and search according to SUCCESSORS and COMBINER."
@@ -23,26 +46,9 @@ and search according to SUCCESSORS and COMBINER."
   "Search new states first until goal is reached."
   (tree-search (list start) goal-p successors #'append))
 
-(defun binary-tree (x) (list (* 2 x) (+ 1 (* 2 x))))
-
-(defun is (value) #'(lambda (x) (eql x value)))
-
-(defun prepend (x y) "Prepend Y to start of X" (append y x))
-
 (defun breadth-first-search (start goal-p successors)
   "Search old states first until goal is reached."
   (tree-search (list start) goal-p successors #'prepend))
-
-(defun finite-binary-tree (n)
-  "Return a successor function that generates a binary tree
-with N nodes."
-  #'(lambda (x)
-      (remove-if #'(lambda (child) (> child n))
-                 (binary-tree x))))
-
-(defun diff (num)
-  "Return the function that finds the difference from NUM."
-  #'(lambda (x) (abs (- x num))))
 
 (defun sorter (cost-fn)
   "Return a combiner function that sorts according to COST-FN."
@@ -69,6 +75,13 @@ but never consider more than BEAM-WIDTH states at a time."
                      (if (> beam-width (length sorted))
                          sorted
                          (subseq sorted 0 beam-width))))))
+
+;;; ____________________________________________________________________________
+;;;                                                                     Example
+
+;; Consider the task of planning a flight across the North American continent in a small
+;; airplane, one whose range is limited to 1000 kilometers. Suppose we have a list of
+;; selected cities with airports, along with their position in longitude and latitude:
 
 (defstruct (city (:type list)) name long lat)
 
@@ -195,8 +208,8 @@ Return the first solution found at any width."
 
 (defun graph-search (states goal-p successors combiner
                      &optional (state= #'eql) old-states)
-  "Find a state that satisfies `goal-p'. Start with `states',
-and search according to `successors' and `combiner'.
+  "Find a state that satisfies GOAL-P. Start with STATES,
+and search according to SUCCESSORS and COMBINER.
 Don't try the same state twice."
   (dbg :search "~&;; Search: ~a" states)
   (cond ((null states) fail)
@@ -219,6 +232,9 @@ Don't try the same state twice."
    (funcall successors (first states))))
 
 (defun next2 (x) (list (+ x 1) (+ x 2)))
+
+;;; ____________________________________________________________________________
+;;;                                                                   A* search
 
 (defun a*-search (paths goal-p successors cost-fn cost-left-fn
                   &optional (state= #'eql) old-paths)
@@ -259,6 +275,8 @@ lower cost and discard the other."
          ;; Finally, call A* again with the updated path lists:
          (a*-search paths goal-p successors cost-fn cost-left-fn
                     state= old-paths)))))
+
+;;; ____________________________________________________________________________
 
 (defun find-path (state paths state=)
   "Find the path with this state among a list of paths."

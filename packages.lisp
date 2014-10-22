@@ -231,7 +231,11 @@ and type bye to exit")
         #:ch4-final)
   (:import-from :ch5-final :*eliza-rules*)
   (:shadowing-import-from #:paip-aux :debug)
-  (:export #:tree-search
+  (:export #:finite-binary-tree
+           #:prepend
+           #:diff
+           #:deg->radians
+           #:tree-search
            #:depth-first-search
            #:breadth-first-search
            #:finite-binary-tree
@@ -284,13 +288,17 @@ and type bye to exit")
   (:import-from :ch5-exercises
                 #:mappend)
   (:import-from :ch6
+                #:finite-binary-tree
+                #:prepend
+                #:diff
+                #:is
+                #:deg->radians
                 #:tree-search
                 #:depth-first-search
                 #:breadth-first-search
                 #:finite-binary-tree
                 #:best-first-search
                 #:beam-search
-                #:is
                 #:a*-search
                 #:search-gps)
   (:import-from :ch6-exercises
