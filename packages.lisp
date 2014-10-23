@@ -58,10 +58,7 @@ to test chapter exercises.")
            #:flatten
            #:mklist
            #:random-elt
-           #:starts-with
-           #:no-bindings
-           #:fail
-           #:match-variable))
+           #:starts-with))
 
 ;;; ____________________________________
 ;;;                        Run examples
@@ -94,8 +91,8 @@ To run examples from particular chapter:
   (:documentation "Chapter 1. Introduction to Lisp")
   (:use #:common-lisp
         #:inspect
-        #:paip-aux
-        #:tutor)
+        #:tutor
+        #:paip-aux)
   (:shadowing-import-from #:common-lisp :debug))
 
 (defpackage #:ch1-exercises
@@ -117,8 +114,8 @@ To run examples from particular chapter:
   (:documentation "Chapter 2. A Simple Lisp Program")
   (:use #:common-lisp
         #:inspect
-        #:paip-aux
-        #:tutor)
+        #:tutor
+        #:paip-aux)
   (:shadowing-import-from #:common-lisp :debug))
 
 (defpackage #:ch2-exercises
@@ -136,16 +133,16 @@ To run examples from particular chapter:
   (:documentation "Chapter 3. Overview of Lisp")
   (:use #:common-lisp
         #:inspect
-        #:paip-aux
-        #:tutor)
+        #:tutor
+        #:paip-aux)
   (:shadowing-import-from #:common-lisp :debug)
   (:export #:while))
 
 (defpackage #:ch3-exercises
   (:documentation "Selected exercises form Chapter 3")
   (:use #:common-lisp
-        #:paip-aux
         #:pcl-test
+        #:paip-aux
         #:ch3)
   (:shadowing-import-from #:common-lisp :debug)
   (:export #:dprint
@@ -161,16 +158,16 @@ To run examples from particular chapter:
   (:documentation "Chapter 4. GPS: The General Problem Solver (first version)")
   (:use #:common-lisp
         #:inspect
-        #:paip-aux
-        #:tutor)
+        #:tutor
+        #:paip-aux)
   (:shadowing-import-from #:common-lisp :debug))
 
 (defpackage #:ch4-final
   (:documentation "Chapter 4. GPS: The General Problem Solver (final version)")
   (:use #:common-lisp
         #:inspect
-        #:paip-aux
-        #:tutor)
+        #:tutor
+        #:paip-aux)
   (:shadowing-import-from #:paip-aux :debug)
   ;; Final version of GPS
   (:export #:gps)
@@ -188,12 +185,28 @@ To run examples from particular chapter:
   (:export #:permutations
            #:test-permutations))
 
+(defpackage #:pat-base
+  (:documentation "Simple version of 'pat-match' and common functions.
+In Chapters 5 and 6 'pat-match' will be improved.")
+  (:use #:common-lisp)
+  (:export #:fail
+           #:no-bindings
+           #:variable-p
+           #:get-binding
+           #:binding-val
+           #:binding-var
+           #:make-binding
+           #:lookup
+           #:match-variable
+           #:extend-bindings))
+
 (defpackage #:ch5-first
   (:documentation "Chapter 5. ELIZA: Dialog with a Machine (first version)")
   (:use #:common-lisp
         #:inspect
+        #:tutor
         #:paip-aux
-        #:tutor)
+        #:pat-base)
   (:shadowing-import-from #:common-lisp :debug)
   (:export #:rule-pattern
            #:rule-responses
@@ -203,8 +216,9 @@ To run examples from particular chapter:
   (:documentation "Chapter 5. ELIZA: Dialog with a Machine (final version)")
   (:use #:common-lisp
         #:inspect
-        #:paip-aux
         #:tutor
+        #:paip-aux
+        #:pat-base
         #:ch5-first)
   (:shadowing-import-from #:common-lisp :debug)
   (:export #:*eliza-rules*
@@ -226,12 +240,19 @@ and type bye to exit")
   (:documentation "Chapter 6. Building Software Tools")
   (:use #:common-lisp
         #:inspect
-        #:paip-aux
         #:tutor
-        #:ch4-final)
-  (:import-from :ch5-final :*eliza-rules*)
+        #:paip-aux
+        #:pat-base)
   (:shadowing-import-from #:paip-aux :debug)
-  (:export #:finite-binary-tree
+  (:import-from :ch4-final
+                #:make-block-ops
+                #:use
+                #:action-p
+                #:*ops*
+                #:op-preconds)
+  (:import-from :ch5-final :*eliza-rules*)
+  (:export #:pat-match
+           #:finite-binary-tree
            #:prepend
            #:diff
            #:deg->radians
@@ -288,6 +309,7 @@ and type bye to exit")
   (:import-from :ch5-exercises
                 #:mappend)
   (:import-from :ch6
+                #:pat-match
                 #:finite-binary-tree
                 #:prepend
                 #:diff
@@ -307,4 +329,4 @@ and type bye to exit")
 ;;; ____________________________________
 ;;;                                Help
 
-(format *debug-io* "~2%Loading is done. Happy hacking.")
+(format *debug-io* "~2%Loading is done. Happy hacking!")

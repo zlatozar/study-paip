@@ -4,25 +4,13 @@
 ;;; Copyright (c) 1991 Peter Norvig
 
 ;;;; File eliza1.lisp: Basic version of the Eliza program.
-;;;;                   See also ../ auxfns.lisp section Chapter 5
 
 (in-package #:ch5-first)
 
-;; There is no 'variable type' in Common Lisp. There is now way to distinguish them like
-;; in Prolog where they begin with capital letter. Let's use symbols with some name
-;; convention then. In particular, symbols have names, which are strings and are
-;; accessible through the 'symbol-name' function. Strings in turn have elements that are
-;; characters, accessible through the function char. The character '?' is denoted by the
-;; self-evaluating escape sequence #\?.
-
-(defun variable-p (x)
-  "Is X a variable (a symbol beginning with `?')?"
-  (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
-
-;;; New version of 'pat-match' (see old in ../auxfns.lisp) with segment variables
+;;; New version of 'pat-match' (see old in ../pat-base.lisp) with segment variables
 
 (defun pat-match (pattern input &optional (bindings no-bindings))
-  "Match `pattern' against `input' in the context of the `bindings'"
+  "Match PATTERN against INPUT in the context of the BINDINGS"
   (cond ((eq bindings fail) fail)
         ((variable-p pattern)
          (match-variable pattern input bindings))
@@ -115,6 +103,8 @@
 
 ;;; ____________________________________________________________________________
 ;;;                                                           Run first version
+
+;;; First is the pattern second are the responses
 
 (defun rule-pattern (rule) (first rule))
 (defun rule-responses (rule) (rest rule))

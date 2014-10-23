@@ -117,70 +117,7 @@ according to the keywords. Doesn't alter SEQUENCE."
   "Get rid of imbedded lists (to one level only)."
   (mappend #'mklist the-list))
 
-;;; Pattern Matching Facility p. 155
-
-(defun variable-p (x)
-  "Is X a variable (a symbol beginning with `?')?"
-  (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
-
-(defconstant fail nil "Indicates pat-match failure")
-
-(defvar no-bindings '((t . t))
-  "Indicates `pat-match' success, with no variables")
-
-(defun get-binding (var bindings)
-  "Find a (variable . value) pair in a binding list."
-  (assoc var bindings))
-
-(defun make-binding (var val)
-  (cons var val))
-
-(defun binding-val (binding)
-  "Get the value part of a single binding."
-  (cdr binding))
-
-(defun binding-var (binding)
-  "Get the variable part of a single binding."
-  (car binding))
-
-(defun lookup (var bindings)
-  "Get the value part (for VAR) from a binding list."
-  (binding-val (get-binding var bindings)))
-
-;; If both pattern and input are lists, we first call 'pat-match' recursively on the first
-;; element of each list. This returns a binding list (or 'fail'), which we use to match
-;; the rest of the lists.
-
-;; Basic version
-(defun pat-match (pattern input &optional (bindings no-bindings))
-  "Match PATTERN against INPUT in the context of the BINDINGS"
-  (cond ((eq bindings fail) fail)
-        ((variable-p pattern) (match-variable pattern input bindings))
-        ((eql pattern input) bindings)
-        ((and (consp pattern) (consp input))     ; ***
-         (pat-match (rest pattern) (rest input)
-                    (pat-match (first pattern) (first input) bindings)))
-        (t fail)))
-
-(defun match-variable (var input bindings)
-  "Does VAR match INPUT? Uses (or updates) and returns BINDINGS."
-  (let ((binding (get-binding var bindings)))
-    (cond ((not binding) (extend-bindings var input bindings))
-          ((equal input (binding-val binding)) bindings)
-          (t fail))))
-
-;; Following function is a good example of conditional consing/adding. It show also how to
-;; use list-consing recursion. 'pat-match' has as a parameter 'bindings' - it is CONS
-;; parameter. As each recursive call returns, we (possibly) add to this CONS parameter.
-
-(defun extend-bindings (var val bindings)
-  "Add a (var . value) pair to a binding list."
-  (cons (cons var val)
-        ;; Once we add a "real" binding,
-        ;; we can get rid of the dummy 'no-bindings' (aka (T . T))
-        (if (eq bindings no-bindings)
-            nil
-            bindings)))
+;;; Pattern Matching Facility p. 155 - see ../pat-base.lisp
 
 ;;; ____________________________________________________________________________
 ;;;                                                                   Chapter 6

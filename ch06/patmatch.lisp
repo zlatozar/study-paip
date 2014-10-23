@@ -91,11 +91,6 @@
                                bindings)))
         (t fail)))
 
-;; From previous chapter
-(defun variable-p (x)
-  "Is X a variable (a symbol beginning with `?')?"
-  (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
-
 ;;; ____________________________________________________________________________
 
 ;; The table would say "if you see ?* in the pattern, then use the function
@@ -311,3 +306,39 @@ and apply the action to that rule."
          (if (not (eq result fail))
              (funcall action result (funcall rule-then rule)))))
    rules))
+
+;;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;;;                 NOT PART OF THE BOOK (start)
+
+;;; WHY?
+
+;;; Pattern matching is one of the most important tools for AI. That's why it is good idea
+;;; to export 'pat-match' in public book interface - PAIP package. To do that we should
+;;; fix symbols matching when call it from other package.
+
+(defparameter *predicates-fn*
+  '((?is  . match-is)
+    (?or  . match-or)
+    (?and . match-and)
+    (?not . match-not)))
+
+(defparameter *segment-patterns-fn*
+  '((?*  . segment-match)
+    (?+  . segment-match+)
+    (??  . segment-match?)
+    (?if . match-if)))
+
+(defun segment-match-fn (x)
+  "Get the segment-match function for X,
+if it is a symbol that has one."
+  (when (symbolp x)
+    (cdr (assoc x *segment-patterns-fn* :test #'string-equal))))
+
+(defun single-match-fn (x)
+  "Get the single-match function for X,
+if it is a symbol that has one."
+  (when (symbolp x)
+    (cdr (assoc x *predicates-fn* :test #'string-equal))))
+
+;;;                 NOT PART OF THE BOOK (end)
+;;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

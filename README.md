@@ -61,6 +61,11 @@ have to go to the chapter first. For example _Chapter 4_:
 (tutor:do-examples 4)
 ```
 
+It is possible to run set of examples:
+``` cl
+(tutor:do-examples '(1 2))
+```
+
 #### Typical Study Session
 
 - Read chapter from end to end and try to follow author's thoughts:
@@ -76,7 +81,8 @@ have to go to the chapter first. For example _Chapter 4_:
 
 - Read my notes (_Readme.md_ file) in the chapter directory.
 
-- Read lisp implementation:
+- Load `study-paip` and read lisp implementation:
+   * Use to use Slime shortcut `C-M-x` to reload changed functions
    * Use **step** to understand how it works.
    * Read author notes in lisp code.
 

@@ -53,6 +53,9 @@
                  (:file "ch04/examples-gps" :depends-on ("tutor" "ch04/gps"))
                  (:file "ch04/exercises" :depends-on ("tools/test"))
 
+                 ;; Common functions that will be used in Chapters 5 and 6
+                 (:file "pat-base" :depends-on ("packages"))
+
                  ;; Chapter 5
                  (:file "ch05/eliza1")
                  (:file "ch05/examples-eliza1" :depends-on ("tutor" "ch05/eliza1"))

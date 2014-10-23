@@ -4,7 +4,7 @@
 ;;; Copyright (c) 1991 Peter Norvig
 
 ;;;; File eliza.lisp: Advanced version of Eliza. Has more rules, and accepts input
-;;;;                  without parens
+;;;;                  without parens.
 
 (in-package #:ch5-final)
 
@@ -33,10 +33,6 @@
                     (pat-match (first pattern) (first input)
                                bindings)))
         (t fail)))
-
-(defun variable-p (x)
-  "Is X a variable (a symbol beginning with `?')?"
-  (and (symbolp x) (equal (elt (symbol-name x) 0) #\?)))
 
 (defun segment-match (pattern input bindings &optional (start 0))
   "Match the segment PATTERN ((?* var) . pat) against INPUT."
@@ -75,7 +71,8 @@
      (let* ((input (read-line-no-punct))
             (response (flatten (use-eliza-rules input))))
        (print-with-spaces response)
-       (if (equal response '(good bye)) (RETURN)))))
+       (if (equal response '(good bye))
+           (RETURN)))))
 
 ;; ex. 5.5 p. 170
 (defun read-line-no-punct ()
