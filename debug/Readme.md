@@ -1,4 +1,4 @@
-####Debugging in Lips####
+#### Debugging in Lisp
 
 _(Sorry, I can't remember from where I took it)_
 
@@ -84,7 +84,7 @@ minutes to repopulate its data.
 
 Let's suppose you don't have a Lisp editor.  Maybe you haven't learned Emacs or your
 vendor's editor yet, and running your Lisp from a command prompt.  That's okay too.  You
-can press a break key (usually *Ctr-C*) while your program is running, and you'll get a
+can press a break key (usually **Ctr-C**) while your program is running, and you'll get a
 debugger prompt.  From there, you can either load your modified source file, or if the new
 function is short, just type it in by hand.  Then tell the debugger to continue where it
 left off.
@@ -93,7 +93,7 @@ If you want, then at the debugger prompt, you can call your inner function by it
 as `(divisible-by-10-p 10)`.  You can look at what it does, and call it again and again as
 you refine it.  If you need variables, such as complex data structures, that your program
 maintains while it's running, they're all available.  All your subroutines are available.
-In this respect, it's similar to *gdb*'s "call" and "print" commands, with one important
+In this respect, it's similar to **gdb**'s "call" and "print" commands, with one important
 difference: you can edit your function while you're testing.
 
 Eventually, either because you think you've got things working or because you don't feel
@@ -139,14 +139,20 @@ both your program and all of Lisp's tools.  In a very real sense, you're within 
 program.  If you think in these terms - and it's hard at first, after years of
 *ALGOL*-descended conditioning - then Lisp debugging will make a lot more sense.
 
-####SLIME helpful commands####
+#### SLIME helpful commands
+
+Example codding session is described in **debugging-allegro.pdf**. Key bindings are
+slightly different in SLIME.
 
 - **C-c C-y** - slime-call-defun
 Type it when you are inside the function. It will sends expression `(<func-name>  )` to
 REPL. You have to fill parameters only (if any)
 - **C-c M-o** - slime-repl-clear-buffer
-Type it when you are in REPL. It will clear the buffer like *C-l* in shell.
+Type it when you are in REPL. It will clear the buffer like **C-l** in shell.
 - **C-c E** - slime-edit-value
+When there is a error - go to the frame and type 'v' to see buggy code. Next go to the
+particular value in a function and type **C-c E** to change it. Finally **C-M-x** to
+re-evaluate _defun_.
 - **C-c ~** -  slime-sync-package-and-default-directory
 - **C-u C-c C-c** - compile function for debug
 - **C-u C-c C-k** - compile file for debug
@@ -178,7 +184,7 @@ Place the cursor on the opening parenthesis of a macro form in your source code
 alias lisp='rlwrap sbcl'
 ```
 
-####How Lisp helps####
+#### How Lisp helps
 
 - compile, compile-file, load
 - describe, documentation

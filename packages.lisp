@@ -224,11 +224,6 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:export #:*eliza-rules*
            #:eliza))
 
-(format *debug-io* "~2%To run ELIZA:
-    (in-package :ch5-final)
-    (eliza)
-and type bye to exit")
-
 (defpackage #:ch5-exercises
   (:documentation "Selected exercises form Chapter 5")
   (:use #:common-lisp
@@ -252,9 +247,11 @@ and type bye to exit")
                 #:op-preconds)
   (:import-from :ch5-final :*eliza-rules*)
   (:export #:pat-match
+           #:binary-tree
            #:finite-binary-tree
            #:prepend
            #:diff
+           #:is
            #:deg->radians
            #:tree-search
            #:depth-first-search
@@ -262,7 +259,8 @@ and type bye to exit")
            #:finite-binary-tree
            #:best-first-search
            #:beam-search
-           #:is
+           #:iter-wide-search
+           #:graph-search
            #:a*-search
            #:search-gps))
 
@@ -310,10 +308,11 @@ and type bye to exit")
                 #:mappend)
   (:import-from :ch6
                 #:pat-match
+                #:binary-tree
                 #:finite-binary-tree
+                #:is
                 #:prepend
                 #:diff
-                #:is
                 #:deg->radians
                 #:tree-search
                 #:depth-first-search
@@ -321,8 +320,9 @@ and type bye to exit")
                 #:finite-binary-tree
                 #:best-first-search
                 #:beam-search
-                #:a*-search
-                #:search-gps)
+                #:iter-wide-search
+                #:graph-search
+                #:a*-search)
   (:import-from :ch6-exercises
                 #:compose))
 

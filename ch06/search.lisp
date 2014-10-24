@@ -10,7 +10,14 @@
 ;;; ____________________________________________________________________________
 ;;;                                                                   Utilities
 
-(defun binary-tree (x) (list (* 2 x) (+ 1 (* 2 x))))
+;; p. 192
+;; To search in a tree you actually need... the tree. Simple way is to load given tree
+;; and the second (clever) way is to load tree nodes when you need it (on every step) on
+;; your algorithm. 'binary-tree' gives you next nodes you need it. Do not forget that
+;; with second approach tree is infinite.
+
+(defun binary-tree (x)
+  (list (* 2 x) (+ 1 (* 2 x))))
 
 (defun finite-binary-tree (n)
   "Return a successor function that generates a binary tree
@@ -30,6 +37,7 @@ with N nodes."
 ;;; ____________________________________________________________________________
 ;;;                                                                 Tree search
 
+;; p.191
 (defun tree-search (states goal-p successors combiner)
   "Find a state that satisfies GOAL-P. Start with STATES,
 and search according to SUCCESSORS and COMBINER."
@@ -79,6 +87,7 @@ but never consider more than BEAM-WIDTH states at a time."
 ;;; ____________________________________________________________________________
 ;;;                                                                     Example
 
+;; p.197
 ;; Consider the task of planning a flight across the North American continent in a small
 ;; airplane, one whose range is limited to 1000 kilometers. Suppose we have a list of
 ;; selected cities with airports, along with their position in longitude and latitude:
@@ -196,6 +205,8 @@ The points are coordinates in n-dimensional space."
       (cons (funcall fn (path-state path))
             (map-path fn (path-previous path)))))
 
+;;; Guessing versus Guaranteeing a Good Solution p. 204
+
 (defun iter-wide-search (start goal-p successors cost-fn
                          &key (width 1) (max 100))
   "Search, increasing beam width from width to max.
@@ -205,6 +216,8 @@ Return the first solution found at any width."
     (or (beam-search start goal-p successors cost-fn width)
         (iter-wide-search start goal-p successors cost-fn
                           :width (+ width 1) :max max))))
+
+;;; Searching graphs p. 206
 
 (defun graph-search (states goal-p successors combiner
                      &optional (state= #'eql) old-states)
@@ -231,11 +244,13 @@ Don't try the same state twice."
            (member state old-states :test state=)))
    (funcall successors (first states))))
 
+;; Used in examples p. 208
 (defun next2 (x) (list (+ x 1) (+ x 2)))
 
 ;;; ____________________________________________________________________________
 ;;;                                                                   A* search
 
+;; p. 209
 (defun a*-search (paths goal-p successors cost-fn cost-left-fn
                   &optional (state= #'eql) old-paths)
   "Find a path whose state satisfies GOAL-P. Start with PATHS,
@@ -276,7 +291,7 @@ lower cost and discard the other."
          (a*-search paths goal-p successors cost-fn cost-left-fn
                     state= old-paths)))))
 
-;;; ____________________________________________________________________________
+;;; A*-helper functions
 
 (defun find-path (state paths state=)
   "Find the path with this state among a list of paths."
@@ -297,6 +312,9 @@ lower cost and discard the other."
       (cons (path-state path)
             (path-states (path-previous path)))))
 
+;;; ____________________________________________________________________________
+
+;; p. 211
 (defun search-all (start goal-p successors cost-fn beam-width)
   "Find all solutions to a search problem, using beam search."
   ;; Be careful: this can lead to an infinite loop.
