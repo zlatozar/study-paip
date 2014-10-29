@@ -22,6 +22,17 @@ _(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
 - Every package has one official name and zero or more _nicknames_.
 - The REPL can't start in the COMMON-LISP package because you're not allowed to intern new
   symbols in it. That's way we use CL-USER.
+- A package must be defined before you can refer to it. If a package definition refers
+  to symbols in other packages (via the `:import-from` and `:shadowing-import-from`
+  options) then these symbols must already exist.
+- **Macros** (along with any supporting code which the macro functions invoke) must
+  be defined before code which refers to them is compiled; and if they're redefined
+  then that code must be recompiled. If inline functions aren't already defined then
+  the calls to them won’t be inlined.
+- Any code required to evaluate the initial values for global variables must be defined
+  before these variables' defining forms (`defvar`, `defparameter` or `defconstant`) are
+  loaded.
+- Constants are best defined before you refer to them.
 - Packages don't provide direct control over who can call what function or access what
   variable. There is no access qualifiers like in Java.
 - Instead of keywords, use uninterned symbols, using the `#:` syntax.
