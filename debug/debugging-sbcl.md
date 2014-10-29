@@ -219,6 +219,7 @@ Backtrace:
 Remember that SLIME colors useful frames with green? This time `1 2 3 and 5` are meaningful.
 Go with the marker on `(ATTACKED-QUEEN-P (4 4) (NIL NIL NIL))` and press `Enter` to see all
 parameters.
+
 ```
   1: (ATTACKED-QUEEN-P (4 4) (NIL NIL NIL))
       Locals:
@@ -228,14 +229,20 @@ parameters.
         L = 4
         POSITION = (4 4)
 ```
+
 This time, the message is not sufficiently clear and it is convenient to get some more
-information. One simple way to achieve that is to call the function in its interpreted
-form. _How can we achieve this?_
+information.
+
+_TIP: Type `C-h m` in debugger to see all available commands._
+
+One simple way to achieve that is to call the function in its interpreted form.
+_How can we achieve this?_
 
 In **.sbclrc** add following line:
 
 ```cl
 ;; Add maximum debug information
+(declaim (optimize debug))
 (sb-ext:restrict-compiler-policy 'debug 3)
 ```
 
@@ -400,7 +407,13 @@ _TIP: Type `i` in debugger to view detail information of a symbol._
 Because of that it is very difficult to find out which function returns `nil`.
 
 One possible solution is to use _step_ and evaluate in frame expressions - in debugger
-press `e`. Another is to trace every function in suspicions function. Here is the result:
+press `e`.
+
+_TIP: To change value press `e` in debugger. At the prompt, type_
+      _`(setq *value-to-be-changed* nil)` and press **Enter** and then re-evaluate._
+
+
+Another is to trace every function in suspicions function. Here is the result:
 
 ```
 CL-USER> (queens 1)
@@ -425,10 +438,5 @@ returns `nil`? It should return list. That is the problem!
 (defun make-positions ()
     (list 'end))
 ```
-
-_TIP: To change value press `e` in debugger. At the prompt, type_
-_`(setq *value-to-be-changed* nil)` and press **Enter** and then re-evaluate_
-
-_TIP: Type `C-h m` in debugger to see all available commands._
 
 That's all!

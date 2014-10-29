@@ -141,8 +141,7 @@ program.  If you think in these terms - and it's hard at first, after years of
 
 #### SLIME helpful commands
 
-Example codding session is described in **debugging-allegro.pdf**. Key bindings are
-slightly different in SLIME.
+Example debugging session could be found [here](debugging-sbcl.md).
 
 - **C-c C-y** - slime-call-defun
 Type it when you are inside the function. It will sends expression `(<func-name>  )` to
