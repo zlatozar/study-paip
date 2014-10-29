@@ -49,7 +49,7 @@ some position is occupied.
 all positions in a diagonal that goes up-left have the same coordinate difference and all
 positions in a diagonal that goes up-right have the same coordinate sum.
 
-![Board coordinates](chess_coordinates.png "8 queens")
+![Board coordinates](chess_coordinates.png "Board coordinates")
 
 The relevant operations for this type are the following:
 
@@ -367,15 +367,12 @@ CL-USER> (queens 1)
   NIL
 ```
 
-In fact, there’s something wrong. The board 1×1 has an obvious solution that it is not
-found.
+In fact, there’s something wrong - returned `nil` is always suspicions!
+The board 1×1 has an obvious solution that it is not found.
 
 To analyze the problem, we will execute the function **step-by-step**. First, we remove
 the trace (using **untrace**) because the step-by-step shows more or less the same
 information.
-
-_TIP: In SLIME place cursor on function name and type `C-c M-t` and function will be
-trace. Do it once again and will remove trace._
 
 ```
 CL-USER> (untrace place-queens)
@@ -399,6 +396,39 @@ With arguments:
 
 _TIP: Type `i` in debugger to view detail information of a symbol._
 
-**ATTENTION:** SBCL _step_ do not display function return value as Allegro CL do.
+**ATTENTION:** SBCL _step_ function do not display what function returns as Allegro CL do.
+Because of that it is very difficult to find out which function returns `nil`.
 
-_(to be continued)_
+One possible solution is to use _step_ and evaluate in frame expressions - in debugger
+press `e`. Another is to trace every function in suspicions function. Here is the result:
+
+```
+CL-USER> (queens 1)
+  0: (PLACE-QUEENS 1 1 1 (NIL NIL NIL))
+    1: (ATTACKED-QUEEN-P (1 1) (NIL NIL NIL))
+    1: ATTACKED-QUEEN-P returned NIL
+    1: (JOIN-QUEEN (1 1) (NIL NIL NIL))
+    1: JOIN-QUEEN returned ((1) (2) (0))
+    1: (PLACE-QUEENS 1 0 1 ((1) (2) (0)))
+      2: (MAKE-POSITIONS)
+      2: MAKE-POSITIONS returned NIL
+    1: PLACE-QUEENS returned NIL
+    1: (PLACE-QUEENS 1 1 0 (NIL NIL NIL))
+    1: PLACE-QUEENS returned NIL
+  0: PLACE-QUEENS returned NIL
+```
+
+`attacked-queen-p` is a predicate so returned `nil` is not a problem. Why `make-positions`
+returns `nil`? It should return list. That is the problem!
+
+``` cl
+(defun make-positions ()
+    (list 'end))
+```
+
+_TIP: To change value press `e` in debugger. At the prompt, type_
+_`(setq *value-to-be-changed* nil)` and press **Enter** and then re-evaluate_
+
+_TIP: Type `C-h m` in debugger to see all available commands._
+
+That's all!

@@ -1,13 +1,12 @@
-(declaim (optimize debug))
 
 (defun make-position (line column)
-  (list line column))
+  (list line colunm)) ; <-- typo
 
 (defun position-line (position)
-  (car position))
+  (caar position))    ; <-- should use 'car'
 
 (defun position-column (position)
-  (cadr position))
+  (caddr position))   ; <-- should use 'cadr'
 
 (defun make-positions ()
   (list))  ; <-- FIXME: should be (list 'end)
@@ -38,7 +37,7 @@
   (cond ((= i 0)
          (make-positions))
         ((= j 0) nil)
-        ((attacked-queen-p (make-position i j) board)
+        ((attacked-queen (make-position i j) board) ; <-- should use 'attacked-queen-p'
          (place-queens n i (1- j) board))
         (t
          (let ((result (place-queens n
