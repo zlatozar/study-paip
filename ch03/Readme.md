@@ -172,3 +172,4 @@ fact, other keywords are allowed.
 ``` cl
 (setf (symbol-function 'find-all-if) #`remove-if-not)
 ```
+- With `some` function you just implement **Chain of Responsibility** design pattern.

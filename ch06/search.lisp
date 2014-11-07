@@ -14,7 +14,12 @@
 ;; To search in a tree you actually need... the tree. Simple way is to load given tree
 ;; and the second (clever) way is to load tree nodes when you need it (on every step) on
 ;; your algorithm. 'binary-tree' gives you next nodes you need it. Do not forget that
-;; with second approach tree is infinite.
+;; with second approach tree is infinite. You should pass to successors functions a piece
+;; of data and this piece of data should contain relations. For example if you have a tree
+;; (0 (1 (2) (3)) (4 (5 (6) NIL) NIL)) you should pass (1 (2) (3))) not just 1.
+
+;; NOTE: Name 'binary-tree' is a confusing better could be 'gen-successors'. In practice
+;; it returns next legal moves.
 
 (defun binary-tree (x)
   (list (* 2 x) (+ 1 (* 2 x))))
@@ -26,9 +31,14 @@ with N nodes."
       (remove-if #'(lambda (child) (> child n))
                  (binary-tree x))))
 
-(defun is (value) #'(lambda (x) (eql x value)))
+(defun is (value)
+  #'(lambda (x) (eql x value)))
 
-(defun prepend (x y) "Prepend Y to start of X" (append y x))
+;;; ____________________________________________________________________________
+
+(defun prepend (x y)
+  "Prepend Y to start of X"
+  (append y x))
 
 (defun diff (num)
   "Return the function that finds the difference from NUM."
@@ -36,6 +46,9 @@ with N nodes."
 
 ;;; ____________________________________________________________________________
 ;;;                                                                 Tree search
+
+;;; As a matter of style it is a good idea to name parameters that are functions
+;;; with -fn suffix. For example: successors-fn, combiner-fn.
 
 ;; p.191
 (defun tree-search (states goal-p successors combiner)

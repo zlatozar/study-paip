@@ -136,7 +136,8 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
   (rest (rest x)))
 
 (defun find-anywhere (item tree)
-  "Does ITEM occur anywhere in TREE?"
+  "Does ITEM occur anywhere in TREE?
+Returns searched element if found else nil."
   (if (atom tree)
       (if (eql item tree) tree)
       (or (find-anywhere item (first tree))

@@ -269,7 +269,8 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:use #:common-lisp
         #:pcl-test
         #:ch6)
-  (:export #:compose))
+  (:export #:compose
+           #:test-depth-first-search))
 
 ;;; ____________________________________
 ;;;                              Public
@@ -304,15 +305,17 @@ In Chapters 5 and 6 'pat-match' will be improved.")
                 #:while)
   (:import-from :ch4-exercises
                 #:permutations)
+  (:import-from :pat-base
+                #:fail)
   (:import-from :ch5-exercises
                 #:mappend)
   (:import-from :ch6
                 #:pat-match
                 #:binary-tree
                 #:finite-binary-tree
-                #:is
                 #:prepend
                 #:diff
+                #:is
                 #:deg->radians
                 #:tree-search
                 #:depth-first-search

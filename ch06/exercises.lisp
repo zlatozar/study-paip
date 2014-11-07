@@ -57,4 +57,32 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
     solutions))
 
 ;;; ____________________________________________________________________________
+
+;; Use 'depth-first-search' for a given tree: (0 (1 (2) (3)) (4 (5 (6) NIL) NIL))
+
+(defparameter *bin-tree* '(0 (1 (2) (3)) (4 (5 (6)))))
+
+;; Defines legal next moves for a given node
+(defun successors-fn (node)
+  (rest node))
+
+(defun is= (value)
+  #'(lambda (x) (eql (car x) value)))
+
+;; test DFS
+(deftest test-depth-first-search ()
+  (check
+    (equal (depth-first-search *bin-tree* (is= 1)  #'successors-fn)
+           '(1 (2) (3)) )))
+
+;;; ____________________________________________________________________________
 ;;;                                                                    My notes
+
+;; It is important to understand that goal and successors functions should be fast
+;; and if possible - easy to be written.
+;;
+;; If tree is represented as a list there is no way to find out successors if you pass
+;; just element (number in our case). That's why node should be passed and we should take
+;; care for that as passing tree not just element:
+;;
+;; (depth-first-search *bin-tree* goal-p successors-fn)

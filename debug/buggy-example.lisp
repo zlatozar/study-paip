@@ -9,7 +9,7 @@
   (caddr position))   ; <-- should use 'cadr'
 
 (defun make-positions ()
-  (list))  ; <-- FIXME: should be (list 'end)
+  (list))  ; <-- should be (list 'end)
 
 (defun join-position (position positions)
   (cons position positions))

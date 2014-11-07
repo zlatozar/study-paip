@@ -8,7 +8,7 @@
 
 (in-package #:pat-base)
 
-(defconstant fail nil "Indicates pat-match failure")
+(defconstant fail nil "Indicates failure")
 
 (defvar no-bindings '((t . t))
   "Indicates `pat-match' success, with no variables")

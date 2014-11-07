@@ -160,6 +160,10 @@ First two are connected - typo that should be fixed: `colunm` should be `column`
 
 Hmm, again typing problem.
 
+_TIP: If there is a compilation error and_
+`See also: Common Lisp Hyperspec, 3.2.2.3 [:section]`
+_You can visit it hitting Enter on `3.2.2.3`._
+
 Should be `attacked-queen-p`. In `buggy-example` type `M-g M-g` and go to the line
 **39**. Change `attacked-queen` to `attacked-queen-p` and then re-evaluate `place-queens`
 with `C-c C-c` and `C-c C-z` to go to the REPL.
@@ -215,6 +219,8 @@ Backtrace:
   4: (SB-INT:SIMPLE-EVAL-IN-LEXENV (QUEENS 4) #<NULL-LEXENV>)
   5: (EVAL (QUEENS 4))
 ```
+
+_TIP: You can use `M-.` everywhere even in error messages in debugger._
 
 Remember that SLIME colors useful frames with green? This time `1 2 3 and 5` are meaningful.
 Go with the marker on `(ATTACKED-QUEEN-P (4 4) (NIL NIL NIL))` and press `Enter` to see all
