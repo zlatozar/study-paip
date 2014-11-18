@@ -227,9 +227,9 @@ You can place control sequences into this string to affect the format of the out
 and it’s optimized for compactness rather than easy comprehension.
 - The format control string contains literal text and formatting directives.
 Directives are always introduced with a ~ character.
-```
+
 |  Directive  |  Interpretation                    |
-|: ---------: |  :--------------                   |
+|  ---------  |  --------------                    |
 |     ~%      |  new line                          |
 |     ~&      |  fresh line                        |
 |     ~|      |  page break                        |
@@ -253,7 +253,7 @@ Directives are always introduced with a ~ character.
 |     ~A      |  legibly, without escapes          |
 |     ~S      |  READably, with escapes            |
 |     ~~      |  ~                                 |
-```
+
 #### FORMAT directives
 
 - All directives start with a *tilde* (~) and end with a single character that identifies the directive.
