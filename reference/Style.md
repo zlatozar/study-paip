@@ -4,27 +4,24 @@ Read also **25.15 A Style guide to Lisp** on p. 887
 
 #### Widely used "need-to-know" conventions
 
-| Example           | Description                                         |
-| :---------------- | :--------------------------------                   |
-| foo-bar           | "-" is used as a word delimiter                     |
-| *foo*             | (global) special variable                           |
-| foo*              | slightly different variant of the foo operator      |
-| &foo              | lambda list keyword. These symbols will be in       |
-|                   | the lambda-list-keywords list.                      |
-| nfoo              | (possibly) destructive (non-consing) function       |
-| foop              | predicate (also foo-p, be consistent)               |
-| foof              | place changing (like in *SETF*, *INCF*, ...)        |
-| +foo+             | constant, or single CLOS instance                   |
-| %foo              | low-level, fast, dangerous function, or Lisp system |
-|                   | specific implementation of foo                      |
-| make-foo          | create a foo and return it                          |
-| define-foo        | (globally) define a new foo                         |
-| with-foo          | create a dynamic context with a foo                 |
-| do-foo            | iterate through a foo                               |
-| foo-case          | foo-specific case expression                        |
-| foo-bar           | type-slot, converting FOO to BAR                    |
-| foo-to-bar        | converting FOO to BAR                               |
-| <class-name>      | Surround class name with "<" and ">"                |
+| Example           | Description                                             |
+| :---------------- | :--------------------------------                       |
+| `foo-bar`         | "-" is used as a word delimiter                         |
+| `*foo*`           | (global) special variable                               |
+| `foo*`            | slightly different variant of the `foo` operator        |
+| `nfoo`            | (possibly) destructive (non-consing) function           |
+| `foop`            | predicate (also `foo-p`, be consistent)                 |
+| `foof`            | place changing (like in **SETF**, **INCF**, ...)        |
+| `+foo+`           | constant, or single `CLOS` instance                     |
+| `%foo`            | low-level, fast, dangerous function, or system specific |
+| `make-foo`        | create a `fo`o and return it                            |
+| `define-foo`      | (globally) define a new `foo`                           |
+| `with-foo`        | create a dynamic context with a `foo`                   |
+| `do-foo`          | iterate through a `foo`                                 |
+| `foo-case`        | foo-specific case expression                            |
+| `foo-bar`         | type-slot, converting **FOO** to **BAR**                |
+| `foo-to-bar`      | converting **FOO** to **BAR**                           |
+| `<class-name>`    | Surround class name with "<" and ">"                    |
 
 #### Comments
 
