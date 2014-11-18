@@ -1126,6 +1126,14 @@ result. While MAPCAR and MAPLIST build a completely new list to hold the results
 function calls, MAPCAN and MAPCON build their result by splicing together the results -
 which must be lists - as if by NCONC.
 
+MAPCAN is used with a function to return a variable number of items to be included in an
+output list. When the function returns zero or one items, the function serves as a
+filter. For example,
+``` cl
+(mapcan #'(lambda (x) (when (and (numberp x) (evenp x)) (list x)))
+        '(1 2 3 4 x 5 y 6 z 7))
+```
+
 See MAPCAR.
 
 ``` cl
@@ -1214,6 +1222,12 @@ form that evaluates to a list of values. Each symbol is dynamically bound to the
 corresponding value, and then the _body-forms_ are evaluated. The difference between PROGV
 and LET is that because _symbols-list_ is evaluated at runtime, the names of the variables
 to bind can be determined dynamically.
+
+STYLE:
+If you want to bind a list of values to a list of lexical variables, use
+`(MULTIPLE-VALUE-BIND (..) (VALUES-LIST ..) ..)`
+or
+`(MULTIPLE-VALUE-SETQ (..) (VALUES-LIST ..))` instead.
 
 ## Koans
 
