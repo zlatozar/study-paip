@@ -92,7 +92,7 @@ Add `:type` to each slots
   (:documentation "A class represents Aluminium."))
 ```
 
-Don't forget a type `null` for optional slots.
+_Don't forget a type `null` for optional slots._
 
 ### General Programming Style rules
 
@@ -141,6 +141,15 @@ using `LET` or `LET*`.
 - If you want a function to return no values (i.e., equivalent to `void` in C), use
 `(VALUES)` to return zero values. This signals to the reader that the function is used
 mainly for side-effects.
+- Always add `#'` in front of lambda. `#'(lambda (x) ...)` this one is used in the book.
+Do not use alternatives:
+```
+(lambda (x) ...)
+'(lambda (x) ...)
+```
+LAMBDA is a macro. It expands to `(function (lambda ...))`, which is the equivalent of
+`#'(lambda ...)`. It allows to easily identify actual functions used as values. It also
+makes it easier to replace with an `flet` or `labels` function.
 
 ### Macros
 

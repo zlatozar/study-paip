@@ -7,6 +7,10 @@
 
 (in-package #:ch6)
 
+;; In these solutions we search forward from the start to the goal; this is quite
+;; different from the means-ends approach of searching backward from the goal for an
+;; appropriate operator.
+
 (defun search-gps (start goal &optional (beam-width 10))
   "Search for a sequence of operators leading to GOAL."
   (find-all-if

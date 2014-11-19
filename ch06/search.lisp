@@ -137,8 +137,18 @@ but never consider more than BEAM-WIDTH states at a time."
                #'(lambda (c) (air-distance c dest))
                1))
 
+;;; ____________________________________________________________________________
+;;;                                                          Search Paths p.200
+
+;; To minimize the total distance, we need some way to talk about the path that leads
+;; to the goal.
+
 (defstruct (path (:print-function print-path))
   state (previous nil) (cost-so-far 0) (total-cost 0))
+
+;; The next question is how to integrate paths into the searching routines with the least
+;; amount of disruption. This suggests that we can use 'tree-search' unchanged if we pass
+;; it paths instead of states, and give it functions that can process paths.
 
 (defun trip (start dest &optional (beam-width 1))
   "Search for the best path from the START to DEST."
@@ -179,6 +189,7 @@ The points are coordinates in n-dimensional space."
   "Convert degrees and minutes to radians."
   (* (+ (truncate deg) (* (rem deg 1) 100/60)) pi 1/180))
 
+;; New version of 'is' function
 (defun is (value &key (key #'identity) (test #'eql))
   "Returns a predicate that tests for a given VALUE."
   #'(lambda (path) (funcall test value (funcall key path))))
@@ -204,6 +215,9 @@ The points are coordinates in n-dimensional space."
   (format stream "#<Path to ~a cost ~,1f>"
           (path-state path) (path-total-cost path)))
 
+;; The notation #<...>, which is a Common Lisp convention for
+;; printing output that can not be reconstructed by READ.
+
 (defun show-city-path (path &optional (stream t))
   "Show the length of a PATH, and the cities along it."
   (format stream "#<Path ~,1f km: ~{~:(~a~)~^ - ~}>"
@@ -218,7 +232,12 @@ The points are coordinates in n-dimensional space."
       (cons (funcall fn (path-state path))
             (map-path fn (path-previous path)))))
 
-;;; Guessing versus Guaranteeing a Good Solution p. 204
+;;; ____________________________________________________________________________
+;;;                         Guessing versus Guaranteeing a Good Solution p. 204
+
+;; One way out of this dilemma is to start with a narrow beam width, and if that does
+;; not lead to an acceptable solution, widen the beam and try again. We will call this
+;; iterative widening.
 
 (defun iter-wide-search (start goal-p successors cost-fn
                          &key (width 1) (max 100))
@@ -230,7 +249,8 @@ Return the first solution found at any width."
         (iter-wide-search start goal-p successors cost-fn
                           :width (+ width 1) :max max))))
 
-;;; Searching graphs p. 206
+;;; ____________________________________________________________________________
+;;;                                                     Searching graphs p. 206
 
 (defun graph-search (states goal-p successors combiner
                      &optional (state= #'eql) old-states)
@@ -261,9 +281,13 @@ Don't try the same state twice."
 (defun next2 (x) (list (+ x 1) (+ x 2)))
 
 ;;; ____________________________________________________________________________
-;;;                                                                   A* search
+;;;                                                            A* search p. 209
 
-;; p. 209
+;; The complication is in deciding which path to keep when two paths reach the same
+;; state. If we have a cost function, then the answer is easy: keep the path with the
+;; cheaper cost. Best-first search of a graph removing duplicate states is
+;; called A*-search.
+
 (defun a*-search (paths goal-p successors cost-fn cost-left-fn
                   &optional (state= #'eql) old-paths)
   "Find a path whose state satisfies GOAL-P. Start with PATHS,
@@ -326,8 +350,12 @@ lower cost and discard the other."
             (path-states (path-previous path)))))
 
 ;;; ____________________________________________________________________________
+;;;                                          Find all possible solutions p. 211
 
-;; p. 211
+;; To find all solutions to a problem, all we have to do is pass in a goal predicate that
+;; always fails, but saves all the solutions in a list. The goal predicate will see all
+;; possible solutions and save away just the ones that are real solutions.
+
 (defun search-all (start goal-p successors cost-fn beam-width)
   "Find all solutions to a search problem, using beam search."
   ;; Be careful: this can lead to an infinite loop.
