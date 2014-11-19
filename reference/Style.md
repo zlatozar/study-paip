@@ -25,12 +25,12 @@ Read also **25.15 A Style guide to Lisp** on p. 887
 
 #### Comments
 
-**80 column** maximum width
+**80 column** maximum width!
 
-;  for inline comment<br/>
-;;  for in function comment<br/>
-;;;   for between function comment<br/>
-;;;;   for section header
+`;`     for inline comment<br/>
+`;;`    for in function comment<br/>
+`;;;`   for between function comment<br/>
+`;;;;`  for section header
 
 #### Multi-Line Strings
 
@@ -47,33 +47,33 @@ instead using read-time evaluation and a call to format:
 
 - Functions are usually actions. Therefore name them accordingly with a verb first then an
   object:
-`
+```
     generate-first-deck
     pick-letter
     begin-game
-`
+```
 Some functions return a boolean. In this case put the subject first and the verb next:
-`
+```
     word-exist
     number-is-even
     file-lock
-`
+```
 This is so that conditional statements resemble English:
-`
+```
     (if (word-exist
     (when (not file-lock
-`
+```
 **Avoid double negative like the pest!**
 
 - Name variables as explicitly as possible, mostly use two word when one is not sufficient.
 - Never put and **'s'** at the end, it's a source of typos.
 - Don't abbreviate character to **char** or index to **i**. What you gain in typing is lost
 in refactoring or code reading. Here are some variables examples:
-`
+```
     time-left
     bad-word
     deck-letter
-`
+```
 
 #### Class
 
@@ -138,7 +138,7 @@ boolean, use `NIL`. Similarly, use `NULL` to test for an empty list, `NOT` to te
 logical value. Use `ENDP` to test for the end of a list, not `NULL`.
 - Don't use the `&AUX` lambda-list keyword. It is always clearer to define local variables
 using `LET` or `LET*`.
-- If you want a function to return no values (i.e., equivalent to VOID in C), use
+- If you want a function to return no values (i.e., equivalent to `void` in C), use
 `(VALUES)` to return zero values. This signals to the reader that the function is used
 mainly for side-effects.
 
