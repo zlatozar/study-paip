@@ -145,7 +145,12 @@
   (format t "~%~a~{~%  ~{ ~a~}~}~%" header
           (mapcar #'prefix->infix equations)))
 
-(defconstant operators-and-inverses
+;; Version from book:
+;; (defconstant operators-and-inverses
+;;   '((+ -) (- +) (* /) (/ *) (= =)))
+
+;; To be easy to reload
+(defparameter operators-and-inverses
   '((+ -) (- +) (* /) (/ *) (= =)))
 
 (defun inverse-op (op)
