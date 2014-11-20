@@ -81,6 +81,7 @@ according to the keywords. Doesn't alter SEQUENCE."
     (dotimes (i indent) (princ "  " *debug-io*))
     (apply #'format *debug-io* format-string args)))
 
+;; Shadows DEBUG from Common Lisp package
 (defun debug (&rest ids)
   "Start `dbg' output on the given IDS."
   (setf *dbg-ids* (union ids *dbg-ids*)))
@@ -130,6 +131,13 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
       (reduce #'funcall functions :from-end t :initial-value x)))
 
 ;;; ____________________________________________________________________________
+;;;                                                                   Chapter 8
+
+(defun length=1 (x)
+  "Is X a list of length 1?"
+  (and (consp x) (null (cdr x))))
+
+;;; ____________________________________________________________________________
 
 (defun rest2 (x)
   "The rest of a list after the first two elements."
@@ -142,10 +150,6 @@ Returns searched element if found else nil."
       (if (eql item tree) tree)
       (or (find-anywhere item (first tree))
           (find-anywhere item (rest tree)))))
-
-(defun length=1 (x)
-  "Is X a list of length 1?"
-  (and (consp x) (null (cdr x))))
 
 (defun rest3 (list)
   "The rest of a LIST after the first three elements."
@@ -198,6 +202,7 @@ NEW-LENGTH, if that is longer than the current length."
 ;;; Therefore, it would be best to rename the function SYMBOL to something
 ;;; else. This has not been done (for compatibility with the book).
 
+;; Shadows SYMBOL form Common Lisp package
 (defun symbol (&rest args)
   "Concatenate symbols or strings to form an interned symbol"
   (intern (format nil "~{~a~}" args)))

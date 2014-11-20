@@ -7,8 +7,8 @@
 
 (in-package :cl-user)
 
-;;; ____________________________________
-;;;                               Tools
+;;; ____________________________________________________________________________
+;;;                                                                       Tools
 
 (defpackage #:inspect
   (:documentation "This package is not part of the book.
@@ -30,8 +30,8 @@ to test chapter exercises.")
   (:export #:deftest
            #:check))
 
-;;; ____________________________________
-;;;      Helper functions from the book
+;;; ____________________________________________________________________________
+;;;                                              Helper functions from the book
 
 (defpackage #:paip-aux
   (:documentation "Useful functions defined in the book.")
@@ -39,6 +39,7 @@ to test chapter exercises.")
   (:shadow #:symbol
            #:debug)
 
+  ;; Shows where in book are defined
   (:export #:mappend
            ;; ch03
            #:find-all
@@ -58,10 +59,13 @@ to test chapter exercises.")
            #:flatten
            #:mklist
            #:random-elt
-           #:starts-with))
+           #:starts-with
+           ;; ch08
+           #:length=1
+           ))
 
-;;; ____________________________________
-;;;                        Run examples
+;;; ____________________________________________________________________________
+;;;                                                                Run examples
 
 (defpackage #:tutor
   (:documentation "Use defined in the book test framework
@@ -82,8 +86,8 @@ To run all examples:
 To run examples from particular chapter:
     (tutor:do-examples <chapter number>)")
 
-;;; ____________________________________
-;;;            Book chapters with tools
+;;; ____________________________________________________________________________
+;;;                                                    Book chapters with tools
 
 ;;; PART I "Introduction to Common Lisp"
 
@@ -110,6 +114,8 @@ To run examples from particular chapter:
            #:dot-product
            #:test-dot-product))
 
+;;; ____________________________________________________________________________
+
 (defpackage #:ch2
   (:documentation "Chapter 2. A Simple Lisp Program")
   (:use #:common-lisp
@@ -128,6 +134,8 @@ To run examples from particular chapter:
            #:test-cross-product
            #:combine-all
            #:test-combine-all))
+
+;;; ____________________________________________________________________________
 
 (defpackage #:ch3
   (:documentation "Chapter 3. Overview of Lisp")
@@ -185,6 +193,8 @@ To run examples from particular chapter:
   (:export #:permutations
            #:test-permutations))
 
+;;; ____________________________________________________________________________
+
 (defpackage #:pat-base
   (:documentation "Simple version of 'pat-match' and common functions.
 In Chapters 5 and 6 'pat-match' will be improved.")
@@ -231,6 +241,8 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:export #:mappend
            #:test-mappend))
 
+;;; ____________________________________________________________________________
+
 (defpackage #:ch6
   (:documentation "Chapter 6. Building Software Tools")
   (:use #:common-lisp
@@ -262,7 +274,11 @@ In Chapters 5 and 6 'pat-match' will be improved.")
            #:iter-wide-search
            #:graph-search
            #:a*-search
-           #:search-gps))
+           #:search-gps
+           #:rule-based-translator
+           ;; ch07
+           #:pat-match-abbrev
+           #:expand-pat-match-abbrev))
 
 (defpackage #:ch6-exercises
   (:documentation "Selected exercises form Chapter 6")
@@ -272,8 +288,52 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:export #:compose
            #:test-depth-first-search))
 
-;;; ____________________________________
-;;;                              Public
+;;; ____________________________________________________________________________
+
+(defpackage #:ch7
+  (:documentation "Chapter 7. STUDENT: Solving Algebra Word Problems")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor)
+  (:shadow #:exp)
+  (:import-from :pat-base
+                #:binding-val
+                #:binding-var)
+  (:import-from :ch6
+                #:rule-based-translator
+                #:pat-match-abbrev
+                #:expand-pat-match-abbrev))
+
+(defpackage #:ch7-exercises
+  (:documentation "Selected exercises form Chapter 7")
+  (:use #:common-lisp
+        #:pcl-test
+        #:ch7))
+
+;;; ____________________________________________________________________________
+
+(defpackage #:ch8
+  (:documentation "Chapter 8. Symbolic Mathematics: A Simplification Program")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor)
+  (:shadow #:exp)
+  (:import-from :paip-aux
+                #:starts-with
+                #:length=1)
+  (:import-from :ch6
+                #:rule-based-translator
+                #:pat-match-abbrev
+                #:expand-pat-match-abbrev))
+
+(defpackage #:ch8-exercises
+  (:documentation "Selected exercises form Chapter 8")
+  (:use #:common-lisp
+        #:pcl-test
+        #:ch8))
+
+;;; ____________________________________________________________________________
+;;;                                                                      Public
 
 (defpackage #:paip
   (:documentation "Expose functions and complete programs from PAIP book.")
@@ -329,7 +389,7 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:import-from :ch6-exercises
                 #:compose))
 
-;;; ____________________________________
-;;;                                Help
+;;; ____________________________________________________________________________
+;;;                                                                        Help
 
 (format *debug-io* "~2%Loading is done. Happy hacking!")

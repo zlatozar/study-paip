@@ -40,11 +40,11 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
 
 ;;; ____________________________________________________________________________
 
-;; Exercise 6.11[m] Write a function that calls 'beam-search' to find the first n solutions
-;; to a problem and returns them in a list.
+;; Exercise 6.11[m] Write a function that calls 'beam-search' to find the first N
+;; solutions to a problem and returns them in a list.
 
 (defun search-n (start n goal-p successors cost-fn beam-width)
-  "Find n solutions to a search problem, using beam search."
+  "Find N solutions to a search problem, using beam search."
   (let ((solutions nil))
     (beam-search
      start #'(lambda (x)
@@ -58,7 +58,8 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
 
 ;;; ____________________________________________________________________________
 
-;; Use 'depth-first-search' for a given tree: (0 (1 (2) (3)) (4 (5 (6) NIL) NIL))
+;; Exercise: Use 'depth-first-search' for a given tree:
+;; (0 (1 (2) (3)) (4 (5 (6) NIL) NIL))
 
 (defparameter *bin-tree* '(0 (1 (2) (3)) (4 (5 (6)))))
 
