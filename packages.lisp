@@ -12,8 +12,7 @@
 
 (defpackage #:inspect
   (:documentation "This package is not part of the book.
-It contains functions that are collected from other places and
-could help during coding sessions.")
+It contains functions that could help during coding sessions.")
   (:use #:common-lisp)
   (:export #:??
            #:?a
@@ -39,7 +38,6 @@ to test chapter exercises.")
   (:shadow #:symbol
            #:debug)
 
-  ;; Shows where in book are defined
   (:export #:mappend
            ;; ch03
            #:find-all
@@ -69,12 +67,10 @@ to test chapter exercises.")
 
 (defpackage #:tutor
   (:documentation "Use defined in the book test framework
-and run chapter examples. If in chapter there is more than one version
-only final is included.")
-  (:use #:common-lisp
-        #:paip-aux)
-  (:shadowing-import-from #:common-lisp :debug)
-
+and run chapter examples.")
+  (:use #:common-lisp)
+  (:import-from :paip-aux
+                #:starts-with)
   (:export #:defexamples
            #:do-examples
            #:do-chapter))
@@ -95,9 +91,9 @@ To run examples from particular chapter:
   (:documentation "Chapter 1. Introduction to Lisp")
   (:use #:common-lisp
         #:inspect
-        #:tutor
-        #:paip-aux)
-  (:shadowing-import-from #:common-lisp :debug))
+        #:tutor)
+  (:import-from :paip-aux
+                #:mappend))
 
 (defpackage #:ch1-exercises
   (:documentation "Selected exercises form Chapter 1")
@@ -120,16 +116,16 @@ To run examples from particular chapter:
   (:documentation "Chapter 2. A Simple Lisp Program")
   (:use #:common-lisp
         #:inspect
-        #:tutor
-        #:paip-aux)
-  (:shadowing-import-from #:common-lisp :debug))
+        #:tutor)
+  (:import-from :paip-aux
+                #:mappend))
 
 (defpackage #:ch2-exercises
   (:documentation "Selected exercises form Chapter 2")
   (:use #:common-lisp
-        #:pcl-test
-        #:paip-aux)
-  (:shadowing-import-from #:common-lisp :debug)
+        #:pcl-test)
+  (:import-from :paip-aux
+                #:mappend)
   (:export #:cross-product
            #:test-cross-product
            #:combine-all
@@ -141,18 +137,14 @@ To run examples from particular chapter:
   (:documentation "Chapter 3. Overview of Lisp")
   (:use #:common-lisp
         #:inspect
-        #:tutor
-        #:paip-aux)
-  (:shadowing-import-from #:common-lisp :debug)
+        #:tutor)
   (:export #:while))
 
 (defpackage #:ch3-exercises
   (:documentation "Selected exercises form Chapter 3")
   (:use #:common-lisp
         #:pcl-test
-        #:paip-aux
         #:ch3)
-  (:shadowing-import-from #:common-lisp :debug)
   (:export #:dprint
            #:questions
            #:length-r
@@ -166,25 +158,31 @@ To run examples from particular chapter:
   (:documentation "Chapter 4. GPS: The General Problem Solver (first version)")
   (:use #:common-lisp
         #:inspect
-        #:tutor
-        #:paip-aux)
-  (:shadowing-import-from #:common-lisp :debug))
+        #:tutor)
+  (:import-from :paip-aux
+                #:find-all))
 
 (defpackage #:ch4-final
   (:documentation "Chapter 4. GPS: The General Problem Solver (final version)")
   (:use #:common-lisp
         #:inspect
-        #:tutor
-        #:paip-aux)
-  (:shadowing-import-from #:paip-aux :debug)
-  ;; Final version of GPS
-  (:export #:gps)
+        #:tutor)
+  (:import-from :paip-aux
+                #:mappend
+                #:find-all
+                #:find-all-if
+                #:undebug
+                #:dbg-indent)
+  (:shadowing-import-from :paip-aux
+                          #:debug)
   ;; Utilities (needed for Chapter 6)
   (:export #:make-block-ops
            #:use
            #:action-p
            #:*ops*
-           #:op-preconds))
+           #:op-preconds)
+  ;; Final version of GPS
+  (:export #:gps))
 
 (defpackage #:ch4-exercises
   (:documentation "Selected exercises form Chapter 4")
@@ -215,9 +213,9 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:use #:common-lisp
         #:inspect
         #:tutor
-        #:paip-aux
         #:pat-base)
-  (:shadowing-import-from #:common-lisp :debug)
+  (:import-from :paip-aux
+                #:starts-with)
   (:export #:rule-pattern
            #:rule-responses
            #:switch-viewpoint))
@@ -227,10 +225,13 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:use #:common-lisp
         #:inspect
         #:tutor
-        #:paip-aux
         #:pat-base
         #:ch5-first)
-  (:shadowing-import-from #:common-lisp :debug)
+  (:import-from :paip-aux
+                #:starts-with
+                #:random-elt
+                #:flatten
+                #:mklist)
   (:export #:*eliza-rules*
            #:eliza))
 
@@ -248,9 +249,14 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:use #:common-lisp
         #:inspect
         #:tutor
-        #:paip-aux
         #:pat-base)
-  (:shadowing-import-from #:paip-aux :debug)
+  (:import-from :paip-aux
+                #:dbg
+                #:find-all-if
+                #:undebug
+                #:declare-ignore)
+  (:shadowing-import-from :paip-aux
+                          #:debug)
   (:import-from :ch4-final
                 #:make-block-ops
                 #:use
@@ -353,7 +359,8 @@ In Chapters 5 and 6 'pat-match' will be improved.")
                 #:undebugit
                 #:starts-with
                 #:member-equal
-                #:flatten)
+                #:flatten
+                #:length=1)
   (:import-from :ch1-exercises
                 #:power
                 #:count-anywhere
