@@ -67,6 +67,7 @@
 - [Chapter-6](#chapter-6)
     - [handler-case](#handler-case)
     - [progv](#progv)
+    - [adjoin](#adjoin)
 - [Koans](#koans)
 
 ## Chapter-1
@@ -972,11 +973,6 @@ See also SET-EXCLUSIVE-OR, UNION and INTERSECTION.
 Return true if _list1_ is a subset of _list2_.
 I.e., if every element of _list1_ also appears in _list2_.
 
-  (adjoin _item_ _list_ :test :test-not :key)
-
-Return _item_ consed onto the front of _list_ only if it's not already there.
-**Otherwise, return _list_ unmodified.**
-
 Set operations with different types:
 
 | lists           | integers   | bit vectors |
@@ -1228,6 +1224,16 @@ If you want to bind a list of values to a list of lexical variables, use
 `(MULTIPLE-VALUE-BIND (..) (VALUES-LIST ..) ..)`
 or
 `(MULTIPLE-VALUE-SETQ (..) (VALUES-LIST ..))` instead.
+
+### adjoin
+
+(**adjoin** _item_ _list_ :test :test-not :key) => new list
+
+Return _item_ consed onto the front of _list_ only if it's not already there.
+**Otherwise, return _list_ unmodified.**
+`(adjoin item list) == (if (member item list) list (cons item list))`
+
+See also: PUSHNEW
 
 ## Koans
 

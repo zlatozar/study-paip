@@ -235,9 +235,8 @@ The points are coordinates in n-dimensional space."
 ;;; ____________________________________________________________________________
 ;;;                         Guessing versus Guaranteeing a Good Solution p. 204
 
-;; One way out of this dilemma is to start with a narrow beam width, and if that does
-;; not lead to an acceptable solution, widen the beam and try again. We will call this
-;; iterative widening.
+;; "iterative widening" technique - start with a narrow beam width, and if that does
+;; not lead to an acceptable solution, widen the beam and try again.
 
 (defun iter-wide-search (start goal-p successors cost-fn
                          &key (width 1) (max 100))
