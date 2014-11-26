@@ -102,7 +102,7 @@ Key&nbsp;Binding   |    Emacs&nbsp;Function       |  Description
 `undefined`      | name-last-kbd-macro         | Name the last macro before saving it then you can execute it using `M-x <your-macro-name>`.
 `undefined`      | apply&#8209;macro&#8209;to&#8209;region&#8209;lines | Apply macro to selected region.
 
-### Emacs commands for using rectangles (cua-selection-mode)'
+### Emacs commands for using rectangles (cua-selection-mode)
 
 _(to be added)_
 
@@ -116,10 +116,6 @@ _(to be added)_
 
 ### Useful reference
 
-http://www.ibm.com/developerworks/views/aix/libraryview.jsp?search_by=emacs+editing+environment
+[Emacs Tutorials](http://www.ibm.com/developerworks/views/aix/libraryview.jsp?search_by=emacs+editing+environment)
 
-http://www.cb1.com/~john/computing/emacs/beyond-tutorial.html
-
-http://wttools.sourceforge.net/emacs-stuff/emacs-keybindings.html
-
-http://www.math.uh.edu/~bgb/emacs_keys.html
+[Emacs Key Bindings](http://www.cb1.com/~john/computing/emacs/beyond-tutorial.html)
