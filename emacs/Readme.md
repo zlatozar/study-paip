@@ -114,7 +114,7 @@ _(to be added)_
 
 _(to be added)_
 
-### Useful reference
+### Links
 
 [Emacs Tutorials](http://www.ibm.com/developerworks/views/aix/libraryview.jsp?search_by=emacs+editing+environment)
 
