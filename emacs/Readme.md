@@ -38,7 +38,7 @@ compare&#8209;windows |  Compare the current window with the next window, beginn
 Key&nbsp;Binding   |    Emacs&nbsp;Function       |  Description
 ----------  | ---------                  |          :-----------
 `C-x Tab`   | indent-rigidly             |  Indents lines in the region (or at point).
-undefined   | `fill-region`              |  Fills all paragraphs in the region.
+`undefined` | `fill-region`              |  Fills all paragraphs in the region.
 `M-q`       | fill-paragraph             |  Fills the single paragraph at point.
 `M-\`       | delete&#8209;horizontal&#8209;space   | Removes any horizontal space to the right and left of point.
 `M-t`       | transpose-words            |  Transposes the single words to the right and left of point.
@@ -99,8 +99,8 @@ Key&nbsp;Binding   |    Emacs&nbsp;Function       |  Description
 ----------     |      --------               |     :-----------
 `C-x (`          | start-kbd-macro             | Start a new macro definition.
 `C-x )`          | end-kbd-macro               | End the current macro definition.
-			     | name-last-kbd-macro         | Name the last macro before saving it then you can execute it using `M-x <your-macro-name>`.
-			     | apply&#8209;macro&#8209;to&#8209;region&#8209;lines | Apply macro to selected region.
+`undefined`      | name-last-kbd-macro         | Name the last macro before saving it then you can execute it using `M-x <your-macro-name>`.
+`undefined`      | apply&#8209;macro&#8209;to&#8209;region&#8209;lines | Apply macro to selected region.
 
 ### Emacs commands for using rectangles (cua-selection-mode)'
 
@@ -119,5 +119,7 @@ _(to be added)_
 http://www.ibm.com/developerworks/views/aix/libraryview.jsp?search_by=emacs+editing+environment
 
 http://www.cb1.com/~john/computing/emacs/beyond-tutorial.html
+
 http://wttools.sourceforge.net/emacs-stuff/emacs-keybindings.html
+
 http://www.math.uh.edu/~bgb/emacs_keys.html
