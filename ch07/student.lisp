@@ -145,7 +145,8 @@
   (format t "~%~a~{~%  ~{ ~a~}~}~%" header
           (mapcar #'prefix->infix equations)))
 
-;; Version from book:
+;; Version from the book:
+;;
 ;; (defconstant operators-and-inverses
 ;;   '((+ -) (- +) (* /) (/ *) (= =)))
 
