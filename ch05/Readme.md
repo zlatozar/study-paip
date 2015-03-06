@@ -1,5 +1,10 @@
 #### Chapter 5
 
+- Pattern matching
+
+Pattern matching is the process of comparing symbolic expressions to see if one is
+similar to another.
+
 - Here is ELIZA algorithm:
 
 ```
@@ -15,9 +20,12 @@ while (true) {
 The procedure is to look for specific patterns, based on a key word
 or words in the input.
 
-- Variables in Common Lisp are naming convention and starts with question mark.
+- **Variables** in Common Lisp are naming convention and starts with question mark.
 
-- Good example of conditional consing (adding):
+- When *match* succeeds, the variables, if any, become associated with those parts
+of the data that variable elements match.
+
+- Good example of **conditional consing** (adding):
 ``` cl
 (defun extend-bindings (var val bindings)
   (cons (cons var val)
@@ -25,8 +33,12 @@ or words in the input.
             nil
             bindings)))
 ```
-- **segment variables** - variables in any position that match a sequence of items in the
-  input. We choose `(?* variable)` to noted them.
+- **single variables** (which take the form `?x`) match a single word.
+
+- **segment variables** - variables in any position that match a sequence of items (phrases)
+  in the input. We choose a list of the form `(?* ?variable)` to noted them.
+
+- **output pattern** is the result of match. This variables are only single variables.
 
 - A **rule** is a data structure that consist of a pattern and a set of responses.<br/>
 For example:
@@ -43,6 +55,10 @@ RULE:
   * How is a specific response is chosen within matched rule?
 
 - Let's summarize:
+
+The variable names contained in an input pattern should be the same as those in the
+corresponding output pattern, and each segment variable `(?* ?x)` in an input
+pattern corresponds to the single variable `?x` in the output pattern.
 
 In each rule, the first element is the pattern and the rest are responses. For example:<br/>
 `((?* ?x) hello (?* ?y))`<br/>

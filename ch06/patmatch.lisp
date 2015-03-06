@@ -264,9 +264,14 @@ The PATTERN looks like ((?if code) . rest)."
 ;; translated into the first, which would then be processed by 'pat-match'.
 
 (defun pat-match-abbrev (symbol expansion)
-  "Define SYMBOL as a macro standing for a pat-match pattern."
+  "Define SYMBOL as a macro standing for a `pat-match' pattern."
   (setf (get symbol 'expand-pat-match-abbrev)
         (expand-pat-match-abbrev expansion)))
+
+;; We first define the abbreviation then use 'expand-pat-match-abbrev'
+
+;; (pat-match-abbrev '?x* '(? * ?x))
+;; (pat-match-abbrev '?y* '(? * ?y))
 
 (defun expand-pat-match-abbrev (pat)
   "Expand out all pattern matching abbreviations in PAT."
@@ -274,6 +279,9 @@ The PATTERN looks like ((?if code) . rest)."
         ((atom pat) pat)
         (t (cons (expand-pat-match-abbrev (first pat))
                  (expand-pat-match-abbrev (rest pat))))))
+
+;; (setf axyd (expand-pat-match-abbrev '(a ?x* ?y* d)))
+;; (pat-match axyd '(a x y d)) ;=> ((?Y B C) (?X))
 
 ;;; ____________________________________________________________________________
 ;;;                                         Convert 'use-eliza-rules' into tool

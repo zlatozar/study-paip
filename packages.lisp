@@ -282,7 +282,6 @@ In Chapters 5 and 6 'pat-match' will be improved.")
            #:a*-search
            #:search-gps
            #:rule-based-translator
-           ;; ch07
            #:pat-match-abbrev
            #:expand-pat-match-abbrev))
 
@@ -378,6 +377,8 @@ In Chapters 5 and 6 'pat-match' will be improved.")
                 #:mappend)
   (:import-from :ch6
                 #:pat-match
+                #:pat-match-abbrev
+                #:expand-pat-match-abbrev
                 #:binary-tree
                 #:finite-binary-tree
                 #:prepend

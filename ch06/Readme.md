@@ -17,6 +17,13 @@ does much less work than READ or EVAL, but is still quite handy.
 **The important point is not whether one line of code can be considered an**
 **implementation of Lisp; it is to recognize common patterns of computation**.
 
+- Patterns matching could be improved - add a way to specify that a position is to be
+filled by a member of some class of atoms. That class might be the numbers, or the
+atoms of a particular length. Introduce the restriction feature code looks like this:
+```cl
+(pat-match '(x = (?and (?is ?n numberp) (?is ?n oddp))) '(x = 3)) ;=> ((?N . 3))
+
+```
 - Both ELIZA and Lisp can be seen as interactive interpreters that read some input,
 transform or evaluate the input in some way, print the result, and then go back for more
 input.
