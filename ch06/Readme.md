@@ -51,8 +51,9 @@ attempt a more formal specification.
 - This style of programming, where _pattern/action_ pairs are stored in a table, is called
 **data-driven programming**. It is a very flexible style that is appropriate for writing
 extensible systems.
-- A function that looks up adata-driven function and calls it is called a **dispatch**
+- A function that looks up a data-driven function and calls it is called a **dispatch**
 function.
+- Read  [here](generalizing-search.md)
 - In general, a _search problem_ involves exploring from some starting state and
 investigating neighboring states until a solution is reached.
 - Search problems are called _nondeterministic_ because there is no way to determine what

@@ -303,7 +303,7 @@ Argument Y is not a NUMBER: NIL
 There is no `Y` in `attacked-queen-p`. From where it comes from?
 
 Go to the top level, line that contains `0: (SB-KERNEL:TWO-ARG-+ 4 NIL)` and type `M-.`
-when you are on SB-KERNEL:TWO-ARG-+.
+when you are on `SB-KERNEL:TWO-ARG-+`.
 
 It opens `numbers.lisp` from SBCL source:
 
