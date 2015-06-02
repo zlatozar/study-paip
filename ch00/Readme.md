@@ -1,8 +1,109 @@
 ## Chapter 0
 
-_(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
+### Why lisp?
+
+_Lisp is not merely a different notation, it's a fundamentally different way of thinking_
+_about what programming is._ The mainstream model is that programming consists of
+producing standalone artifacts called **programs** which operate on other artifacts called
+**data**. Of course, everyone knows that programs are data, but the mainstream model revolves
+around maintaining an artificial distinction between the two concepts. Yes, programs are
+data, but they are data only for a special kind of program called a compiler. Compilers
+are hard to write, a field of study unto themselves. Most people don't write their own
+compilers, but instead use compilers written by the select few who have attainted the
+level of mastery required to write one that isn't just a toy.
+
+_The Lisp model is that programming is a more general kind of interaction with a machine._
+The act of describing what you want the machine to do is interleaved with the machine
+actually doing what you have described, observing the results, and then changing the
+description of what you want the machine to do based on those observations. There is no
+bright line where a program is finished and becomes an artifact unto itself. Yes, it is
+possible to draw such a line and produce standalone executables in Lisp, just as it is
+possible to write interactive programs in **C**. But Lisp was intended to be interactive
+(because it was invented to support AI research), whereas C was not (because it was
+invented for writing operating systems). **Interactivity is native** to Lisp whereas it is
+foreign to C, just as building standalone executable is native to C but foreign to Lisp.
+
+**The key insight is that Lisp programs are not text, they are data structures.**
+
+Of course, there are times when you have no choice but to iterate. Some times you don't
+know everything you need to know to produce a finished design and you have to do some
+experiments, and the faster you can do them the better off you will be. In cases like
+this it is very helpful to have a general mechanism for taking little programs and
+composing them to make a bigger program, and the C world has such a mechanism: the pipe.
+However, what the C world doesn't have is a standard way of serializing and de-serializing
+data. And, in particular, the C world doesn't have a standard way of serializing and
+de-serializing hierarchical data. Instead, the C world has a vast array of different
+kinds of serialization formats: fixed-width, delimiter-separated, MIME, JSON, ICAL, SGML
+and its offspring, HTML and XML, to name but a few. _And those are just serialization_
+_formats for data._ If you want to write code, every programming language has its own
+syntax with its own idiosyncrasies.
+
+The C ecosystem has spawned the peculiar mindset that thinks that syntax matters. A lot
+of mental energy is devoted to syntax design. Tools like **LEX** and **YACC** are widely used.
+In the C world, writing parsers is a big part of any programmer's life.
+
+Every now and then someone in the C world gets the bright idea to try to use one of these
+data serialization formats to try to represent code. These efforts are short-lived
+because code represented in XML or JSON looks absolutely horrible compared to code
+represented using a syntax specifically designed to represent code. They conclude that
+representing code as data is a Bad Idea and go back to writing parsers.
+
+The reason that code represented as XML or JSON looks horrible is not because representing
+code as data is a bad idea, but because XML and JSON are badly designed serialization
+formats. And the reason they are badly designed is very simple: too much punctuation.
+And, in the case of XML, too much redundancy. The reason Lisp succeeds in representing
+code as data where other syntaxes fail is that **S-expression** syntax is a well-designed
+serialization format, and the reason it's well designed is that it is minimal. Compare:
+```
+    XML: <list><item>abc</item><item>pqr</item><item>xyz</item></list>
+    JSON: ['abc', 'pqr', 'xyz']
+    S-expression: (abc pqr xyz)
+```
+The horrible bloatedness of XML is obvious even in this simple example.  The difference
+between JSON and S-expressions is a little more subtle, but consider: _this is a valid_
+_S-expression:_
+```
+    (for x in foo collect (f x))
+```
+The JSON equivalent is:
+```
+    ['for', 'x', 'in', 'foo', 'collect', ['f', 'x']]
+```
+The difference becomes particularly evident if you try to type those expressions rather
+than just look at them. The quotes and commas that seem innocuous enough for
+small data structures become an immediately intolerable burden for anything really
+complicated.
+
+**The reason that Lisp is so cool and powerful is that the intuition that leads people to**
+**try to represent code as data is actually correct.** It is an incredibly powerful lever.
+Among other things, it makes writing interpreters and compilers really easy, and so
+inventing new languages and writing interpreters and compilers for them becomes as much a
+part of day-to-day Lisp programming as writing parsers is business as usual in the C
+world. But to make it work you must start with the right syntax for representing code and
+data, which means you must start with a minimal syntax for representing code and data,
+because anything else will drown you in a sea of commas, quotes and angle brackets.
+
+Which means you have to start with S-expressions, because they are the _minimal syntax_ for
+representing hierarchical data. Think about it: to represent hierarchical data you need
+two syntactic elements: a token separator and a block delimiter. In S expressions,
+whitespace is the token separator and parens are the block delimiters. That's it. You
+can't get more minimal than that.
+
+It is worth noting that the reason the parens stick out so much in Lisp is not that Lisp
+has more parens than other programming languages, it's that Lisp as _only one_ block
+delimiter (parens) and so the parens tend to stick out because there is nothing else.
+Other languages have different block delimiters depending on the kind of block being
+delimited. The C family, for example, has **()** for argument lists and sub-expressions,
+**[]** for arrays, **{}** for code blocks and dictionaries. It also uses commas and
+semicolons as block delimiters. If you compare apples and apples, Lisp usually has fewer
+block delimiters than C-like languages.  _Lisp programmers never have to worry about such
+things: if you want to close a_ _block, you type a ")"._ It's always a no brainer, which
+leaves Lisp programmers with more mental capacity to focus on the problem they actually
+want to solve.
 
 ### Packages
+
+_(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
 
 - Packages are fundamentally a part of the lisp `READER` and not the `EVALUATOR`.
   Packages control how the `READER` maps strings onto symbols.
@@ -212,6 +313,8 @@ DEFVAR, and DEFCLASS only when their home package is the current package. In oth
 warning about **"redefining BAR, originally defined in...".**
 
 ### Format
+
+_(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
 
 ``` cl
 (format t "Price today is ~$" 1.5)
@@ -474,6 +577,8 @@ instance, you could print only the keys of a plist like this:
 ```
 
 ### Macros
+
+_(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
 
 - Macros are simply programs which change/generate code, but this happens during compile
 time.
