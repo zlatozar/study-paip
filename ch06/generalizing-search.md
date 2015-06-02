@@ -1,8 +1,9 @@
 ### Search
 
 Let's examine something that many believe to be an even *more* powerful
-_computational metaphor_ for thought -- whatever your opinion about "power", it certainly
-scores points for generality and ease of formal analysis: **All thought is SEARCH.**
+_computational metaphor_ for thought.
+
+**All thought is SEARCH.**
 
 Suppose we wanted to search for the symbol FOO in some list:
 ```cl
@@ -574,6 +575,7 @@ added to the queue.
             ((1 2 3) NIL NIL) ((3) (1) (2)))
 [stuff deleted]
 --> (NIL NIL (1 2 3))
+```
 
 This was better, and I actually let it run to completion, but note _that previously_
 _explored states are still being added to the queue._
@@ -923,7 +925,7 @@ reached, but never consider more than beam-width states at a time."
 ;; Search: ((NIL (1) (2 3)) ((1 2) NIL (3)) ((1) (2) (3)))
 ;; Search: ((NIL NIL (1 2 3)) ((1) NIL (2 3)) ((1 2) NIL (3)))
 --> (NIL NIL (1 2 3))
-``
+```
 
 Here's a **different** heuristic function -- it takes the sizes of the disks into account.
 
@@ -971,18 +973,16 @@ between a Towers of Hanoi state and the goal"
 
 ### The game
 
-_You and I alternatively select numbers between 1 and 9 (inclusive)._
-_Each number can only be chosen once._
-
-The first person to have among their numbers exactly 3 that sum to 15 wins.
+_You and I alternatively select numbers between 1 and 9 (inclusive). Each number can_
+_only be chosen once. The first person to have among their numbers exactly 3 that sum to 15_
+wins._
 
 It was easy for me to play because I had a tic-tac-toe board with the numbers arranged on
 it in such a way that all of the triples that sum to 15 (and only these triples) are
-3-in-a-row. So I played by playing tic-tac-toe, not by doing arithmetic.
-
-There's a general lesson here about the influence of representation on the difficulty of a
-problem. The search application we'll look at is: how do we find the number arrangements with the
-required property?
+3-in-a-row. So I played by playing tic-tac-toe, not by doing arithmetic.  There's a
+general lesson here about the influence of representation on the difficulty of a
+problem. The search application we'll look at is: how do we find the number arrangements
+with the required property?
 
 - First we need a goal-testing function:
 
