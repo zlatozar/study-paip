@@ -163,6 +163,7 @@ the predicate, nil if one ain't there."
 ```cl
 (depth-search '((2 4 6) (2  8 (7 8)) (10 11 12))
               #'oddp)
+
 checking: 2
 checking: 4
 checking: 6
@@ -194,6 +195,7 @@ the predicate, nil if one ain't there."
 ```cl
 (depth-search '((2 4 6) (2  8 (7 8)) (10 11 12))
               #'oddp)
+
 input list: ((2 4 6) (2 8 (7 8)) (10 11 12))
 input list: (2 4 6 (2 8 (7 8)) (10 11 12))
 input list: (4 6 (2 8 (7 8)) (10 11 12))
@@ -342,7 +344,7 @@ define **PREPEND**, which does an **APPEND** backwards:
   "Search old states first until goal is reached."
   (tree-search
    (list start) goal-p successors #'prepend))
-   ```
+```
 
 Here's a function that's handy for creating goal functions:
 
@@ -522,6 +524,7 @@ We need a function that generates *valid* moves from a given game configuration:
 (hanoi-moves '((2 3) (1) ()))
 --> (((3) (1) (2)) ((2 3) NIL (1)) ((1 2 3) NIL NIL))
 ```
+
 ```cl
 (defun goalp (config)
   (and (null (first config))
@@ -975,7 +978,7 @@ between a Towers of Hanoi state and the goal"
 
 _You and I alternatively select numbers between 1 and 9 (inclusive). Each number can_
 _only be chosen once. The first person to have among their numbers exactly 3 that sum to 15_
-wins._
+_wins._
 
 It was easy for me to play because I had a tic-tac-toe board with the numbers arranged on
 it in such a way that all of the triples that sum to 15 (and only these triples) are
@@ -1031,11 +1034,15 @@ one element has been swapped with one other."
 ```cl
 (insert-at-index 'pooch 0 '(fish frog cat spark-plug))
 --> (POOCH FROG CAT SPARK-PLUG)
+
 (insert-at-index 'pooch 1 '(fish frog cat spark-plug))
 --> (FISH POOCH CAT SPARK-PLUG)
+
 (insert-at-index 'pooch 23 '(fish frog cat spark-plug))
 --> (FISH FROG CAT SPARK-PLUG)
+```
 
+```cl
 (defun swap-elts (index1 index2 list)
   "Returns list with the elements at index1 and index2 swapped."
   (insert-at-index (nth index1 list)
@@ -1043,9 +1050,12 @@ one element has been swapped with one other."
                    (insert-at-index (nth index2 list)
                                     index1
                                     list)))
+```
 
+```cl
 (swap-elts 0 8 '(a b c d e f g h i))
 --> (I B C D E F G H A)
+
 (swap-elts 3 4 '(a b c d e f g h i))
 --> (A B C E D F G H I)
 
@@ -1090,14 +1100,16 @@ picking cards.  First to get 3 that sum to 15 wins."
                #'tic-tac-toe-all-wins-sum-to-15-property
                #'all-swaps
                #'board-cost))
+```
 
-;; Track time
+```cl
 (time (isometric-game-board))
 --> (2 9 4 7 5 3 6 1 8)
 ```
 
 Beam search with a beam width of 1 works in this case as well, and produces an answer
 faster:
+
 ```cl
 (defun isometric-game-board ()
   "Returns a permutation of numbers which reveals the
@@ -1109,13 +1121,16 @@ picking cards.  First to get 3 that sum to 15 wins."
                #'all-swaps
                #'board-cost
                1))
-
+```
+               
+```cl
 (time (isometric-game-board))
 --> (2 9 4 7 5 3 6 1 8)
 ```
 
 A modified version of PAIP *search-all* function can be used to obtain multiple
 solutions:
+
 ```cl
 (defun search-all (start goal-p successors cost-fn beam-width)
   "Find all solutions to a search problem, using beam search."
@@ -1138,8 +1153,11 @@ picking cards.  First to get 3 that sum to 15 wins."
               #'all-swaps
               #'board-cost
               1))
+```
 
+```cl
 (isometric-game-board)
+
 (2 9 4 7 5 3 6 1 8)
 (4 9 2 3 5 7 8 1 6)
 (6 7 2 1 5 9 8 3 4)
@@ -1207,7 +1225,7 @@ abandons the entire branch with no further search.
 
 **AND/OR Graphs**
 
-AND/OR Graphs can be considered as a variation of game trees, for which each node is
+_AND/OR Graphs_ can be considered as a variation of game trees, for which each node is
 explicitly marked as being an AND node (all children must be solved) or an OR node (only
 one child must be solved), regardless of **ply**. To use an AND/OR graph for a 2-person
 game, your own moves should be children of OR nodes (you only need to make one of the
