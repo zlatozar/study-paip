@@ -4,7 +4,7 @@
 
 (in-package #:ch5-exercises)
 
-;; Exercise 5.14[m] Define a version of 'mappend' that, like 'mapcar', accepts any number
+;; Exercise 5.14[m] Define a version of `paip-aux:mappend' that, like `mapcar', accepts any number
 ;; of argument lists.
 
 ;;; ____________________________________________________________________________
@@ -29,7 +29,7 @@
 ;;; ____________________________________________________________________________
 ;;;                                                                    My notes
 
-;; REMEMBER: 'mappend' offers a nondestructive alternative to 'mapcan'!
+;; REMEMBER: `mappend' offers a nondestructive alternative to `mapcan'!
 
 ;; Loosely (apply #'mapcar fn lists) is (mapcar fn list1 list2 ... listN) then collect
-;; results with 'append' or 'reduce/append'
+;; results with `append' or 'reduce/append'

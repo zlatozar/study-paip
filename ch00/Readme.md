@@ -213,8 +213,9 @@ or COMPILE-FILE a file that contains an IN-PACKAGE expression switching to that 
                  ))
 ```
 - Usually two expressions typed into the toplevel are equivalent to the same two
-  expressions enclosed within a single progn. Not in this case. If we try saying:
-```
+expressions enclosed within a single progn. Not in this case. If we try saying:
+
+```cl
 MINE> (progn (in-package ’common-lisp-user)
              (export ’bar))
 >>Error: MINE::BAR is not accessible in COMMON-LISP-USER.
@@ -252,7 +253,8 @@ data. For example, if we define noise as follows:
 ```
 then if we call noise from another package with an unqualified symbol as an argument, it
 will usually fall off the end of the case clauses and return nil:
-```
+
+```cl
 OTHER> (in-package ’common-lisp-user)
 #<Package "COMMON-LISP-USER" 4CD15E>
 > (other:noise ’pig)

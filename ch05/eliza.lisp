@@ -218,8 +218,8 @@
     (((?* ?x) are (?* ?y))
      (Did you think they might not be ?y)
      (Possibly they are ?y))
-    ((bye)
-     (good bye))
+    ((bye)              ;; ***
+     (good bye))        ;; ***
     (((?* ?x))
      (Very interesting) (I am not sure I understand you fully)
      (What does that suggest to you?) (Please continue) (Go on)

@@ -74,12 +74,9 @@
     (t (format t "Reply with YES, NO, or IT if I have guessed it.")
        (questions node))))
 
-
-;; Exercise 3.9 [m] Write a version 'of length' using the function 'reduce'.
-
 ;;; ____________________________________________________________________________
 
-;; Exercise 3.9 [m] Write a version of 'length' using the function reduce.
+;; Exercise 3.9 [m] Write a version of 'length' using the function `reduce'.
 
 (defun length-r (list)
   (reduce #'+ (mapcar #'(lambda (x)

@@ -147,7 +147,7 @@ but never consider more than BEAM-WIDTH states at a time."
   state (previous nil) (cost-so-far 0) (total-cost 0))
 
 ;; The next question is how to integrate paths into the searching routines with the least
-;; amount of disruption. This suggests that we can use 'tree-search' unchanged if we pass
+;; amount of disruption. This suggests that we can use `tree-search' unchanged if we pass
 ;; it paths instead of states, and give it functions that can process paths.
 
 (defun trip (start dest &optional (beam-width 1))
@@ -189,7 +189,7 @@ The points are coordinates in n-dimensional space."
   "Convert degrees and minutes to radians."
   (* (+ (truncate deg) (* (rem deg 1) 100/60)) pi 1/180))
 
-;; New version of 'is' function
+;; New version of `is' function
 (defun is (value &key (key #'identity) (test #'eql))
   "Returns a predicate that tests for a given VALUE."
   #'(lambda (path) (funcall test value (funcall key path))))

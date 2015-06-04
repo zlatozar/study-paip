@@ -81,7 +81,6 @@
       0
       (+ 1 (position-if #'true list :from-end t))))
 
-
 (defun length9 (list)
   (if (null list)
       0
@@ -119,7 +118,7 @@
   (let ((prod 1))
     (dolist (n numbers prod)
       (if (= n 0)
-          (RETURN 0)     ;; style: return to be in upper case
+          (RETURN 0)     ;; style: `return' to be in upper case
           (setf prod (* n prod))))))
 
 ;;; ____________________________________________________________________________
@@ -197,7 +196,7 @@
 
 ;;; ____________________________________________________________________________
 
-;; In pseudo code:
+;; In pseudo-code:
 ;;
 ;; (defun eat-porridge (bear)
 ;;   (assert (< too-cold (temperature (bear-porridge bear)) too-hot)
@@ -250,15 +249,19 @@
 
 ;;; ____________________________________________________________________________
 
-;; NOTE: The function 'find-all' described in book is defined in ../auxfns.lisp
+;; NOTE: The function 'find-all' described in book is defined here `paip-aux:find-all'
 
 ;;; ____________________________________________________________________________
 
 ;; p. 102
-(defmacro while (test &body body)
+;; Rename it because it is used in `paip' package
+(defmacro while-t (test &body body)
   "Repeat BODY while TEST is true."
   `(loop (if (not ,test) (return nil))
       . ,body))
+
+;; Here is how macro alias could be defined:
+;; (setf (macro-function 'while-true) #'while-t)
 
 ;; STYLE: &aux can be used to bind a new local variable or variables, as if bound with
 ;; let*. Because &aux variables are not parameters at all and thus have no place in a

@@ -123,8 +123,8 @@ E.g. (?is x predicate) (?and . patterns) (?or . patterns)."
 
 ;;; ____________________________________________________________________________
 
-;; A function that looks up a data-driven function and calls it (such as 'segment-matcher'
-;; and 'single-matcher') is called a dispatch function.
+;; A function that looks up a data-driven function and calls it (such as `segment-matcher'
+;; and `single-matcher') is called a dispatch function.
 
 (defun segment-matcher (pattern input bindings)
   "Call the right function for this kind of segment pattern."
@@ -258,17 +258,17 @@ The PATTERN looks like ((?if code) . rest)."
 
 ;; Many readers find the second pattern easier to understand at a glance. We could
 ;; change 'pat-match' to allow for patterns of the form ?x*, but that would mean
-;; 'pat-match' would have a lot more work to do on every match. An alternative is
+;; `pat-match' would have a lot more work to do on every match. An alternative is
 ;; to leave 'pat-match' as is, but define another level of syntax for use by human readers
 ;; only. That is, a programmer could type the second expression above, and have it
-;; translated into the first, which would then be processed by 'pat-match'.
+;; translated into the first, which would then be processed by `pat-match'.
 
 (defun pat-match-abbrev (symbol expansion)
   "Define SYMBOL as a macro standing for a `pat-match' pattern."
   (setf (get symbol 'expand-pat-match-abbrev)
         (expand-pat-match-abbrev expansion)))
 
-;; We first define the abbreviation then use 'expand-pat-match-abbrev'
+;; We first define the abbreviation then use `expand-pat-match-abbrev'
 
 ;; (pat-match-abbrev '?x* '(? * ?x))
 ;; (pat-match-abbrev '?y* '(? * ?y))
@@ -284,7 +284,7 @@ The PATTERN looks like ((?if code) . rest)."
 ;; (pat-match axyd '(a x y d)) ;=> ((?Y B C) (?X))
 
 ;;; ____________________________________________________________________________
-;;;                                         Convert 'use-eliza-rules' into tool
+;;;                                         Convert `use-eliza-rules' into tool
 
 ;; Here is what is needed (p. 188):
 
@@ -321,7 +321,7 @@ and apply the action to that rule."
 ;;; WHY?
 
 ;;; Pattern matching is one of the most important tools for AI. That's why it is good idea
-;;; to export 'pat-match' in public book interface - PAIP package. To do that we should
+;;; to export `pat-match' in public book interface - `paip' package. To do that we should
 ;;; fix symbols matching when call it from other package.
 
 (defparameter *predicates-fn*

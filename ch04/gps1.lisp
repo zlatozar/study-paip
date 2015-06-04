@@ -29,8 +29,8 @@ or if there is an appropriate op for it that is applicable."
   "An OP is appropriate to a GOAL if it is in its add list."
   (member goal (op-add-list op)))
 
-;; After applying operation it adds in add-list what is achieved and
-;; remove from del-list what is loosed.
+;; After applying operation it adds in 'add-list' what is achieved and
+;; remove from 'del-list' what is loosed.
 (defun apply-op (op)
   "Print a message and update `*state*' if OP is applicable."
   (when (every #'achieve (op-preconds op))

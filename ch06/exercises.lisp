@@ -27,7 +27,7 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
 
 ;;; ____________________________________________________________________________
 
-;; Exercise 6.9 [m] The sorter function is inefficient for two reasons: it calls append,
+;; Exercise 6.9 [m] The sorter function is inefficient for two reasons: it calls `append',
 ;; which has to make a copy of the first argument, and it sorts the entire result, rather
 ;; than just inserting the new states into the already sorted old states. Write a more
 ;; efficient sorter.
@@ -40,7 +40,7 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
 
 ;;; ____________________________________________________________________________
 
-;; Exercise 6.11[m] Write a function that calls 'beam-search' to find the first N
+;; Exercise 6.11[m] Write a function that calls `ch6:beam-search' to find the first N
 ;; solutions to a problem and returns them in a list.
 
 (defun search-n (start n goal-p successors cost-fn beam-width)
@@ -58,7 +58,7 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
 
 ;;; ____________________________________________________________________________
 
-;; Exercise: Use 'depth-first-search' for a given tree:
+;; Exercise: Use `ch6:depth-first-search' for a given tree:
 ;; (0 (1 (2) (3)) (4 (5 (6) NIL) NIL))
 
 (defparameter *bin-tree* '(0 (1 (2) (3)) (4 (5 (6)))))

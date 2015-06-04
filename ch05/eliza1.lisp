@@ -7,7 +7,7 @@
 
 (in-package #:ch5-first)
 
-;;; New version of 'pat-match' (see old in ../pat-base.lisp) with segment variables
+;;; New version of `pat-base::pat-match' with segment variables
 
 (defun pat-match (pattern input &optional (bindings no-bindings))
   "Match PATTERN against INPUT in the context of the BINDINGS"
@@ -132,6 +132,7 @@
           words))
 
 ;;; ____________________________________________________________________________
+;;;                                                    Example of ELIZA session
 
 ;;; ch5-first> (eliza)
 ;;; ELIZA> (hello there)

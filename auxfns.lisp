@@ -91,9 +91,9 @@ according to the keywords. Doesn't alter SEQUENCE."
   (setf *dbg-ids* (if (null ids) nil
                       (set-difference *dbg-ids* ids))))
 
-;; Functions alias (to avoid name clash) that are exposed in PAIP package
-(setf (symbol-function 'debugit) #'debug)
-(setf (symbol-function 'undebugit) #'undebug)
+;; Functions alias (to avoid name clash) that are exposed in `paip' package
+(setf (symbol-function 'enable-dbg) #'debug)
+(setf (symbol-function 'disable-dbg) #'undebug)
 
 ;; p. 126
 (defun starts-with (list x)
@@ -118,7 +118,7 @@ according to the keywords. Doesn't alter SEQUENCE."
   "Get rid of imbedded lists (to one level only)."
   (mappend #'mklist the-list))
 
-;;; Pattern Matching Facility p. 155 - see ../pat-base.lisp
+;;; Pattern Matching Facility p. 155 - see `pat-base'
 
 ;;; ____________________________________________________________________________
 ;;;                                                                   Chapter 6
@@ -197,12 +197,12 @@ NEW-LENGTH, if that is longer than the current length."
 ;;; NOTE:
 ;;;
 ;;; In ANSI Common Lisp, the effects of adding a definition
-;;; (or most anything else) to a symbol in the common-lisp package is undefined.
+;;; (or most anything else) to a symbol in the 'CL-USER' package is undefined.
 ;;;
 ;;; Therefore, it would be best to rename the function SYMBOL to something
 ;;; else. This has not been done (for compatibility with the book).
 
-;; Shadows SYMBOL form Common Lisp package
+;; Shadows SYMBOL form 'CL-USER' package
 (defun symbol (&rest args)
   "Concatenate symbols or strings to form an interned symbol"
   (intern (format nil "~{~a~}" args)))

@@ -47,7 +47,7 @@
   "Is X of the form: (executing ...) ?"
   (starts-with x 'executing))
 
-;; also in ../auxfns.lisp
+;; also in `paip-aux'
 (defun starts-with (list x)
   "Is this a LIST whose first element is X?"
   (and (consp list) (eql (first list) x)))
@@ -121,9 +121,9 @@ or if there is an appropriate op for it that is applicable."
 
 ;;; ____________________________________________________________________________
 
-;; 'apply-op' now returns the new state instead of printing anything. It first computes
+;; `apply-op' now returns the new state instead of printing anything. It first computes
 ;; the state that would result from achieving all the preconditions of the operator. If it
-;; is possible to arrive at such a state, then 'apply-op' returns a new state derived from
+;; is possible to arrive at such a state, then `apply-op' returns a new state derived from
 ;; this state by adding what's in the add-list and removing everything in the delete-list.
 
 (defun apply-op (state goal op goal-stack)
