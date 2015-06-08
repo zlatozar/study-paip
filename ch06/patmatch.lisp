@@ -75,6 +75,7 @@
 ;; ((?N . 3))
 
 ;; p. 181
+;; Improved version of `ch5-final::pat-match'
 (defun pat-match (pattern input &optional (bindings no-bindings))
   "Match PATTERN against INPUT in the context of the BINDINGS"
   (cond ((eq bindings fail) fail)
