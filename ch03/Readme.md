@@ -30,7 +30,7 @@ access Alabama with key 'AL.
 special forms `defsetf` or `define-setf-method`.
 - Some kinds of data, like binary trees, are hard to deal with in anything but a
 recursive fashion. Others, like lists and integers, can be defined either recursively or as
-a sequence.
+a sequence. Read [here](binary-tree.lisp) how to represent trees in Common Lips.
 - To be efficient recursive functions should be `tail-recursive`.
 - As a good style write `RETURN` with uppercase to emphasise an unusual step to exit from
 loop.
