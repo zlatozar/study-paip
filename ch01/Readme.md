@@ -77,6 +77,15 @@ And do not forget parenthesis around lambda e.g.
 ``` cl
 (funcall #'(lambda (x) (+ x 2)) 4)
 ```
+LAMBDA is a macro. It expands to `(function (lambda ...))`, which is the equivalent of
+`#'(lambda ...)`. It allows to easily identify actual functions used as values. It also
+makes it easier to replace with an flet or labels function. All this are the same:
+
+```cl
+(lambda (x) ...)
+'(lambda (x) ...)
+#'(lambda (x) ...) ; This one is used in book.
+```
 - What is the difference between reading and evaluating an expression?
 - Every `atom` is either symbol or nonsymbol. A nonsymbol atom evaluates to itself.
 - Trees in Lisp are represented as nested lists. Try to solve exercise 1.4.

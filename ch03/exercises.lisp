@@ -89,6 +89,7 @@
               (+ x 1)) list
               :initial-value 0))
 
+;; Test this one
 (defun length-r (list)
   (reduce #'+ list :key #'(lambda (x) (declare-ignore x) 1)))
 

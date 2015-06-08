@@ -48,7 +48,7 @@ to test chapter exercises.")
            #:false
            ;; ch04
            #:debug
-           #:enable-dbg ; alias of 'DEBUG'
+           #:enable-dbg  ; alias of 'DEBUG'
            #:undebug
            #:disable-dbg ; alias of 'UNDEBUG'
            #:dbg
@@ -61,6 +61,7 @@ to test chapter exercises.")
            #:starts-with
            ;; ch08
            #:length=1
+           #:find-anywhere
            ))
 
 ;;; ____________________________________________________________________________
@@ -146,6 +147,9 @@ To run examples from particular chapter:
   (:use #:common-lisp
         #:pcl-test
         #:ch3)
+  (:import-from :paip-aux
+                #:declare-ignore
+                #:find-anywhere)
   (:export #:dprint
            #:questions
            #:length-r

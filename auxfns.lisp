@@ -118,7 +118,7 @@ according to the keywords. Doesn't alter SEQUENCE."
   "Get rid of imbedded lists (to one level only)."
   (mappend #'mklist the-list))
 
-;;; Pattern Matching Facility p. 155 - see `pat-base'
+;;; Pattern Matching Facility p. 155 - see `pat-base' package
 
 ;;; ____________________________________________________________________________
 ;;;                                                                   Chapter 6
@@ -136,6 +136,14 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
 (defun length=1 (x)
   "Is X a list of length 1?"
   (and (consp x) (null (cdr x))))
+
+(defun find-anywhere (item tree)
+  "Does ITEM occur anywhere in TREE?
+Returns searched element if found else nil."
+  (if (atom tree)
+      (if (eql item tree) tree)
+      (or (find-anywhere item (first tree))
+          (find-anywhere item (rest tree)))))
 
 ;;; ____________________________________________________________________________
 ;;;                                                                      Macros
@@ -180,14 +188,6 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
 (defun rest2 (x)
   "The rest of a list after the first two elements."
   (rest (rest x)))
-
-(defun find-anywhere (item tree)
-  "Does ITEM occur anywhere in TREE?
-Returns searched element if found else nil."
-  (if (atom tree)
-      (if (eql item tree) tree)
-      (or (find-anywhere item (first tree))
-          (find-anywhere item (rest tree)))))
 
 (defun rest3 (list)
   "The rest of a LIST after the first three elements."

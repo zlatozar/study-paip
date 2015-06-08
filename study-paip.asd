@@ -44,6 +44,7 @@
                (:file "ch03/overview")
                (:file "ch03/examples" :depends-on ("tutor" "ch03/overview"))
                (:file "ch03/exercises" :depends-on ("tools/test" "ch03/overview"))
+               (:file "ch03/binary-tree" :depends-on ("tools/test" "auxfns"))
 
                ;; Chapter 4
                (:file "ch04/gps1")
