@@ -2,7 +2,9 @@
 
 - If we left out the prompt, we could write a complete Lisp interpreter using just four
 symbols:
-`(loop (print (eval (read))))`
+```cl
+(loop (print (eval (read))))
+```
 - Is this possible? **Yes!**
 
 We would need a **lexical analyzer** and a **symbol table** manager. This is a

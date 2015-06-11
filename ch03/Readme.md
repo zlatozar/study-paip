@@ -125,9 +125,11 @@ will print any object without the new line and space. For both functions, the ob
 printed in a form that could be processed by `read`. The function `princ` is used to print
 in a human-readable format. This means that `read` cannot recover the original form; read
 would interpret it as two symbols, not one string.
-- Try `step` as a debugging tool. Remember that you can place it inside your function
-or `(step (foo <foo params>))` to start debugging from the very begging. Then in SLIME
-type usually 3 [STEP-INTO]
+- Try `step` as a debugging tool. Remember that you can place it inside your function or
+```cl
+(step (foo <foo params>))
+```
+to start debugging from the very begging. Then in SLIME type usually 3 [STEP-INTO]
 - Antibugging code checks for errors and possibly takes corrective action.
 - `assert` could be very fancy.
 *ASSERT* is ideal for those situations where your program's state must pass some test --

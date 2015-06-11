@@ -5,7 +5,7 @@
 ;;;; study-paip.asd: Defines loading order and dependencies.
 ;;;;
 ;;;; ATTENTION: There is no error if you pass invalid path to the lisp file - just
-;;;;            ASDF refuse to load study-paip system.
+;;;;            ASDF refuse to load 'study-paip' system.
 
 (in-package :cl-user)
 
