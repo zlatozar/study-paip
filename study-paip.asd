@@ -18,7 +18,10 @@
   :maintainer "Zlatozar Zhelyazkov <zlatozar@gmail.com>"
 
   :serial t
-  :components ((:file "packages")
+  :components ((:file "aux-packages")
+               (:file "part-I-packages" :depends-on ("aux-packages"))
+               (:file "part-II-packages" :depends-on ("part-I-packages"))
+               (:file "packages" :depends-on ("part-II-packages"))
 
                ;; Helper functions
                (:file "tools/introspection" :depends-on ("packages"))
