@@ -41,20 +41,27 @@
   (:shadowing-import-from :paip-aux
                           #:debug)
   ;; `paip-aux'
-  (:export #:random-elt
+  (:export ;; ch03
+           #:find-all
+           #:find-all-if
            #:declare-ignore
            #:true
            #:false
-           #:find-all
-           #:find-all-if
-           #:dbg
-           #:dbg-indent
+           ;; ch04
            #:enable-dbg
            #:disable-dbg
-           #:starts-with
+           #:dbg
+           #:dbg-indent
            #:member-equal
+           ;; ch05
            #:flatten
-           #:length=1)
+           #:mklist
+           #:random-elt
+           #:starts-with
+           ;; ch08
+           #:length=1
+           #:find-anywhere
+           )
 
   ;; `ch1-exercises'
   (:export #:power
@@ -74,7 +81,7 @@
   ;; `pat-base'
   (:export #:fail)
 
-  ;; Use optimized version of MAPPEND
+  ;; Use optimized version of `paip-aux:mappend'
   (:shadowing-import-from :ch5-exercises
                           #:mappend)
 
@@ -83,8 +90,6 @@
 
   ;; `ch6'
   (:export #:pat-match
-           #:pat-match-abbrev
-           #:expand-pat-match-abbrev
            #:binary-tree
            #:finite-binary-tree
            #:prepend
@@ -99,7 +104,11 @@
            #:beam-search
            #:iter-wide-search
            #:graph-search
-           #:a*-search)
+           #:a*-search
+           #:search-gps
+           #:rule-based-translator
+           #:pat-match-abbrev
+           #:expand-pat-match-abbrev)
 
   ;; `ch6-exercises'
   (:export #:compose))
