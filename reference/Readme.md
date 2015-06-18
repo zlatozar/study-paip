@@ -15,6 +15,8 @@
     - [list](#list)
     - [make-list](#make-list)
 - [Chapter-3](#chapter-3)
+    - [flet](#flet)
+    - [labels](#labels)
     - [incf](#incf)
     - [remove](#remove)
     - [every](#every)
@@ -365,6 +367,44 @@ _size_ should be a non-negative integer.
 ```
 
 ## Chapter-3
+
+FLET and LABELS let you define a function that can be referred to only within the scope of
+the FLET or LABELS form. These special operators are handy when you need a local function
+that's a bit too complex to define inline as a LAMBDA expression or that you need to use
+more than once.
+
+### flet
+
+Bindings are not recursive and cannot refer to each other. Each binding contains function
+name, arguments, and function body.
+
+```cl
+(flet (function-definition*)
+      body-form*)
+```
+
+Example:
+```cl
+(flet ((sin2x (x) (sin (* 2 x)))
+       (cos2x (x) (cos (* 2 x))))
+ (+ (sin2x 0.2) (cos2x 0.2))) ;=> 1.3104793
+```
+
+### labels
+
+Bindings can be recursive and can refer to each other.
+
+```cl
+(labels (function-definition*)
+        _body-of-labels_) ;=> an object
+```
+
+Example:
+```cl
+(labels ((fact2x (x) (fact (* 2 x)))
+         (fact (x) (if (< x 2) 1 (* x (fact (1- x))))))
+  (fact2x 3)) ;=> 720
+```
 
 ### incf
 
@@ -1221,9 +1261,10 @@ to bind can be determined dynamically.
 
 STYLE:
 If you want to bind a list of values to a list of lexical variables, use
-`(MULTIPLE-VALUE-BIND (..) (VALUES-LIST ..) ..)`
+```(MULTIPLE-VALUE-BIND (..) (VALUES-LIST ..) ..)```
 or
-`(MULTIPLE-VALUE-SETQ (..) (VALUES-LIST ..))` instead.
+```(MULTIPLE-VALUE-SETQ (..) (VALUES-LIST ..))```
+instead.
 
 ### adjoin
 
@@ -1231,7 +1272,9 @@ or
 
 Return _item_ consed onto the front of _list_ only if it's not already there.
 **Otherwise, return _list_ unmodified.**
-`(adjoin item list) == (if (member item list) list (cons item list))`
+```
+(adjoin item list) == (if (member item list) list (cons item list))
+```
 
 See also: PUSHNEW
 
