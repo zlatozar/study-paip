@@ -1122,7 +1122,7 @@ picking cards.  First to get 3 that sum to 15 wins."
                #'board-cost
                1))
 ```
-               
+
 ```cl
 (time (isometric-game-board))
 --> (2 9 4 7 5 3 6 1 8)
@@ -1193,53 +1193,3 @@ _h2, the estimate computed by A2._
 The algorithm for A* is in Tanimoto on page 236, and lisp code follows on page 237.
 
 [TODO: Add code]
-
-Suppose there's an assignment of numerical values to every possible game state for some
-game, and that my goal is to MAXIMIZE that value. My opponent's goal is to MINIMIZE that
-value.
-
-**MINIMAX** search searches for the best move that I can make, taking into account that my
-opponent will then take her best (my worst) move, followed by my best next move, etc.
-Each level of the game tree is called a ply.  Search into the game tree must stop at some
-point, either because there are no successors (game over) or because the limit of
-computational resources has been reached. Values at this level are produced by a static
-evaluation function.
-
-The MINIMAX Algorithm (from Winston)
-
-[TODO: Add code]
-
-- If the limit of search has been reached, compute the static value of the current position
-relative to the appropriate player. Report the result.
-- If the level is a minimizing leve, use MINIMAX on the children of the current
-position. Report the minimum of the results.
-- Otherwise, the level is a maximizing leve, use MINIMAX on the children of the current
-position. Report the maximum of the results.
-
-**Alpha-Beta Pruning**
-
-In many cases you can *"prune"* large portions of the search tree.  The Alpha-Beta search
-algorithm monitors progress in a branch of the search tree. As soon as it is clear that
-the branch is necessarily worse than other branches that have already been explored, it
-abandons the entire branch with no further search.
-
-**AND/OR Graphs**
-
-_AND/OR Graphs_ can be considered as a variation of game trees, for which each node is
-explicitly marked as being an AND node (all children must be solved) or an OR node (only
-one child must be solved), regardless of **ply**. To use an AND/OR graph for a 2-person
-game, your own moves should be children of OR nodes (you only need to make one of the
-moves), while your opponent's moves should be children of AND nodes (you have to consider
-all of them).
-
-A node in an AND/OR graph is solved if:
-
-1. it is an OR node and at least one of its
-   children is solved, or
-2. it is an AND node and all of its children
-   are solved, or
-3. it is a leaf node and problem-dependent criteria
-   associated with the node are satisfied.
-
-A solution graph for an AND/OR graph is a subgraph of the original consisting of a set of
-solved nodes and the arcs connecting them that make the root node solved.

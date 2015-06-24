@@ -63,11 +63,12 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
 
 (defparameter *bin-tree* '(0 (1 (2) (3)) (4 (5 (6)))))
 
-;; Defines legal next moves for a given node
 (defun successors-fn (node)
+  "Define legal next moves for a given NODE"
   (rest node))
 
 (defun is= (value)
+  "Compare node value with a VALUE"
   #'(lambda (x) (eql (car x) value)))
 
 ;; test DFS

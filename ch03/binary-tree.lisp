@@ -25,8 +25,8 @@
 ;; NOTE: Another representation is to use Paul Graham "ANSI Common Lisp"
 ;; representation:
 
-(defstruct tree-node
-  elt (l nil) (r nil))
+;; (defstruct tree-node
+;;   elt (l nil) (r nil))
 
 ;; If we have binary tree may be a better way to represent it with nested lists is to
 ;; use a-list (more readable). For example:
@@ -71,12 +71,21 @@
 
 (defun node-p (node)
   "Test if binary tree NODE is a node."
-  (and (listp node)
-       (= (list-length node) 3)))
+  (not (leaf-p node)))
 
 ;; Later in book, `paip-aux:find-anywhere' will be defined
 (defun member-p (elm tree)
   (eql (find-anywhere elm tree) elm))
+
+;; AHA! I discover that it very easy to write `paip-aux:find-anywhere' when we present
+;; trees as nested lists this: (0 (1) (2))
+;; 'car' is the current 'cdr's are the successors and we stop when 'car' is an atom.
+;; There is no need to remember DFS algorithm.
+
+;; (if (atom tree)
+;;       (if (eql item tree) tree)
+;;       (or (find-anywhere item (first tree))
+;;           (find-anywhere item (rest tree))))
 
 ;;; ____________________________________________________________________________
 ;;;                                                                Simple tests
@@ -90,6 +99,10 @@
                                                           (make-bin-leaf 6))))
            '(0 (1 (2) (3)) (4 (5 (6) NIL) NIL)) )))
 
-(deftest test-find-anywhere ()
+(deftest test-nodes ()
   (check
-    (eql (find-anywhere 3 *bin-tree*) 3)))
+    (eq (node-left '(1 (2) (3))) 2)
+    (eq (node-right '(1 (2) (3 (4) (5)))) 3)
+    (eq (node-right 1) nil)
+    (eq (node-elm '(1)) 1)
+    (eq (node-elm nil) nil)))

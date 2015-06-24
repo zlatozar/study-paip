@@ -32,6 +32,8 @@ with N nodes."
                  (binary-tree x))))
 
 (defun is (value)
+  "Returns a function that checks using `eql' if passed parameter X
+is equal to VALUE"
   #'(lambda (x) (eql x value)))
 
 ;;; ____________________________________________________________________________
