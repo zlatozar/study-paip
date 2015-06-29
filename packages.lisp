@@ -20,6 +20,7 @@
         #:ch1-exercises
         #:ch2-exercises
         #:ch3
+        #:ch4-final
         #:ch4-exercises
         #:pat-base
         #:ch5-exercises
@@ -74,6 +75,11 @@
 
   ;; `ch3'
   (:export #:while-t)
+
+  ;; `ch4-final'
+  (:export #:make-op
+           #:gps
+           #:find-path)
 
   ;; `ch4-exercises'
   (:export #:permutations)

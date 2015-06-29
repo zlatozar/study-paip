@@ -36,7 +36,9 @@
            #:*ops*
            #:op-preconds)
   ;; Final version of GPS
-  (:export #:gps))
+  (:export #:make-op
+           #:gps
+           #:find-path))
 
 (defpackage #:ch4-exercises
   (:documentation "Selected exercises form Chapter 4")
