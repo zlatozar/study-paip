@@ -95,6 +95,7 @@ of sequence that satisfies test.
 ```
 
 Now let's generalize the idea to **nested** lists (also called trees):
+NOTE: Close to this is `find-anywhere` defined in chapter 8.
 
 ```cl
 (defun tree-search (l predicate)
@@ -113,7 +114,7 @@ the predicate, nil if one ain't there."
 --> 7
 ```
 
-Let's look at the order in which atoms are checked:
+Let's look at the **order** in which atoms are checked:
 
 ```cl
 (defun depth-search (l predicate)
@@ -173,8 +174,8 @@ checking: 7
 --> 7
 ```
 
-The above function keeps all of the items to be searched on **l**, rather than in the
-recursive function-calling stack. Here's the same thing, except we print l each time
+The above function keeps all of the items to be searched on **L**, rather than in the
+recursive function-calling stack. Here's the same thing, except we print **L** each time
 (rather than the particular item we are checking):
 
 ```cl
@@ -250,9 +251,9 @@ input list: (11 12 7 8)
 --> 11
 ```
 
-We can generalize the idea of search in another way. Suppose that we don't initially have
-a list of items to search. Supose that we only have an initial item and a function that
-provides a new item from an old item:
+AHA! We can generalize the idea of search in another way. **Suppose that we don't initially have**
+**a list of items to search.** Abstraction, dude! Suppose that we only have an initial
+item and a function that provides a new item from an old item:
 
 ```cl
 (defun gen-search (item predicate gen-fn)
@@ -280,7 +281,7 @@ with gen-fn that satisfies the predicate."
 Now suppose that our generating function produces *lists* of next-values-to-check. We will
 once again have the choice between depth-first and breadth-first strategies.
 
-* The depth-first strategy is to look at the first item of the first list -- if it isn't an
+* The depth-first strategy is to look at the first item of the first list - if it isn't an
 answer then generate a new list from that first item, etc., checking later items in the
 top list only when you've exhausted the descendants of the first item.
 * The breadth-first strategy is to look at all the items in the first list before generating
@@ -310,6 +311,7 @@ states, and search according to successors and combiner."
 ```
 
 ```cl
+;; Generate successors
 (defun binary-tree (x) (list (* 2 x) (+ 1 (* 2 x))))
 
 (binary-tree 1)
@@ -332,8 +334,8 @@ states, and search according to successors and combiner."
 --> 32
 ```
 
-To get breadth-first search we need a different _combiner function_. To make things clear we
-define **PREPEND**, which does an **APPEND** backwards:
+AHA! To get breadth-first search we need a different _combiner function_. To make things
+clear we define **PREPEND**, which does an **APPEND** backwards:
 
 ```cl
 (defun prepend (x y)
@@ -426,8 +428,9 @@ tree. We could use the following substitute for binary-tree, limiting the values
 --> 12
 ```
 
-Norvig does something _more general_ -- he defines a function finite-binary-tree that takes
-a size and returns a FUNCTION like binary-tree-15, but with the given size in place of 15.
+In PIAP Norvig does something _more general_ - he defines a function `finite-binary-tree`
+that takes a size and returns a FUNCTION like `binary-tree-15`, but with the given
+size in place of **15**.
 
 ```cl
 (defun finite-binary-tree (n)
@@ -455,11 +458,11 @@ binary tree with n nodes."
 --> 12
 ```
 Let's practice and see how search can be used to solve problems.
-
+```
 The "Towers of Hanoi" problem consists of three pegs and some number of disks that fit
 over the pegs. Disks can be moved only from peg to peg, and only one at a time. Disks are
 of different sizes, and a bigger disk can never be on top of a smaller disk.
-
+```
 Supposing that we have three disks, we might start with a situation like:
 ```
 
@@ -480,7 +483,7 @@ and be asked to produce a situation like:
 ---------------------------------------
 ```
 
-We'll describe the game configurations using numbers for the disks (larger = bigger) and
+We'll describe the game configurations using numbers for the disks **(larger = bigger)** and
 lists for the pegs.
 
 In:  `((1 2 3) () ())`
@@ -738,8 +741,8 @@ before."
 --> (NIL NIL (1 2 3))
 ```
 
-We can do better searches if we have some idea about which partial solutions are better
-candidates for further exploration.
+AHA! We can do better searches if we have some idea about which partial solutions are
+better candidates for further exploration.
 
 Assuming that the partial solutions most worth exploring are those closest to the target
 number, a smart way to search is to use a combiner function that sorts the search queue by
@@ -930,7 +933,7 @@ reached, but never consider more than beam-width states at a time."
 --> (NIL NIL (1 2 3))
 ```
 
-Here's a **different** heuristic function -- it takes the sizes of the disks into account.
+Here's a **different** heuristic function - it takes the sizes of the disks into account.
 
 ```cl
 (defun hanoi-diff (goal)
@@ -1064,7 +1067,7 @@ one element has been swapped with one other."
      (D B C A) (C B A D) (B A C D))
 ```
 
-Although we are now in a position to try PAIP breadth-first and depth-first functions,
+Although we are now in a position to try PAIP `breadth-first` and `depth-first` functions,
 they don't work very well in this search space. So we'll go ahead and define a cost
 function:
 
@@ -1180,16 +1183,62 @@ search where the cost of any search state is the cost of getting to the state fr
 start state, plus a heuristic estimate of the distance from the state to the goal.
 Provided that the value of the heuristic estimating function never exceeds the true
 distance between the current state and a goal state, A* will always find a shortest
-path. This is known as the **admissibility** of the A* algorithm.
-Consider the heuristic function always returns zero; A* with this heuristic is admissible,
-since it never exceeds the true distance. A* with this heuristic function is the same as
-"uniform cost" search.  Although uniform cost search is guaranteed to find the shortest
-path, a more informed heuristic will find it faster.
+path. This is known as the **admissibility** of the A* algorithm.  Consider the heuristic
+function always returns zero; A* with this heuristic is admissible, since it never exceeds
+the true distance. A* with this heuristic function is the same as "uniform cost" search.
+Although uniform cost search is guaranteed to find the shortest path, a more informed
+heuristic will find it faster.
 
 _An algorithm A1 is said to be more informed than an algorithm A2 if the heuristic_
 _information of A1 permits it to compute an estimate h1 that is everywhere larger than_
 _h2, the estimate computed by A2._
 
-The algorithm for A* is in Tanimoto on page 236, and lisp code follows on page 237.
+The algorithm for A* in pseudo code:
 
-[TODO: Add code]
+```Pascal
+function A*(start,goal)
+
+    // The set of nodes already evaluated.
+    closedset := the empty set
+
+    // The set of tentative nodes to be evaluated, initially containing the start node
+    openset := {start}
+
+    // The map of navigated nodes.
+    came_from := the empty map
+
+    // Cost from start along best known path
+    g_score[start] := 0
+
+    // Estimated total cost from start to goal through y.
+    f_score[start] := g_score[start] + heuristic_cost_estimate(start, goal)
+
+    while openset is not empty
+        current := the node in openset having the lowest f_score[] value
+        if current = goal
+            return reconstruct_path(came_from, goal)
+
+        remove current from openset
+        add current to closedset
+        for each neighbor in neighbor_nodes(current)
+            if neighbor in closedset
+                continue
+            tentative_g_score := g_score[current] + dist_between(current,neighbor)
+
+            if neighbor not in openset or tentative_g_score < g_score[neighbor]
+                came_from[neighbor] := current
+                g_score[neighbor] := tentative_g_score
+                f_score[neighbor] := g_score[neighbor]
+                                         + heuristic_cost_estimate(neighbor, goal)
+                if neighbor not in openset
+                    add neighbor to openset
+
+    return failure
+
+function reconstruct_path(came_from,current)
+    total_path := [current]
+    while current in came_from:
+        current := came_from[current]
+        total_path.append(current)
+    return total_path
+```

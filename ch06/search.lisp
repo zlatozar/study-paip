@@ -18,11 +18,13 @@
 ;; of data and this piece of data should contain relations. For example if you have a tree
 ;; (0 (1 (2) (3)) (4 (5 (6) NIL) NIL)) you should pass (1 (2) (3))) not just 1.
 
-;; NOTE: Name 'binary-tree' is a confusing better could be 'gen-successors'. In practice
-;; it returns next legal moves.
+;; NOTE: Name `binary-tree' is a confusing better could be 'gen-successors'. In practice
+;; it is a lazy function that 'invents' next legal moves.
 
 (defun binary-tree (x)
   (list (* 2 x) (+ 1 (* 2 x))))
+
+;; 'Inventions' bigger than N are removed. In this way upper bound is set.
 
 (defun finite-binary-tree (n)
   "Return a successor function that generates a binary tree
@@ -32,8 +34,8 @@ with N nodes."
                  (binary-tree x))))
 
 (defun is (value)
-  "Returns a function that checks using `eql' if passed parameter X
-is equal to VALUE"
+  "Returns a function that checks if passed parameter X
+is `eql' to VALUE"
   #'(lambda (x) (eql x value)))
 
 ;;; ____________________________________________________________________________
