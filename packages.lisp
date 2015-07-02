@@ -74,7 +74,7 @@
            #:combine-all)
 
   ;; `ch3'
-  (:export #:while-t)
+  (:export #:while)
 
   ;; `ch4-final'
   (:export #:make-op

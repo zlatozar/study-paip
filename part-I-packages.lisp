@@ -59,7 +59,7 @@
   (:use #:common-lisp
         #:inspect
         #:tutor)
-  (:export #:while-t))
+  (:export #:while))
 
 (defpackage #:ch3-exercises
   (:documentation "Selected exercises form Chapter 3")

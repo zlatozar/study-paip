@@ -255,13 +255,13 @@
 
 ;; p. 102
 ;; Rename it because it is used in `paip' package
-(defmacro while-t (test &body body)
+(defmacro while (test &body body)
   "Repeat BODY while TEST is true."
   `(loop (if (not ,test) (return nil))
       . ,body))
 
 ;; Here is how macro alias could be defined:
-;; (setf (macro-function 'while-true) #'while-t)
+;; (setf (macro-function 'while) #'while-t)
 
 ;; STYLE: &aux can be used to bind a new local variable or variables, as if bound with
 ;; let*. Because &aux variables are not parameters at all and thus have no place in a
