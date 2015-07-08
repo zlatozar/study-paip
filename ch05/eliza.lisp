@@ -83,6 +83,7 @@
                 ")")))
 
 (defun punctuation-p (char)
+  "Return CHAR if it is a punctuation."
   (find char ".,;:`!?#-()\\\""))
 
 (defun print-with-spaces (list)

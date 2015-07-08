@@ -53,7 +53,7 @@ naive approach:
 (tutor:do-examples 4)
 ````
 
-NOTE: If you want to see code without packages names (not fully qualified) you
+NOTE: If you want to see output without packages names (not fully qualified) you
 have to go to the chapter first. For example _Chapter 4_:
 
 ``` cl

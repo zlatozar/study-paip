@@ -45,7 +45,7 @@ Selected books from Bibliography with editions updated
 17. Winston, Patrick H. "Artificial Intelligence". 3d ed. Addison-Wesley.
 
 
-NOT IN BIBLIOGRAPHY
+NOT IN PAIP BIBLIOGRAPHY
 --------------------------------
 
 18. Kiczales, Gregor. (1991) "The Art of the Metaobject Protocol". MIT Press

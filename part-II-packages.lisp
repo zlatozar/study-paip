@@ -71,7 +71,9 @@ In Chapters 5 and 6 'pat-match' will be improved.")
         #:tutor
         #:pat-base)
   (:import-from :paip-aux
-                #:starts-with)
+                #:flatten
+                #:starts-with
+                #:random-elt)
   (:export #:rule-pattern
            #:rule-responses
            #:switch-viewpoint))
@@ -89,6 +91,9 @@ In Chapters 5 and 6 'pat-match' will be improved.")
                 #:flatten
                 #:mklist)
   (:export #:*eliza-rules*
+           #:read-line-no-punct
+           #:punctuation-p
+           #:print-with-spaces
            #:eliza))
 
 (defpackage #:ch5-exercises

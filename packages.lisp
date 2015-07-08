@@ -23,6 +23,7 @@
         #:ch4-final
         #:ch4-exercises
         #:pat-base
+        #:ch5-final
         #:ch5-exercises
         #:ch6
         #:ch6-exercises)
@@ -90,6 +91,11 @@
   ;; Use optimized version of `paip-aux:mappend'
   (:shadowing-import-from :ch5-exercises
                           #:mappend)
+
+  ;; `ch05-final'
+  (:export #:read-line-no-punct
+           #:punctuation-p
+           #:print-with-spaces)
 
   ;; `ch5-exercises'
   (:export #:mappend)

@@ -267,7 +267,7 @@ or if there is an appropriate op for it that is applicable."
 
 ;; The "prerequisite clobbers sibling goal" situation is recognized, but the program
 ;; doesn't do anything about it. One thing we could do is try to vary the order (given and
-;; reversed) of the conjunct goals. That is, we could change 'achieve-all' as follows:
+;; reversed) of the conjunct goals. That is, we could change `achieve-all' as follows:
 
 (defun achieve-all (state goals goal-stack)
   "Achieve each goal, trying several orderings."

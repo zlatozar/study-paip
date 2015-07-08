@@ -305,7 +305,8 @@ Argument description:
 
 ASSOC function searches supplied list for cons cell that have item as car
 part. Return value is the cell with key-value pair which key matched testing
-conditions, otherwise NIL. **Default comparison operator is EQL.**
+conditions, otherwise NIL. Think of it as _"give me the value for a key"_.
+**Default comparison operator is EQL.**
 
 Associative list, or for short alist, is a list with key-value pairs in cons
 cells. That is:

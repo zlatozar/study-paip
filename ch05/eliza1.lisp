@@ -7,7 +7,7 @@
 
 (in-package #:ch5-first)
 
-;;; New version of `pat-base::pat-match' with segment variables
+;;; New version of `pat-base::pat-match' with segment variables denoted with (?* variable)
 
 (defun pat-match (pattern input &optional (bindings no-bindings))
   "Match PATTERN against INPUT in the context of the BINDINGS"
@@ -30,10 +30,12 @@
 
 ;;; ____________________________________________________________________________
 
-;; In writing segment-match, the important question is how much of the input the
-;; segment variable should match.
 
-;; First version
+;; In writing `segment-match', the important question is how much of the input the
+;; segment variable should match. One answer is to look at the next element of the
+;; pattern (the one after the segment variable) and see at what position it occurs in the
+;; input.
+
 (defun segment-match (pattern input bindings &optional (start 0))
   "Match the segment PATTERN ((?* var) . pat) against INPUT."
   (let ((var (second (first pattern)))
@@ -55,8 +57,17 @@
                     (segment-match pattern input bindings (+ pos 1))
                     (match-variable var (subseq input 0 pos) b2))))))))
 
+;; Not works for following example:
+;;
+;; (pat-match  '((?* ?x) a b (?* ?x))  '(1 2 a b a b 1 2 a b))
+;; NIL
 
-;; Better one
+;; This fails because ?x is matched against the sub-sequence (1 2), and then the remaining
+;; pattern successfully matches the remaining input, but the final call to
+;; `match-variable' fails, because ?x has two different values. The fix is to call
+;; `match-variable' before testing whether the b2 fails, so that we will be sure to try
+;; 'segment-match' again with a longer match no matter what the cause of the failure.
+
 (defun segment-match (pattern input bindings &optional (start 0))
   "Match the segment PATTERN ((?* var) . pat) against INPUT."
   (let ((var (second (first pattern)))
@@ -69,9 +80,9 @@
                              :start start :test #'equal)))
           (if (null pos)
               fail
-              (let ((b2 (pat-match
-                         pat (subseq input pos)
-                         (match-variable var (subseq input 0 pos)
+              (let ((b2 (pat-match                                    ;; ***
+                         pat (subseq input pos)                       ;; ***
+                         (match-variable var (subseq input 0 pos)     ;; ***
                                          bindings))))
                 ;; If this match failed, try another longer one
                 (if (eq b2 fail)
@@ -116,6 +127,7 @@
      (write (flatten (use-eliza-rules (read))) :pretty t)))
 
 ;; Do you remember how sublis works? See p. 76 if not.
+;; How to choose when there is many possibilities to answer? Use `paip-aux:random-elt'
 
 (defun use-eliza-rules (input)
   "Find some rule with which to transform the INPUT."
