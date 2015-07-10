@@ -66,7 +66,7 @@
 ;; pattern successfully matches the remaining input, but the final call to
 ;; `match-variable' fails, because ?x has two different values. The fix is to call
 ;; `match-variable' before testing whether the b2 fails, so that we will be sure to try
-;; 'segment-match' again with a longer match no matter what the cause of the failure.
+;; `segment-match' again with a longer match no matter what the cause of the failure.
 
 (defun segment-match (pattern input bindings &optional (start 0))
   "Match the segment PATTERN ((?* var) . pat) against INPUT."
@@ -80,8 +80,8 @@
                              :start start :test #'equal)))
           (if (null pos)
               fail
-              (let ((b2 (pat-match                                    ;; ***
-                         pat (subseq input pos)                       ;; ***
+              (let ((b2 (pat-match
+                         pat (subseq input pos)
                          (match-variable var (subseq input 0 pos)     ;; ***
                                          bindings))))
                 ;; If this match failed, try another longer one

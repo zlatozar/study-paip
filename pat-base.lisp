@@ -52,7 +52,8 @@
   (binding-val (get-binding var bindings)))
 
 (defun match-variable (var input bindings)
-  "Does VAR match INPUT? Uses (or updates) and returns BINDINGS."
+  "Does VAR match INPUT? Returns BINDINGS (existing or updated one)
+ or fail."
   (let ((binding (get-binding var bindings)))
     (cond ((not binding) (extend-bindings var input bindings))
           ((equal input (binding-val binding)) bindings)
