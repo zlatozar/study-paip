@@ -19,7 +19,7 @@
   "All symbols beginning with ? are variables for the pattern matcher."
   "First we see how to substitute variable/value pairs into expressions:"
   ((sublis '((?X . vacation)) '(what would it mean to you if you got a ?X ?))
-   => (what would it mean to you if you got a VACATION ?) @ 156)
+   :=> (what would it mean to you if you got a VACATION ?) @ 156)
   ""
   "Now a version of pat-match that works with such pairs:"
   ((pat-match '(I need a ?x) '(I need a vacation))  @ 158)
@@ -27,13 +27,13 @@
   "Showing how to plug it in:"
   ((sublis (pat-match '(I need a ?x) '(I need a vacation))
            '(what would it mean to you if you got a ?X ?))
-   => (what would it mean to you if you got a VACATION ?) @ 159)
-  ((pat-match '(I need a ?x) '(I really need a vacation)) => nil)
-  ((pat-match '(this is easy) '(this is easy)) => ((t . t)))
-  ((pat-match '(?x is ?x) '((2 + 2) is 4)) => nil)
-  ((pat-match '(?x is ?x) '((2 + 2) is (2 + 2))) => ((?x 2 + 2)))
+   :=> (what would it mean to you if you got a VACATION ?) @ 159)
+  ((pat-match '(I need a ?x) '(I really need a vacation)) :=> nil)
+  ((pat-match '(this is easy) '(this is easy)) :=> ((t . t)))
+  ((pat-match '(?x is ?x) '((2 + 2) is 4)) :=> nil)
+  ((pat-match '(?x is ?x) '((2 + 2) is (2 + 2))) :=> ((?x 2 + 2)))
   ((pat-match '(?P need . ?X) '(I need a long vacation))
-   => ((?X a long vacation) (?P . I)))
+   :=> ((?X a long vacation) (?P . I)))
 
   (:section "5.3 Segment Pattern Matching")
   ""

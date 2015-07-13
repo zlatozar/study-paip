@@ -18,18 +18,18 @@
   "The first example works with a complex chain of steps."
   ((gps '(son-at-home car-needs-battery have-money have-phone-book)
         '(son-at-school)
-        *school-ops*) => SOLVED @ 118)
+        *school-ops*) :=> SOLVED @ 118)
   ""
   "The next example fails because there is no way to make the car work,"
   "because we can't contact the shop to get the battery fixed."
   ((gps '(son-at-home car-needs-battery have-money)
         '(son-at-school)
-        *school-ops*) => NIL)
+        *school-ops*) :=> NIL)
   ""
   "The third example is easy, because the car is currently working."
   ((gps '(son-at-home car-works)
         '(son-at-school)
-        *school-ops*) => SOLVED)
+        *school-ops*) :=> SOLVED)
 
   (:section "4.7 The Clobbered Sibling Goal Problem")
   ""
@@ -37,7 +37,7 @@
   "spent the money on the battery, and thus should fail."
   ((gps '(son-at-home have-money car-works)
         '(have-money son-at-school)
-        *school-ops*) => SOLVED @ 120)
+        *school-ops*) :=> SOLVED @ 120)
   ""
   "The bug is that when (EVERY #'ACHIEVE GOALS) returns true, it means all the"
   "goals were achieved in turn, but they might not still be all true."
@@ -47,7 +47,7 @@
   "What happens if we move the HAVE-MONEY goal to the end?"
   ((gps '(son-at-home car-needs-battery have-money have-phone-book)
         '(have-money son-at-school)
-        *school-ops*) => SOLVED @ 121)
+        *school-ops*) :=> SOLVED @ 121)
   ""
   "GPS returns nil, but only after executing all the actions."
   "I call this the 'leaping before you look' problem, because if you asked"

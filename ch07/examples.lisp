@@ -16,13 +16,13 @@
   (:section "7.1 Translating English into Equations")
   ""
   ((translate-to-expression '(if z is 3 |,| what is twice z))
-   => ((= z 3) (= what (* 2 z))) @ 222)
+   :=> ((= z 3) (= what (* 2 z))) @ 222)
 
   (:section "7.2 Solving Algebra Equations")
   ""
   ((trace isolate solve) @ 229)
   ((solve-equations '((= (+ 3 4) (* (- 5 (+ 2 x)) 7))
-                      (= (+ (* 3 x) y) 12))) => nil)
+                      (= (+ (* 3 x) y) 12))) :=> nil)
   ((untrace isolate solve))
 
   (:section "7.3 Examples")
@@ -30,7 +30,7 @@
   ((student '(If the number of customers Tom gets is twice the square of
               20 % of the number of advertisements he runs |,|
               and the number of advertisements is 45 |,|
-              then what is the number of customers Tom gets ?)) => nil @ 231)
+              then what is the number of customers Tom gets ?)) :=> nil @ 231)
 
   ((student '(The daily cost of living for a group is the overhead cost plus
               the running cost for each person times the number of people in

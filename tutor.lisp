@@ -102,7 +102,9 @@ Return nil if there is a unexpected result."
                  (page (getf (rest example) '@))
                  (input (getf (rest example) ':input)))
              (setf result nil)
-             (setf expected (getf (rest example) '=> ':anything))
+             ;; With packages there is no '=>' but 'package_name::=>'
+             ;; Using keywords fix the problem.
+             (setf expected (getf (rest example) :=> ':anything))
              (set-example example interface)
              (when page
                (set-page page interface))

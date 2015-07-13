@@ -23,12 +23,12 @@
                   :preconds '(in-communication-with-shop)
                   :add-list '(know-phone-number))
          *school-ops*))
-  ((use *school-ops*) => 7 @ 130)
+  ((use *school-ops*) :=> 7 @ 130)
   ""
   "First we make sure the new version works on some of the examples that"
   "version 1 worked on:"
   ((gps '(son-at-home car-needs-battery have-money have-phone-book)
-        '(son-at-school)) =>
+        '(son-at-school)) :=>
    ((START)
     (EXECUTING LOOK-UP-NUMBER)
     (EXECUTING TELEPHONE-SHOP)
@@ -42,7 +42,7 @@
   "Debug GPS"
   ((debug :gps))
   ((gps '(son-at-home car-needs-battery have-money have-phone-book)
-        '(son-at-school)) =>
+        '(son-at-school)) :=>
    ((START)
     (EXECUTING LOOK-UP-NUMBER)
     (EXECUTING TELEPHONE-SHOP)
@@ -56,7 +56,7 @@
   ""
   "Here is another old example:"
   ((gps '(son-at-home car-works)
-        '(son-at-school)) =>
+        '(son-at-school)) :=>
    ((START)
     (EXECUTING DRIVE-SON-TO-SCHOOL)) @ 132)
   ""
@@ -64,25 +64,25 @@
   "In each case the program avoids an infinite loop, and also avoids leaping"
   "before it looks."
   ((gps '(son-at-home car-needs-battery have-money have-phone-book)
-        '(have-money son-at-school)) => NIL)
+        '(have-money son-at-school)) :=> NIL)
   ((gps '(son-at-home car-needs-battery have-money have-phone-book)
-        '(son-at-school have-money)) => NIL)
+        '(son-at-school have-money)) :=> NIL)
   ((gps '(son-at-home car-needs-battery have-money)
-        '(son-at-school)) => NIL)
+        '(son-at-school)) :=> NIL)
   ""
   "Finally, we see the new GPS also works on trivial problems:"
-  ((gps '(son-at-home) '(son-at-home)) => ((START)))
+  ((gps '(son-at-home) '(son-at-home)) :=> ((START)))
 
   (:section "4.12 The New Domain Problem: Monkey and Bananas")
   ""
   "To show that GPS is at all general, we have to make it work in different"
   "domains.  We start with a 'classic' AI problem: Monkey and Bananas"
-  ((use *banana-ops*) => 6 @ 133)
+  ((use *banana-ops*) :=> 6 @ 133)
   ""
   "We pose the problem of becoming not-hungry, given an initial state."
   "GPS can find a solution to this problem:"
   ((GPS '(at-door on-floor has-ball hungry chair-at-door)
-        '(not-hungry)) =>
+        '(not-hungry)) :=>
    ((START)
     (EXECUTING PUSH-CHAIR-FROM-DOOR-TO-MIDDLE-ROOM)
     (EXECUTING CLIMB-ON-CHAIR)
@@ -97,25 +97,25 @@
   ""
   "Next we will consider another 'classic' problem, maze searching."
   "We will assume a particular maze, diagrammed on page 134."
-  ((use *maze-ops*) => 48 @ 134)
+  ((use *maze-ops*) :=> 48 @ 134)
   ((gps '((at 1)) '((at 25))) @ 135)
 
   "We can define FIND-PATH to use the results of a GPS search:"
-  ((find-path 1 25) @ 136 =>
+  ((find-path 1 25) @ 136 :=>
    (1 2 3 4 9 8 7 12 11 16 17 22 23 24 19 20 25))
-  ((find-path 1 1) => (1))
-  ((equal (find-path 1 25) (reverse (find-path 25 1))) => T)
+  ((find-path 1 1) :=> (1))
+  ((equal (find-path 1 25) (reverse (find-path 25 1))) :=> T)
 
   (:section "4.14 The Blocks World Domain")
   ""
   "Another domain that has attracted more than its share of attention in AI"
   "circles is the blocks world domain."
-  ((use (make-block-ops '(a b))) => 4 @ 137)
+  ((use (make-block-ops '(a b))) :=> 4 @ 137)
   ""
   "The simplest possible problem is stacking one block on another."
   ((gps '((a on table) (b on table) (space on a) (space on b)
           (space on table))
-        '((a on b) (b on table))) =>
+        '((a on b) (b on table))) :=>
    ((START)
     (EXECUTING (MOVE A FROM TABLE TO B))))
   ""
@@ -125,7 +125,7 @@
   "Debug GPS"
   ((debug :gps) @ 138)
   ((gps '((a on b) (b on table) (space on a) (space on table))
-        '((b on a))) =>
+        '((b on a))) :=>
    ((START)
     (EXECUTING (MOVE A FROM B TO TABLE))
     (EXECUTING (MOVE B FROM TABLE TO A))))
@@ -133,30 +133,30 @@
   ((undebug))
   ""
   "Now we move on to the three block world."
-  ((use (make-block-ops '(a b c))) => 18)
+  ((use (make-block-ops '(a b c))) :=> 18)
   ""
   "We try some problems:"
   ((gps '((a on b) (b on c) (c on table) (space on a) (space on table))
-        '((b on a) (c on b))) =>
+        '((b on a) (c on b))) :=>
    ((START)
     (EXECUTING (MOVE A FROM B TO TABLE))
     (EXECUTING (MOVE B FROM C TO A))
     (EXECUTING (MOVE C FROM TABLE TO B))))
   ((gps '((c on a) (a on table) (b on table)
           (space on c) (space on b) (space on table))
-        '((c on table) (a on b))) =>
+        '((c on table) (a on b))) :=>
    ((START)
     (EXECUTING (MOVE C FROM A TO TABLE))
     (EXECUTING (MOVE A FROM TABLE TO B))) @ 141)
   ((gps '((a on b) (b on c) (c on table) (space on a) (space on table))
-        '((b on a) (c on b))) @ 141 =>
+        '((b on a) (c on b))) @ 141 :=>
    ((START)
     (EXECUTING (MOVE A FROM B TO TABLE))
     (EXECUTING (MOVE B FROM C TO A))
     (EXECUTING (MOVE C FROM TABLE TO B))))
 
   ((gps '((a on b) (b on c) (c on table) (space on a) (space on table))
-        '((c on b) (b on a))) =>
+        '((c on b) (b on a))) :=>
    ((START)
     (EXECUTING (MOVE A FROM B TO TABLE))
     (EXECUTING (MOVE B FROM C TO A))
@@ -168,8 +168,8 @@
   "The Sussman Anomaly."
   ((setf start '((c on a) (a on table) (b on table) (space on c)
                  (space on b) (space on table))) @ 142)
-  ((gps start '((a on b) (b on c))) => NIL)
-  ((gps start '((b on c) (a on b))) => NIL)
+  ((gps start '((a on b) (b on c))) :=> NIL)
+  ((gps start '((b on c) (a on b))) :=> NIL)
 
   (:section "4.16 The Not Looking after You Don't Leap Problem")
   ""
@@ -182,7 +182,14 @@
   "Debug GPS"
   ((debug :gps))
   ((gps '(son-at-home have-money car-works)
-        '(son-at-school have-money)) => NIL)
+        '(son-at-school have-money)) :=> NIL)
   ""
   "Undebug GPS"
-  ((undebug)))
+  ((undebug))
+
+  ""
+  "Revert test data"
+  ""
+  ((pop *school-ops*))  ; 'taxi-son-to-school
+  ((pop *school-ops*))  ; 'ask-phone-number
+  )
