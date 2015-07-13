@@ -19,6 +19,11 @@ does much less work than READ or EVAL, but is still quite handy.
 **The important point is not whether one line of code can be considered an**
 **implementation of Lisp; it is to recognize common patterns of computation**.
 
+For recurent patterns alternative is to create _an abstraction_, in the form of functions
+and perhaps data structures, and refer explicitly to that abstraction in each new
+application - in other words, to capture the abstraction in the form of a useable
+software tool.
+
 - Patterns matching could be improved - add a way to specify that a position is to be
 filled by a member of some class of atoms. That class might be the numbers, or the
 atoms of a particular length. Introduce the restriction feature code looks like this:
@@ -53,8 +58,13 @@ attempt a more formal specification.
 - This style of programming, where _pattern/action_ pairs are stored in a table, is called
 **data-driven programming**. It is a very flexible style that is appropriate for writing
 extensible systems.
+In our case it is very convenient because pattern is the same only function(predicate)
+that should be matched is different.
 - A function that looks up a data-driven function and calls it is called a **dispatch**
 function.
+
+##### A Set of Searching Tools
+
 - Read how [search is generalized](generalizing-search.md)
 - In general, a _search problem_ involves exploring from some starting state and
 investigating neighboring states until a solution is reached.
@@ -107,3 +117,5 @@ but gives no guarantee is known as **non-admissible heuristic search**.
 - **Iterative Widening** technique - start with a narrow beam width, and if that does
 not lead to an acceptable solution, widen the beam and try again.
 - Pattern matching is one of the most important tools for AI.
+
+##### GPS as Search

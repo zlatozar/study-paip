@@ -1,4 +1,4 @@
-;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CH5-FIRST; Base: 10 -*-
+;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CH6; Base: 10 -*-
 
 ;;; Code from Paradigms of Artificial Intelligence Programming
 ;;; Copyright (c) 1991 Peter Norvig
@@ -6,13 +6,6 @@
 ;;;; File patmatch.lisp
 
 (in-package #:ch6)
-
-;; For recurent patthers alternative is to create an abstraction, in the form of functions
-;; and perhaps data structures, and refer explicitly to that abstraction in each new
-;; application - in other words, to capture the abstraction in the form of a useable
-;; software tool.
-;;
-;; Here is some examples:
 
 ;; p. 177
 (defun compose (f g)
@@ -50,18 +43,18 @@
 ;; pat         => var                  match any one expression
 ;;                constant             match just this atom
 ;;                segment-pat          match something against a sequence
-;;                single-pat           match something against one expression
-;;                (pat . pat)          match the first and the rest
+;;                single-pat           match something against one expression ; ***
+;;                (pat . pat)          match the first and the rest           ; *** (nested patterns)
 
-;; single-pat  => (?is  var predicate) test predicate on one expression
+;; single-pat  => (?is  var predicate) test predicate on one expression       ; *** new section
 ;;                (?or  pat...)        match any pattern on one expression
 ;;                (?and pat...)        match every pattern on one expression
 ;;                (?not pat...)        succeed if pattern(s) do not match
 
 ;; segment-pat => ((?* var)  ...)      match zero or more expressions
-;;                ((?+ var)  ...)      match one or more expressions
-;;                ((?? var)  ...)      match zero or one expression
-;;                ((?if exp) ...)      test if 'exp' (which may contain variables) is true
+;;                ((?+ var)  ...)      match one or more expressions          ; ***
+;;                ((?? var)  ...)      match zero or one expression           ; ***
+;;                ((?if exp) ...)      test if 'exp' (which may contain variables) is true ; ***
 
 ;; var         => ?chars               a symbol starting with ?
 ;; constant    => atom                 any nonvariable atom
@@ -95,7 +88,7 @@
 ;;; ____________________________________________________________________________
 
 ;; The table would say "if you see ?* in the pattern, then use the function
-;; segment-match," and so on. This style of programming, where pattern/action pairs are
+;; `segment-match'," and so on. This style of programming, where pattern/action pairs are
 ;; stored in a table, is called 'data-driven programming'. It is a very flexible style that
 ;; is appropriate for writing extensible systems.
 
@@ -189,14 +182,15 @@ This will never bind any variables."
 
 ;;; Individual matching functions for SEGMENT-MATCH table
 
-;; Allow nonconstant patterns to follow segment variables.
+;; The difference from `ch5-final::segment-match' is that this version
+;; allows nonconstant patterns to follow segment variables.
 (defun segment-match (pattern input bindings &optional (start 0))
   "Match the segment pattern ((?* var) . pat) against INPUT."
   (let ((var (second (first pattern)))
         (pat (rest pattern)))
     (if (null pat)
         (match-variable var input bindings)
-        (let ((pos (first-match-pos (first pat) input start)))
+        (let ((pos (first-match-pos (first pat) input start))) ; ***
           (if (null pos)
               fail
               (let ((b2 (pat-match
@@ -249,13 +243,16 @@ The PATTERN looks like ((?if code) . rest)."
 ;; and 'eval' is called with `(second (first pattern))`, which the value of
 ;; `code`. However, 'eval' is called within the 'progv' that binds v1, v2, ..., to the
 ;; corresponding val1, val2, ..., so that if any of those variables appear free in code,
-;; then they are bound when code is evaluated. Use (trace match-if) to see bindings.
+;; then they are bound when code is evaluated. Use `(trace match-if)` to see bindings.
 
 ;;; ____________________________________________________________________________
 
-;; Second one is more readable right? p. 187
+;; Compare this two examples:
+;;
 ;; (a (?* ?x) (?* ?y) d)
 ;; (a ?x* ?y* d)
+;;
+;; Second one is more readable right? p. 187
 
 ;; Many readers find the second pattern easier to understand at a glance. We could
 ;; change 'pat-match' to allow for patterns of the form ?x*, but that would mean
@@ -269,11 +266,6 @@ The PATTERN looks like ((?if code) . rest)."
   (setf (get symbol 'expand-pat-match-abbrev)
         (expand-pat-match-abbrev expansion)))
 
-;; We first define the abbreviation then use `expand-pat-match-abbrev'
-
-;; (pat-match-abbrev '?x* '(? * ?x))
-;; (pat-match-abbrev '?y* '(? * ?y))
-
 (defun expand-pat-match-abbrev (pat)
   "Expand out all pattern matching abbreviations in PAT."
   (cond ((and (symbolp pat) (get pat 'expand-pat-match-abbrev)))
@@ -281,28 +273,33 @@ The PATTERN looks like ((?if code) . rest)."
         (t (cons (expand-pat-match-abbrev (first pat))
                  (expand-pat-match-abbrev (rest pat))))))
 
+;; We first define the abbreviation then use `expand-pat-match-abbrev'
+;;
+;; (pat-match-abbrev '?x* '(?* ?x))
+;; (pat-match-abbrev '?y* '(?* ?y))
+;;
 ;; (setf axyd (expand-pat-match-abbrev '(a ?x* ?y* d)))
-;; (pat-match axyd '(a x y d)) ;=> ((?Y B C) (?X))
+;; (pat-match axyd '(a b c d)) ;=> ((?Y* . C) (?X* . B))
 
 ;;; ____________________________________________________________________________
 ;;;                                         Convert `use-eliza-rules' into tool
 
 ;; Here is what is needed (p. 188):
 
-;; What kind of rule to use. Every rule will be characterized by an if-part and a
-;; then-part, but the ways of getting at those two parts may vary.
+;; What kind of rule to use. Every rule will be characterized by an 'if-part'
+;; and a 'then-part', but the ways of getting at those two parts may vary.
 
 ;; What list of rules to use. In general, each application will have its own list of
 ;; rules.
 
-;; How to see if a rule matches. By default, we will use 'pat-match', but it should
+;; How to see if a rule matches. By default, we will use `pat-match', but it should
 ;; be possible to use other matchers.
 
 ;; What to do when a rule matches. Once we have determined which rule to use,
 ;; we have to determine what it means to use it. The default is just to substitute
 ;; the bindings of the match into the then-part of the rule.
 
-;; See how can be used in eliza-pm.lisp
+;; See how can be used in `use-eliza-rules'
 (defun rule-based-translator
     (input rules &key (matcher 'pat-match)
                    (rule-if #'first) (rule-then #'rest) (action #'sublis))

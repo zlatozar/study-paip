@@ -1,4 +1,4 @@
-;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CH5-EXERCISES; Base: 10 -*-
+;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CH6-EXERCISES; Base: 10 -*-
 
 ;;;; File exercises.lisp
 

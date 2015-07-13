@@ -16,6 +16,7 @@
   (:import-from :paip-aux
                 #:find-all))
 
+
 (defpackage #:ch4-final
   (:documentation "Chapter 4. GPS: The General Problem Solver (final version)")
   (:use #:common-lisp
@@ -29,15 +30,21 @@
                 #:dbg-indent)
   (:shadowing-import-from :paip-aux
                           #:debug)
+
   ;; Utilities (needed for Chapter 6)
-  (:export #:make-block-ops
+  (:export #:op-action
+           #:op-preconds
+           #:op-add-list
+           #:op-del-list
+           #:*ops*
            #:use
            #:action-p
-           #:*ops*
-           #:op-preconds)
+           #:make-block-ops
+           #:move-op
+           #:move-ons)
   ;; Final version of GPS
-  (:export #:make-op
-           #:gps
+  (:export #:gps
+           #:make-op
            #:find-path))
 
 (defpackage #:ch4-exercises
@@ -119,12 +126,19 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:shadowing-import-from :paip-aux
                           #:debug)
   (:import-from :ch4-final
-                #:make-block-ops
+                #:op-action
+                #:op-preconds
+                #:op-add-list
+                #:op-del-list
+                #:*ops*
                 #:use
                 #:action-p
-                #:*ops*
-                #:op-preconds)
-  (:import-from :ch5-final :*eliza-rules*)
+                #:make-block-ops
+                #:move-op
+                #:move-ons)
+  (:import-from :ch5-final
+                #:*eliza-rules*)
+
   (:export #:pat-match
            #:binary-tree
            #:finite-binary-tree
@@ -141,7 +155,6 @@ In Chapters 5 and 6 'pat-match' will be improved.")
            #:iter-wide-search
            #:graph-search
            #:a*-search
-           #:search-gps
            #:rule-based-translator
            #:pat-match-abbrev
            #:expand-pat-match-abbrev))

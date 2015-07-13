@@ -79,6 +79,7 @@
 
   ;; `ch4-final'
   (:export #:make-op
+           #:use
            #:gps
            #:find-path)
 

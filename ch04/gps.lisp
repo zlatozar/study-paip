@@ -116,6 +116,7 @@ or if there is an appropriate op for it that is applicable."
         (t (some #'(lambda (op) (apply-op state goal op goal-stack))
                  (find-all goal *ops* :test #'appropriate-p)))))
 
+;; the same as `paip-aux:member-equal'
 (defun member-equal (item list)
   (member item list :test #'equal))
 

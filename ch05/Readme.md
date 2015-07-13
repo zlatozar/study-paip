@@ -185,11 +185,11 @@ possible bindings or `fail`.
 
 **There is always two cases**
 
-3. If `b2` succeeds it is easy case - just use returned bindings:
+1. If `b2` succeeds it is easy case - just use returned bindings:
 ```cl
 (match-variable var (subseq input 0 pos) b2)
 ```
-4. What if `b2` fails?
+2. What if `b2` fails?
 Specialize! Illustrate with an example.
 
 ```

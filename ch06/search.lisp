@@ -1,4 +1,4 @@
-;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CH5-FIRST; Base: 10 -*-
+;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CH6; Base: 10 -*-
 
 ;;; Code from Paradigms of Artificial Intelligence Programming
 ;;; Copyright (c) 1991 Peter Norvig
@@ -13,8 +13,8 @@
 ;; p. 192
 ;; To search in a tree you actually need... the tree. Simple way is to load given tree
 ;; and the second (clever) way is to load tree nodes when you need it (on every step) on
-;; your algorithm. 'binary-tree' gives you next nodes you need it. Do not forget that
-;; with second approach tree is infinite. You should pass to successors functions a piece
+;; your algorithm. `binary-tree' gives you next nodes you need it. Do not forget that
+;; with this approach tree is infinite. You should pass to successors functions a piece
 ;; of data and this piece of data should contain relations. For example if you have a tree
 ;; (0 (1 (2) (3)) (4 (5 (6) NIL) NIL)) you should pass (1 (2) (3))) not just 1.
 
