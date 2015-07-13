@@ -118,8 +118,6 @@
            #:iter-wide-search
            #:graph-search
            #:a*-search
-           #:search-gps
-           #:rule-based-translator
            #:pat-match-abbrev
            #:expand-pat-match-abbrev)
 

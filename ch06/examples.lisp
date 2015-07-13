@@ -89,20 +89,26 @@
                            (declare-ignore y) 1) (diff 6))) :=> (6 5 3 1) @ 210)
 
   (:section "6.5 GPS as Search (gps-srch.lisp)")
+
   ""
-  "NOTE: SBCL will warn you: 'undefined variable START'"
+  "ATTENTION"
+  "Following tests use symbols and they are not suitable"
+  "for project that use packages"
   ""
-  ((setf start '((c on a) (a on table) (b on table) (space on c)
-                 (space on b) (space on table))) @ 213)
-  ((use (make-block-ops '(a b c))) :=> 18)
-  ((search-gps start '((a on b) (b on c)))
+
+  "((setf start '((c on a) (a on table) (b on table) (space on c)
+                 (space on b) (space on table))) @ 213)"
+
+  "((use (make-block-ops '(a b c))) :=> 18)"
+
+  "((search-gps start '((a on b) (b on c)))
    :=> ((START)
        (EXECUTING (MOVE C FROM A TO TABLE))
        (EXECUTING (MOVE B FROM TABLE TO C))
-       (EXECUTING (MOVE A FROM TABLE TO B))) @ 213)
-  ((search-gps start '((b on c) (a on b)))
+       (EXECUTING (MOVE A FROM TABLE TO B))) @ 213)"
+  "((search-gps start '((b on c) (a on b)))
    :=> ((START)
        (EXECUTING (MOVE C FROM A TO TABLE))
        (EXECUTING (MOVE B FROM TABLE TO C))
-       (EXECUTING (MOVE A FROM TABLE TO B))))
+       (EXECUTING (MOVE A FROM TABLE TO B))))"
   )

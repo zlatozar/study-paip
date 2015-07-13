@@ -239,6 +239,7 @@ or if there is an appropriate op for it that is applicable."
   (fifth (second action)))
 
 ;;; ____________________________________________________________________________
+;;;                 NOT very practical - use symbols and fixed number of blocks
 
 (defun make-block-ops (blocks)
   (let ((ops nil))
