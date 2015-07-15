@@ -19,13 +19,12 @@ consisting of the type of the structure and alternating pairs of slot names and 
 two, and `cond` when there are more than two.
 - `setf` is a **generic setter**. `setf` understands place structures! From book p. 75
 ``` cl
-(setf (get 'AL 'state) 'Alabama) ; (get 'AL 'state) => NIL
+(setf (get 'AL 'state) 'Alabama) ; (get 'AL 'state) => ALABAMA
 ```
-Basically, the `setf` command asks itself the question,
-**"Where did the item in my first argument originally come from?"**
-In this case, the value came from the *state* with key *AL*. Therefore, if we try to
-`setf` this location, the source variable, *'state*, is modified in response. Now we can
-access Alabama with key 'AL.
+Basically, the `setf` command do like this. Inner part is the **wish**:
+_"I would like to do ```(get 'AL 'state)```?"_ - outer is the desired value so we have to
+read like this: _"When I do ```(get 'AL 'state)``` I would like to receive ```ALABAMA```"_.
+
 - In Lisp, the user can extend the expressions that are allowed in a `setf` form using the
 special forms `defsetf` or `define-setf-method`.
 - Some kinds of data, like binary trees, are hard to deal with in anything but a

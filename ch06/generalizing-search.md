@@ -293,17 +293,16 @@ strategies are possible as well, and are often better.
 
 ```cl
 (defun tree-search (states goal-p successors combiner)
-  "Find a state that satisfies goal-p.  Start with
-states, and search according to successors and combiner."
-  (format t "~&;; Search: ~a" states)
-  (cond ((null states) nil)
+  "Find a state that satisfies GOAL-P. Start with STATES,
+and search according to SUCCESSORS and COMBINER."
+  (dbg :search "~&;; Search: ~a" states)
+  (cond ((null states) fail)
         ((funcall goal-p (first states)) (first states))
         (t (tree-search
-             (funcall combiner
-                      (funcall successors
-                               (first states))
-                      (rest states))
-             goal-p successors combiner))))
+            (funcall combiner
+                     (funcall successors (first states))
+                     (rest states))
+            goal-p successors combiner))))
 
 (defun depth-first-search (start goal-p successors)
   "Search new states first until goal is reached."
@@ -1005,9 +1004,9 @@ this predicate returns true if every 3-in-a-row sums to 15."
         (sq7 (nth 6 nine-nums)) (sq8 (nth 7 nine-nums))
         (sq9 (nth 8 nine-nums)))
     (= 15
-       (+ sq1 sq2 sq3)(+ sq1 sq5 sq9)(+ sq1 sq4 sq7)
-       (+ sq2 sq5 sq8) (+ sq3 sq5 sq7)(+ sq3 sq6 sq9)
-       (+ sq4 sq5 sq6)(+ sq7 sq8 sq9))))
+       (+ sq1 sq2 sq3) (+ sq1 sq5 sq9) (+ sq1 sq4 sq7)
+       (+ sq2 sq5 sq8) (+ sq3 sq5 sq7) (+ sq3 sq6 sq9)
+       (+ sq4 sq5 sq6) (+ sq7 sq8 sq9))))
 ```
 - Now we need a "successors" function to produce a new set of game boards from a game
 board that is not a goal:
@@ -1173,72 +1172,6 @@ Aborted
 ```
 
 So far we've looked at heuristic functions that estimate the distance from some search
-state to a solution.
-
-In many cases we not only searching for a goal state, but we are looking for the shortest
-overall path from the start state to the goal state.
-
-**A*** is a search algorithm that can find the optimal path. It is essentially best-first
-search where the cost of any search state is the cost of getting to the state from the
-start state, plus a heuristic estimate of the distance from the state to the goal.
-Provided that the value of the heuristic estimating function never exceeds the true
-distance between the current state and a goal state, A* will always find a shortest
-path. This is known as the **admissibility** of the A* algorithm.  Consider the heuristic
-function always returns zero; A* with this heuristic is admissible, since it never exceeds
-the true distance. A* with this heuristic function is the same as "uniform cost" search.
-Although uniform cost search is guaranteed to find the shortest path, a more informed
-heuristic will find it faster.
-
-_An algorithm A1 is said to be more informed than an algorithm A2 if the heuristic_
-_information of A1 permits it to compute an estimate h1 that is everywhere larger than_
-_h2, the estimate computed by A2._
-
-The algorithm for A* in pseudo code:
-
-```Pascal
-function A*(start,goal)
-
-    // The set of nodes already evaluated.
-    closedset := the empty set
-
-    // The set of tentative nodes to be evaluated, initially containing the start node
-    openset := {start}
-
-    // The map of navigated nodes.
-    came_from := the empty map
-
-    // Cost from start along best known path
-    g_score[start] := 0
-
-    // Estimated total cost from start to goal through y.
-    f_score[start] := g_score[start] + heuristic_cost_estimate(start, goal)
-
-    while openset is not empty
-        current := the node in openset having the lowest f_score[] value
-        if current = goal
-            return reconstruct_path(came_from, goal)
-
-        remove current from openset
-        add current to closedset
-        for each neighbor in neighbor_nodes(current)
-            if neighbor in closedset
-                continue
-            tentative_g_score := g_score[current] + dist_between(current,neighbor)
-
-            if neighbor not in openset or tentative_g_score < g_score[neighbor]
-                came_from[neighbor] := current
-                g_score[neighbor] := tentative_g_score
-                f_score[neighbor] := g_score[neighbor]
-                                         + heuristic_cost_estimate(neighbor, goal)
-                if neighbor not in openset
-                    add neighbor to openset
-
-    return failure
-
-function reconstruct_path(came_from,current)
-    total_path := [current]
-    while current in came_from:
-        current := came_from[current]
-        total_path.append(current)
-    return total_path
-```
+state to a solution. In many cases we not only searching for a goal state, but we are
+looking for the shortest overall path from the start state to the goal state. **A*** is a
+search algorithm that can find the optimal path.

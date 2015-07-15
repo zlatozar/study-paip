@@ -65,13 +65,14 @@ function.
 
 ##### A Set of Searching Tools
 
-- Read how [search is generalized](generalizing-search.md)
 - In general, a _search problem_ involves exploring from some starting state and
-investigating neighboring states until a solution is reached.
+investigating neighboring states until a solution is reached. Read [here](generalizing-search.md)
+how search is generalized step by step.
 - Search problems are called _nondeterministic_ because there is no way to determine what
 is the best step to take next. AI problems, by their very nature, tend to be
 nondeterministic.
-- Abstractly, a search problem can be characterized by four features:
+
+Abstractly, a search problem can be characterized by four features:
 ```
 1. The start state.
 2. The goal state (or states).
@@ -90,32 +91,127 @@ more storage, because it saves more intermediate states.
 time.
 - While breadth-first search is more methodical, neither strategy is able to take
 advantage of **any knowledge about the state space**. They both search blindly.
-- In most real applications we will have some estimate of how far a state is from the
-solution.
-- **Best-First Search** - the state that _appears_ bot be best is searched first. To do
+
+In most real applications we will have some estimate of how far a state is from the solution.
+- **Best-First Search** - the state that _appears_ to be best is searched first. To do
 that  we need a **cost function** that gives an estimate of how far a given state is from
 the goal.
-- A best-first search that keeps only a fixed number of alternative states at any one time
+
+The idea: discard unpromising paths. This runs the risk of failing to find a solution at
+all, but it can save enough space and time to offset the risk.
+- A best-first search that _keeps only a fixed number of alternative states_ at any one time
 is known as a **beam search**. The difference is that beam search looks down _several_ paths
 at once, instead of just one, and chooses the best one to look at next.
 - We can find a goal either by looking at more states, or by being smarter about the
 states we look at.
 - Beam search is a best-first search when beam width is infinity.
+
 - When beam width is one it is DFS with no backup also known as **hill-climbing**.
-- Hill climbing:
 Think of a mountaineer trying to reach a peak in a heavy fog. One strategy would be for
 the mountaineer to look at adjacent locations, climb to the highest one, and look
 again. This strategy may eventually hit the peak, but it may also get stuck at the top of
 a foothill, or local maximum.
-- Representing paths would lead to an advantage: we could return the path as the solution,
-rather than just return the goal state.
-- The notation `#<...>` is a Common Lisp convention for printing output that can not be
-reconstructed by READ.
+
+- ```(defstruct (structure-name (option value)...) 'Optional doc' slot...)```
+For example:
+```cl
+(defstruct (path (:print-function print-path))
+  state (previous nil) (cost-so-far 0) (total-cost 0))
+```
+It uses the _:print-function_ option to say that all paths are to be printed with the
+function `print-path`.
+
+- Representing paths would lead to an advantage: _we could return the path as the solution,_
+_rather than just return the goal state._
+- The notation `#<...>` is a Common Lisp convention for printing output that can **not**
+be reconstructed by ```READ```.
 - `#<Path ~,1f km: ~{~:(~a~)~^ - ~}>` - what it means?
-- An algorithm that will _probably_ return a solution that is close to the best solution,
+
+#### Guessing versus Guaranteeing a Good Solution
+
+- An algorithm that will _probably_ return a solution that is _close_ to the best solution,
 but gives no guarantee is known as **non-admissible heuristic search**.
 - **Iterative Widening** technique - start with a narrow beam width, and if that does
 not lead to an acceptable solution, widen the beam and try again.
-- Pattern matching is one of the most important tools for AI.
+
+#### Searching Graphs
+
+Any graph can be treated as a tree, if we ignore the fact that certain nodes are
+identical.
+
+**A*** is a search algorithm that can find the optimal path. It is essentially best-first
+search where the cost of any search state is the cost of getting to the state from the
+start state, plus a heuristic estimate of the distance from the state to the goal.
+
+Provided that the value of the heuristic estimating function never exceeds the true
+distance between the current state and a goal state, A* will always find a shortest
+path. This is known as the **admissibility** of the A* algorithm.  Consider the heuristic
+function always returns zero; A* with this heuristic is admissible, since it never exceeds
+the true distance. A* with this heuristic function is the same as "uniform cost" search.
+Although uniform cost search is **guaranteed** to find the shortest path, a more informed
+heuristic will find it faster.
+
+_An algorithm A1 is said to be more informed than an algorithm A2 if the heuristic_
+_information of A1 permits it to compute an estimate h1 that is everywhere larger than_
+_h2, the estimate computed by A2._
+
+The algorithm for A* in pseudo code:
+
+```Pascal
+function A*(start,goal)
+
+    // The set of nodes already evaluated.
+    closedset := the empty set
+
+    // The set of tentative nodes to be evaluated, initially containing the start node
+    openset := {start}
+
+    // The map of navigated nodes.
+    came_from := the empty map
+
+    // Cost from start along best known path
+    g_score[start] := 0
+
+    // Estimated total cost from start to goal through y.
+    f_score[start] := g_score[start] + heuristic_cost_estimate(start, goal)
+
+    while openset is not empty
+        current := the node in openset having the lowest f_score[] value
+        if current = goal
+            return reconstruct_path(came_from, goal)
+
+        remove current from openset
+        add current to closedset
+        for each neighbor in neighbor_nodes(current)
+            if neighbor in closedset
+                continue
+            tentative_g_score := g_score[current] + dist_between(current,neighbor)
+
+            if neighbor not in openset or tentative_g_score < g_score[neighbor]
+                came_from[neighbor] := current
+                g_score[neighbor] := tentative_g_score
+                f_score[neighbor] := g_score[neighbor]
+                                         + heuristic_cost_estimate(neighbor, goal)
+                if neighbor not in openset
+                    add neighbor to openset
+
+    return failure
+
+function reconstruct_path(came_from,current)
+    total_path := [current]
+    while current in came_from:
+        current := came_from[current]
+        total_path.append(current)
+    return total_path
+```
+
+- When to use _search-all_ function?
+
+In some applications, we may want to look at several solutions, or at all possible
+solutions.  Other applications are more naturally seen as optimization problems, where we
+don't know ahead of time what counts as achieving the goal but are just trying to find
+some action with a low cost.
 
 ##### GPS as Search
+
+- Pattern matching is one of the most important tools for AI.

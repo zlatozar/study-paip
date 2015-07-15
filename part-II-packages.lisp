@@ -146,6 +146,8 @@ In Chapters 5 and 6 'pat-match' will be improved.")
            #:diff
            #:is
            #:deg->radians
+           #:sorter
+           #:distance
            #:tree-search
            #:depth-first-search
            #:breadth-first-search
@@ -155,6 +157,7 @@ In Chapters 5 and 6 'pat-match' will be improved.")
            #:iter-wide-search
            #:graph-search
            #:a*-search
+           #:search-all
            #:rule-based-translator
            #:pat-match-abbrev
            #:expand-pat-match-abbrev))
@@ -165,6 +168,7 @@ In Chapters 5 and 6 'pat-match' will be improved.")
         #:pcl-test
         #:ch6)
   (:export #:compose
+           #:search-n
            #:test-depth-first-search))
 
 ;;; ____________________________________________________________________________

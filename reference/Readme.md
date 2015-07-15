@@ -70,7 +70,10 @@
     - [handler-case](#handler-case)
     - [progv](#progv)
     - [adjoin](#adjoin)
+    - [merge](#merge)
 - [Koans](#koans)
+- [Misc](#misc)
+    - [getf](#getf)
 
 ## Chapter-1
 
@@ -87,11 +90,11 @@ shallow copy of specified lists except for the last which is directly shared.
 See also MAPCAN, CONS, LIST, LIST\*.
 
 ``` cl
-(append) => NIL
-(append '(1 2 3)) => (1 2 3)
-(append '(1 2 3) '(4 5 6)) => (1 2 3 4 5 6)
-(append '(1 2 3) '(4 5 6) '(7 8 9)) => (1 2 3 4 5 6 7 8 9)
-(let ((x '(tail list))) (eq x (cddr (append '(front list) x)))) => T
+(append) ;=> NIL
+(append '(1 2 3)) ;=> (1 2 3)
+(append '(1 2 3) '(4 5 6)) ;=> (1 2 3 4 5 6)
+(append '(1 2 3) '(4 5 6) '(7 8 9)) ;=> (1 2 3 4 5 6 7 8 9)
+(let ((x '(tail list))) (eq x (cddr (append '(front list) x)))) ;=> T
 ```
 
 ### length
@@ -109,14 +112,14 @@ the fill pointer is returned.
 See also LIST-LENGTH
 
 ``` cl
-(length nil) => 0
-(length "abc") => 3
+(length nil) ;=> 0
+(length "abc") ;=> 3
 (setq str (make-array '(3) :element-type 'character
                            :initial-contents "abc"
-                           :fill-pointer t)) => "abc"
-(length str) => 3
-(setf (fill-pointer str) 2) => 2
-(length str) => 2
+                           :fill-pointer t)) ;=> "abc"
+(length str) ;=> 3
+(setf (fill-pointer str) 2) ;=> 2
+(length str) ;=> 2
 ```
 
 ### mapcar (aka transform)
@@ -134,11 +137,11 @@ of the shortest list argument.
 See also MAPCAN and MAPPEND(from the book)
 
 ``` cl
-(mapcar (lambda (x) (+ x 10)) '(1 2 3 4)) => (11 12 13 14)
-(mapcar #'round '(1.3 2.7 3.4 4.5)) => (1 3 3 4)
+(mapcar (lambda (x) (+ x 10)) '(1 2 3 4)) ;=> (11 12 13 14)
+(mapcar #'round '(1.3 2.7 3.4 4.5)) ;=> (1 3 3 4)
 (mapcar #'list '(123 symbol "string" 345) '(1 2 3))
-                         => ((123 1) (SYMBOL 2) ("string" 3))
-(mapcar #'* '(3 4 5) '(4 5 6)) => (12 20 30)
+                         ;=> ((123 1) (SYMBOL 2) ("string" 3))
+(mapcar #'* '(3 4 5) '(4 5 6)) ;=> (12 20 30)
 ```
 
 ### member
@@ -158,11 +161,11 @@ element or NIL when item is not found.
 See also MEMBER-IF, POSITION, POSITION-IF, FIND, FIND-IF and FIND-ALL(from the book).
 
 ``` cl
-(member 1 '(0 1 0 0 0 1 0)) => (1 0 0 0 1 0)
-(member 2 '(0 1 0 0 0 1 0)) => NIL
-(member #\h '(#\H #\o #\l #\a)) => NIL
-(member #\h '(#\H #\o #\l #\a) :test #'char-equal) => (#\H #\o #\l #\a)
-(member #\h '(#\H #\o #\l #\a) :key #'char-downcase) => (#\H #\o #\l #\a)
+(member 1 '(0 1 0 0 0 1 0)) ;=> (1 0 0 0 1 0)
+(member 2 '(0 1 0 0 0 1 0)) ;=> NIL
+(member #\h '(#\H #\o #\l #\a)) ;=> NIL
+(member #\h '(#\H #\o #\l #\a) :test #'char-equal) ;=> (#\H #\o #\l #\a)
+(member #\h '(#\H #\o #\l #\a) :key #'char-downcase) ;=> (#\H #\o #\l #\a)
 ```
 
 ### apply
@@ -204,8 +207,8 @@ see CALL-ARGUMENTS-LIMIT constant.
 See also FUNCALL, LAMBDA and EVAL.
 
 ``` cl
-(apply #'+ 1 2 3 '(4 5 6)) => 21
-(apply 'cons '((+ 2 3) 4)) => ((+ 2 3) . 4)
+(apply #'+ 1 2 3 '(4 5 6)) ;=> 21
+(apply 'cons '((+ 2 3) 4)) ;=> ((+ 2 3) . 4)
 ```
 
 ### null
@@ -220,13 +223,13 @@ false. NULL is identical to NOT, but used in conjunction with list processing
 unlike NOT which is used in boolean logic processing.
 
 ``` cl
-(null nil) => T
-(null t) => NIL
-(null '()) => T
+(null nil) ;=> T
+(null t) ;=> NIL
+(null '()) ;=> T
 
-(null '(1 2 3)) => NIL
-(null 234.4) => NIL
-(null "lisp") => NIL
+(null '(1 2 3)) ;=> NIL
+(null 234.4) ;=> NIL
+(null "lisp") ;=> NIL
 ```
 
 ### numberp
@@ -239,9 +242,9 @@ Argument description:
 Returns true if OBJECT is of type NUMBER; otherwise, returns false.
 
 ``` cl
-(numberp 12) => T
-(numberp nil) => NIL
-(numberp (cons 1 2)) => NIL
+(numberp 12) ;=> T
+(numberp nil) ;=> NIL
+(numberp (cons 1 2)) ;=> NIL
 ```
 
 ### atom
@@ -257,14 +260,14 @@ returns false.
 See CONS and LIST.
 
 ``` cl
-(atom nil) => T
-(atom 'some-symbol) => T
-(atom 3) => T
-(atom "moo") => T
-(atom (cons 1 2)) => NIL
-(atom '(1 . 2)) => NIL
-(atom '(1 2 3 4)) => NIL
-(atom (list 1 2 3 4)) => NIL
+(atom nil) ;=> T
+(atom 'some-symbol) ;=> T
+(atom 3) ;=> T
+(atom "moo") ;=> T
+(atom (cons 1 2)) ;=> NIL
+(atom '(1 . 2)) ;=> NIL
+(atom '(1 2 3 4)) ;=> NIL
+(atom (list 1 2 3 4)) ;=> NIL
 ```
 
 ## Chapter-2
@@ -285,12 +288,12 @@ on lists too.**
 ELT may by used with conjunction of SETF.
 
 ``` cl
-(elt "hola" 0) => #\h
-(elt "hola" 3) => #\a
-(elt #(5 3 6 8) 1) => 3
-(elt '(5 3 6 8) 1) => 3
-(let ((a (list 1 2 3 4))) (setf (elt a 1) 'x) a) => (1 X 3 4)
-(let ((a (copy-seq "hola"))) (setf (elt a 1) #\O) a) => "hOla"
+(elt "hola" 0) ;=> #\h
+(elt "hola" 3) ;=> #\a
+(elt #(5 3 6 8) 1) ;=> 3
+(elt '(5 3 6 8) 1) ;=> 3
+(let ((a (list 1 2 3 4))) (setf (elt a 1) 'x) a) ;=> (1 X 3 4)
+(let ((a (copy-seq "hola"))) (setf (elt a 1) #\O) a) ;=> "hOla"
 ```
 
 ### assoc
@@ -315,13 +318,13 @@ cells. That is:
 ```
 
 ``` cl
-(assoc 'a '((a . 1) (b . 2) (c . 3))) => (A . 1)
-(assoc 'x '((a . 1) (b . 2) (c . 3))) => NIL
-(assoc 'b '((a . 1) (b . 2) (c . 3) (b . 4))) => (B . 2)
-(assoc "b" '(("a" . 1) ("b" . 2))) => NIL
-(assoc "b" '(("a" . 1) ("b" . 2)) :test #'equal) => ("b" . 2)
-(assoc 7 '((6 . a) (9 . b)) :key #'1+) => (6 . A)
-(assoc 5 nil) => NIL
+(assoc 'a '((a . 1) (b . 2) (c . 3))) ;=> (A . 1)
+(assoc 'x '((a . 1) (b . 2) (c . 3))) ;=> NIL
+(assoc 'b '((a . 1) (b . 2) (c . 3) (b . 4))) ;=> (B . 2)
+(assoc "b" '(("a" . 1) ("b" . 2))) ;=> NIL
+(assoc "b" '(("a" . 1) ("b" . 2)) :test #'equal) ;=> ("b" . 2)
+(assoc 7 '((6 . a) (9 . b)) :key #'1+) ;=> (6 . A)
+(assoc 5 nil) ;=> NIL
 ```
 
 ### list
@@ -336,18 +339,18 @@ LIST function makes new list from arguments.
 See also LISTP, LIST\*
 
 ``` cl
-(list 1 2 3) => (1 2 3)
-(list 'a #c(1 2) "moo") => (A #C(1 2) "moo")
-(car (list 1 2 3)) => 1
-(cdr (list 1 2 3)) => (2 3)
-(list) => NIL
-(eq (list) nil) => T
-(eq (list) '()) => T
-(equal (list 1) (cons 1 nil)) => T
-(equal (list 1 'a) (cons 1 (cons 'a nil))) => T
-(equal (list 1 'a 3) (cons 1 (cons 'a (cons 3 nil)))) => T
-(equal (list 1 'a 3) '(1 . (a . (3 . nil)))) => T
-(equal '(1 2 3) (list 1 2 3)) => T
+(list 1 2 3) ;=> (1 2 3)
+(list 'a #c(1 2) "moo") ;=> (A #C(1 2) "moo")
+(car (list 1 2 3)) ;=> 1
+(cdr (list 1 2 3)) ;=> (2 3)
+(list) ;=> NIL
+(eq (list) nil) ;=> T
+(eq (list) '()) ;=> T
+(equal (list 1) (cons 1 nil)) ;=> T
+(equal (list 1 'a) (cons 1 (cons 'a nil))) ;=> T
+(equal (list 1 'a 3) (cons 1 (cons 'a (cons 3 nil)))) ;=> T
+(equal (list 1 'a 3) '(1 . (a . (3 . nil)))) ;=> T
+(equal '(1 2 3) (list 1 2 3)) ;=> T
 ```
 
 ### make-list
@@ -363,8 +366,8 @@ is initialized to the `:initial-element` argument (which defaults to nil).
 _size_ should be a non-negative integer.
 
 ``` cl
-(make-list 5) => (nil nil nil nil nil)
-(make-list 3 :initial-element 'rah) => (rah rah rah)
+(make-list 5) ;=> (nil nil nil nil nil)
+(make-list 3 :initial-element 'rah) ;=> (rah rah rah)
 ```
 
 ## Chapter-3
@@ -421,10 +424,10 @@ increment number. **Default increment is 1.**
 See also 1+, DECF and 1-
 
 ``` cl
-(let ((a 10)) (incf a) a) => 11
-(let ((a 10)) (incf a 2.3) a) => 12.3
-(let ((a 10)) (incf a -2.3) a) => 7.7
-(let ((a (list 10 11 12 13))) (incf (elt a 2) 2.3) a) => (10 11 14.3 13)
+(let ((a 10)) (incf a) a) ;=> 11
+(let ((a 10)) (incf a 2.3) a) ;=> 12.3
+(let ((a 10)) (incf a -2.3) a) ;=> 7.7
+(let ((a (list 10 11 12 13))) (incf (elt a 2) 2.3) a) ;=> (10 11 14.3 13)
 ```
 
 ### remove
@@ -448,11 +451,11 @@ COUNT may limit the number of removed elements.
 See also REMOVE-IF, DELETE, DELETE-IF, SUBSEQ, and REMOVE-DUPLICATES.
 
 ``` cl
-(remove 10 '(1 2 3 10) :count 1 :test #'eq) => (1 2 3)
-(remove #\s "Sample string sequence") => "Sample tring equence"
-(remove #\s "Sample string sequence" :count 1) => "Sample tring sequence"
-(remove #\s "Sample string sequence" :test #'char-equal) => "ample tring equence"
-(remove nil '(1 2 nil 4 nil 6)) => (1 2 4 6)
+(remove 10 '(1 2 3 10) :count 1 :test #'eq) ;=> (1 2 3)
+(remove #\s "Sample string sequence") ;=> "Sample tring equence"
+(remove #\s "Sample string sequence" :count 1) ;=> "Sample tring sequence"
+(remove #\s "Sample string sequence" :test #'char-equal) ;=> "ample tring equence"
+(remove nil '(1 2 nil 4 nil 6)) ;=> (1 2 4 6)
 ```
 
 ### every
@@ -482,8 +485,8 @@ Thus, SOME returns T if and only if some invocation of PREDICATE
 returns true.
 
 ``` cl
-(every #'characterp "abc") => T
-(some #'= '(1 2 3 4 5) '(5 4 3 2 1)) => T (because of 3)
+(every #'characterp "abc") ;=> T
+(some #'= '(1 2 3 4 5) '(5 4 3 2 1)) ;=> T (because of 3)
 ```
 
 ### mapc
@@ -501,8 +504,8 @@ argument.
 See MAPCAR, MAPCAN, MAPCON, DOLIST.
 
 ``` cl
-(setq y '(1 2 3)) => NIL
-(mapc #'print y) => prints 1 2 3 (perform operation on each element)
+(setq y '(1 2 3)) ;=> NIL
+(mapc #'print y) ;=> prints 1 2 3 (perform operation on each element)
 ```
 
 ### count
@@ -526,13 +529,13 @@ occurrences or NIL if no occurance is not found.
 See also COUNT-IF, POSITION, POSITION-IF, FIND, FIND-IF and MEMBER.
 
 ``` cl
-(count #\s "Some sequence") => 1
-(count #\s "Some sequence" :key #'char-downcase) => 2
-(count #\s "Some sequence" :key #'char-downcase :start 1) => 1
-(count #\x "Some sequence") => 0
-(count '(1 2) #(9 3 (1 2) 6 7 8)) => 0
-(count '(1 2) #(9 3 (1 2) 6 7 8) :test #'equal) => 1
-(count 1 #(0 1 0 0 0 1 0) :from-end t) => 2
+(count #\s "Some sequence") ;=> 1
+(count #\s "Some sequence" :key #'char-downcase) ;=> 2
+(count #\s "Some sequence" :key #'char-downcase :start 1) ;=> 1
+(count #\x "Some sequence") ;=> 0
+(count '(1 2) #(9 3 (1 2) 6 7 8)) ;=> 0
+(count '(1 2) #(9 3 (1 2) 6 7 8) :test #'equal) ;=> 1
+(count 1 #(0 1 0 0 0 1 0) :from-end t) ;=> 2
 ```
 
 ### delete
@@ -543,17 +546,17 @@ Omit matching elements. DELETE, DELETE-IF, and DELETE-IF-NOT are like REMOVE,
 REMOVE-IF, and REMOVE-IF-NOT respectively, but they may **modify** SEQUENCE.
 
 ``` cl
-(setq tester (list 1 2 4 1 3 4 5)) => (1 2 4 1 3 4 5)
-(delete 4 tester) => (1 2 1 3 5)
+(setq tester (list 1 2 4 1 3 4 5)) ;=> (1 2 4 1 3 4 5)
+(delete 4 tester) ;=> (1 2 1 3 5)
 
-(setq tester (list 1 2 4 1 3 4 5)) => (1 2 4 1 3 4 5)
-(delete 4 tester :count 1) => (1 2 1 3 4 5)
+(setq tester (list 1 2 4 1 3 4 5)) ;=> (1 2 4 1 3 4 5)
+(delete 4 tester :count 1) ;=> (1 2 1 3 4 5)
 
-(setq tester (list 1 2 4 1 3 4 5)) => (1 2 4 1 3 4 5)
-(delete 3 tester :test #'>) => (4 3 4 5)
+(setq tester (list 1 2 4 1 3 4 5)) ;=> (1 2 4 1 3 4 5)
+(delete 3 tester :test #'>) ;=> (4 3 4 5)
 
-(setq tester (list 1 2 4 1 3 4 5)) => (1 2 4 1 3 4 5)
-(delete-if #'oddp tester) => (2 4 4)
+(setq tester (list 1 2 4 1 3 4 5)) ;=> (1 2 4 1 3 4 5)
+(delete-if #'oddp tester) ;=> (2 4 4)
 ```
 
 ### find
@@ -575,13 +578,13 @@ Return value is element itself or NIL if item is not found.
 See also POSITION, POSITION-IF, FIND, FIND-IF, MEMBER and FIND-ALL(from the book).
 
 ``` cl
-(find #\s "Some sequence") => #\s
-(find #\s "Some sequence" :key #'char-downcase) => #\S
-(find #\s "Some sequence" :key #'char-downcase :start 1) => #\s
-(find #\x "Some sequence") => NIL
-(find '(1 2) #(9 3 (1 2) 6 7 8)) => NIL
-(find '(1 2) #(9 3 (1 2) 6 7 8) :test #'equal) => (1 2)
-(find 1 #(0 1 0 0 0 1 0) :from-end t) => 1
+(find #\s "Some sequence") ;=> #\s
+(find #\s "Some sequence" :key #'char-downcase) ;=> #\S
+(find #\s "Some sequence" :key #'char-downcase :start 1) ;=> #\s
+(find #\x "Some sequence") ;=> NIL
+(find '(1 2) #(9 3 (1 2) 6 7 8)) ;=> NIL
+(find '(1 2) #(9 3 (1 2) 6 7 8) :test #'equal) ;=> (1 2)
+(find 1 #(0 1 0 0 0 1 0) :from-end t) ;=> 1
 ```
 
 ### position
@@ -604,13 +607,13 @@ start of the sequence regardless of arguments.
 See also POSITION-IF, FIND, FIND-IF and MEMBER.
 
 ``` cl
-(position #\s "Some sequence") => 5
-(position #\s "Some sequence" :key #'char-downcase) => 0
-(position #\s "Some sequence" :key #'char-downcase :start 1) => 5
-(position #\x "Some sequence") => NIL
-(position '(1 2) #(9 3 (1 2) 6 7 8)) => NIL
-(position '(1 2) #(9 3 (1 2) 6 7 8) :test #'equal) => 2
-(position 1 #(0 1 0 0 0 1 0) :from-end t) => 5
+(position #\s "Some sequence") ;=> 5
+(position #\s "Some sequence" :key #'char-downcase) ;=> 0
+(position #\s "Some sequence" :key #'char-downcase :start 1) ;=> 5
+(position #\x "Some sequence") ;=> NIL
+(position '(1 2) #(9 3 (1 2) 6 7 8)) ;=> NIL
+(position '(1 2) #(9 3 (1 2) 6 7 8) :test #'equal) ;=> 2
+(position 1 #(0 1 0 0 0 1 0) :from-end t) ;=> 5
 ```
 
 ### reduce
@@ -633,13 +636,13 @@ initial-value and first element or first two elements.
 See also MAPCAR, MAPCAN, MAP.
 
 ``` cl
-(reduce #'list '(1 2 3 4)) => (((1 2) 3) 4)
-(reduce #'list '(1 2 3 4) :initial-value 0) => ((((0 1) 2) 3) 4)
-(reduce #'list '(1 2 3 4) :initial-value 0 :from-end t) => (1 (2 (3 (4 0))))
-(reduce #'list '(1 2 3 4) :from-end t) => (1 (2 (3 4)))
-(reduce (lambda (x y) (+ (* x 10) y)) '(1 2 3 4)) => 1234
-(reduce #'+ '(1 2 3 4)) => 10
-(reduce #'* '(1 2 3 4) :initial-value 1) => 24
+(reduce #'list '(1 2 3 4)) ;=> (((1 2) 3) 4)
+(reduce #'list '(1 2 3 4) :initial-value 0) ;=> ((((0 1) 2) 3) 4)
+(reduce #'list '(1 2 3 4) :initial-value 0 :from-end t) ;=> (1 (2 (3 (4 0))))
+(reduce #'list '(1 2 3 4) :from-end t) ;=> (1 (2 (3 4)))
+(reduce (lambda (x y) (+ (* x 10) y)) '(1 2 3 4)) ;=> 1234
+(reduce #'+ '(1 2 3 4)) ;=> 10
+(reduce #'* '(1 2 3 4) :initial-value 1) ;=> 24
 ```
 
 ### substitute
@@ -678,9 +681,9 @@ NTH may be used to specify a PLACE to SETF. Specifically,
 See also ELT, FIRST, NTHCDR
 
 ``` cl
-(nth 0 nil) => NIL
-(nth 0 '(foo bar baz)) => FOO
-(nth 3 '(foo bar baz)) => NIL
+(nth 0 nil) ;=> NIL
+(nth 0 '(foo bar baz)) ;=> FOO
+(nth 3 '(foo bar baz)) ;=> NIL
 ```
 
 ### reverse
@@ -695,10 +698,10 @@ REVERSE function makes new sequence with reverted order of elements.
 See also MAP, MAPCAR and MAPCAN.
 
 ``` cl
-(reverse '(1 2 3 4)) => (4 3 2 1)
-(reverse '#(1 2 3 4)) => #(4 3 2 1)
-(reverse "hola") => "aloh"
-(reverse nil) => NIL
+(reverse '(1 2 3 4)) ;=> (4 3 2 1)
+(reverse '#(1 2 3 4)) ;=> #(4 3 2 1)
+(reverse "hola") ;=> "aloh"
+(reverse nil) ;=> NIL
 ```
 
 ### subseq
@@ -716,10 +719,10 @@ Default ending index is end of sequence. SUBSEQ may be used with SETF.
 See also COPY-SEQ and MAP.
 
 ``` cl
-(subseq "hello world" 3) => "lo world"
-(subseq "hello world" 3 5) => "lo"
-(let ((a "hello world")) (setf (subseq a 3 5) "LO") a) => "helLO world"
-(let ((a "hello world")) (setf (subseq a 3 5) "YYY") a) => "helYY world"
+(subseq "hello world" 3) ;=> "lo world"
+(subseq "hello world" 3 5) ;=> "lo"
+(let ((a "hello world")) (setf (subseq a 3 5) "LO") a) ;=> "helLO world"
+(let ((a "hello world")) (setf (subseq a 3 5) "YYY") a) ;=> "helYY world"
 ```
 
 ### aref
@@ -739,13 +742,13 @@ dimensional arrays so aref works on them too.**
 AREF with conjunction of SETF may be used to set array elements.
 
 ``` cl
-(aref "hola" 0) => #\h
-(aref "hola" 3) => #\a
-(aref #(5 3 6 8) 1) => 3
-(aref (make-array '(10 10) :initial-element 'moo) 9 9) => MOO
+(aref "hola" 0) ;=> #\h
+(aref "hola" 3) ;=> #\a
+(aref #(5 3 6 8) 1) ;=> 3
+(aref (make-array '(10 10) :initial-element 'moo) 9 9) ;=> MOO
 
 (let ((a (make-array '(3 3) :initial-element 'moo)))
-      (setf (aref a 1 1) 'x) a) => #2A((MOO MOO MOO) (MOO X MOO) (MOO MOO MOO))
+      (setf (aref a 1 1) 'x) a) ;=> #2A((MOO MOO MOO) (MOO X MOO) (MOO MOO MOO))
 ````
 
 ### char
@@ -756,13 +759,12 @@ Argument description:
 - _string_ - a string
 - _index_  - a valid array index for the string
 
-CHAR access the element of string specified by index. Could be used in SETF
-
-(setf (char string index) new-character)
+CHAR access the element of string specified by index. Could be used in SETF:
+```(setf (char string index) new-character)```
 
 ``` cl
-(setq my-simple-string (make-string 6 :initial-element #\A)) =>  "AAAAAA"
-(schar my-simple-string 4) =>  #\A
+(setq my-simple-string (make-string 6 :initial-element #\A)) ;=>  "AAAAAA"
+(schar my-simple-string 4) ;=>  #\A
 ```
 
 ### bit
@@ -789,9 +791,9 @@ CONCATENATE creates new sequence and fills it with data from arguments.
 See also MAPCAN.
 
 ``` cl
-(concatenate 'string "hello" " " "world") => "hello world"
-(concatenate 'vector "hello" " " "world") => #(#\h #\e #\l #\l #\o #\  #\w #\o #\r #\l #\d)
-(concatenate 'vector '(1 2) '(3 4)) => #(1 2 3 4)
+(concatenate 'string "hello" " " "world") ;=> "hello world"
+(concatenate 'vector "hello" " " "world") ;=> #(#\h #\e #\l #\l #\o #\  #\w #\o #\r #\l #\d)
+(concatenate 'vector '(1 2) '(3 4)) ;=> #(1 2 3 4)
 ```
 
 ### eq
@@ -807,15 +809,15 @@ Argument description:
 - _object2_	- second object
 
 EQ function compares object identity. It works for symbols and identical
-objects. It is not suitable for comparing numbers - see EQL and =. Result is
+objects. It is not suitable for comparing numbers - see **EQL** and **=**. Result is
 true if they are same, otherwise false.
 
 ``` cl
-(eq 'moo 'moo) => T
-(eq 1 2) => NIL
-(eq 1234567890123456789 1234567890123456789) => NIL
-(eq (cons 1 2) (cons 1 2)) => NIL
-(let ((x (cons 1 2))) (eq x x)) => T
+(eq 'moo 'moo) ;=> T
+(eq 1 2) ;=> NIL
+(eq 1234567890123456789 1234567890123456789) ;=> NIL
+(eq (cons 1 2) (cons 1 2)) ;=> NIL
+(let ((x (cons 1 2))) (eq x x)) ;=> T
 ```
 
 EQL function compares object identity, numbers and characters. Numbers are
@@ -823,14 +825,14 @@ considered as equal only when they have the both same value and type. Result is
 true if they are same, otherwise false.
 
 ``` cl
-(eql 'moo 'foo) => NIL
-(eql 1 1) => T
-(eql 1 2) => NIL
-(eql 1234567890123456789 1234567890123456789) => T
-(eql 1.0 1) => NIL
-(eql 1.0 1.0) => T
-(eql (cons 1 2) (cons 1 2)) => NIL
-(let ((x (cons 1 2))) (eql x x)) => T
+(eql 'moo 'foo) ;=> NIL
+(eql 1 1) ;=> T
+(eql 1 2) ;=> NIL
+(eql 1234567890123456789 1234567890123456789) ;=> T
+(eql 1.0 1) ;=> NIL
+(eql 1.0 1.0) ;=> T
+(eql (cons 1 2) (cons 1 2)) ;=> NIL
+(let ((x (cons 1 2))) (eql x x)) ;=> T
 ```
 
 EQUAL function compares same things as eql, additionally result is true under
@@ -839,13 +841,13 @@ part), string and bit-vectors are compared element-wise. Result is true if they
 are same, otherwise false.
 
 ``` cl
-(equal #*1010101 #*1010101) = T
-(equal (vector 2 3 4) (vector 2 3 4)) = NIL
-(equal (cons 1 2) (cons 1 2)) => T
-(let ((x (cons 1 2))) (equal x x)) => T
-(equal 'moo 'moo) => T
-(equal 1.0 1) => NIL
-(equal 1.0 1.0) => T
+(equal #*1010101 #*1010101) ;=> T
+(equal (vector 2 3 4) (vector 2 3 4)) ;=> NIL
+(equal (cons 1 2) (cons 1 2)) ;=> T
+(let ((x (cons 1 2))) (equal x x)) ;=> T
+(equal 'moo 'moo) ;=> T
+(equal 1.0 1) ;=> NIL
+(equal 1.0 1.0) ;=> T
 ```
 
 EQUALP function compares same things as equal, additionally result is true under
@@ -855,16 +857,16 @@ characters are compared case insensitively. Result is true if they are same,
 otherwise false.
 
 ``` cl
-(equalp "moo" "MoO") => T
-(equalp "moo" "moo ") => NIL
-(equalp (cons 1 2) (cons 1 2)) => T
-(let ((x (cons 1 2))) (equalp x x)) => T
-(equalp 'moo 'moo) => T
-(equalp 'moo 'foo) => NIL
-(equalp "a" 'a) => NIL
-(equalp 1 2) => NIL
-(equalp 1.0 1) => T
-(equalp 1.0 1.0) => T
+(equalp "moo" "MoO") ;=> T
+(equalp "moo" "moo ") ;=> NIL
+(equalp (cons 1 2) (cons 1 2)) ;=> T
+(let ((x (cons 1 2))) (equalp x x)) ;=> T
+(equalp 'moo 'moo) ;=> T
+(equalp 'moo 'foo) ;=> NIL
+(equalp "a" 'a) ;=> NIL
+(equalp 1 2) ;=> NIL
+(equalp 1.0 1) ;=> T
+(equalp 1.0 1.0) ;=> T
 ```
 
 All four begin with the letters _eq_, with more letters meaning the predicate
@@ -881,14 +883,14 @@ upper- and lowercase characters and numbers of different types.
 (**tree-equal** _tree1_ _tree2_ :test) => T or NIL
 
 Argument description:
-- _tree_ - a tree represented like list e.g. `((a b) ((c)) (d e))`
+- _tree_ - a tree represented like list e.g. ```((a b) ((c)) (d e))```
 
 COPY-TREE treats passed list as a tree and creates a copy of a tree of conses.
 TREE-EQUAL is similar to EQUAL but is more powerful because allows :test keyword.
 
 ``` cl
 (setf tree '((a b) ((c)) (d e)))
-(tree-equal tree (copy-tree tree)) => T
+(tree-equal tree (copy-tree tree)) ;=> T
 ```
 ### subst
 ### sublis
@@ -905,8 +907,8 @@ _Note_ that the order of old and new in the alist for **sublis** is reversed fro
 the order of arguments to **subst**.
 
 ``` cl
-(subst 'new 'old '(old ((very old))) => (NEW ((VERY NEW)))
-(sublis '((old . new)) '(old ((very old))))=> (NEW ((VERY NEW)))
+(subst 'new 'old '(old ((very old))) ;=> (NEW ((VERY NEW)))
+(sublis '((old . new)) '(old ((very old)))) ;=> (NEW ((VERY NEW)))
 ```
 ### rem
 ### mod
@@ -921,12 +923,12 @@ MOD performs the operation 'floor' on _number_ and _divisor_ and returns
 the remainder of the 'floor' operation.
 
 ``` cl
-(rem -1 5) => -1
-(mod -1 5) => 4
-(mod 13 4) => 1
-(rem 13 4) => 1
-(mod -13 4) => 3
-(rem -13 4) => -1
+(rem -1 5) ;=> -1
+(mod -1 5) ;=> 4
+(mod 13 4) ;=> 1
+(rem 13 4) ;=> 1
+(mod -13 4) ;=> 3
+(rem -13 4) ;=> -1
 ```
 
 ### intersection
@@ -945,13 +947,13 @@ construct the result. _list2_ is not destroyed.
 ``` cl
 (setq list1 (list 1 1 2 3 4 a b c "A" "B" "C" "d")
       list2 (list 1 4 5 b c d "a" "B" "c" "D"))
- => (1 4 5 B C D "a" "B" "c" "D")
+ ;=> (1 4 5 B C D "a" "B" "c" "D") (more than one assignment at once)
 
-(intersection list1 list2) => (C B 4 1 1)
-(intersection list1 list2 :test 'equal) => ("B" C B 4 1 1)
-(intersection list1 list2 :test #'equalp) => ("d" "C" "B" "A" C B 4 1 1)
+(intersection list1 list2) ;=> (C B 4 1 1)
+(intersection list1 list2 :test 'equal) ;=> ("B" C B 4 1 1)
+(intersection list1 list2 :test #'equalp) ;=> ("d" "C" "B" "A" C B 4 1 1)
 
-(nintersection list1 list2) => (1 1 4 B C)
+(nintersection list1 list2) ;=> (1 1 4 B C)
 ```
 
 ### union
@@ -973,10 +975,10 @@ This is a non-destructive function; it makes a copy of the data if necessary
 to avoid corrupting the original _list1_ and _list2_.
 
 ``` cl
-(union '(1 2 3) '(2 3 4)) => (1 2 3 4)
-(union '((1) (2) (3)) '((2) (3) (4))) => ((3) (2) (1) (2) (3) (4))
-(union '((1) (2) (3)) '((2) (3) (4)) :test #'equal) => ((1) (2) (3) (4))
-(union '((1) (2) (3)) '((2) (3) (4)) :key #'first) => ((1) (2) (3) (4))
+(union '(1 2 3) '(2 3 4)) ;=> (1 2 3 4)
+(union '((1) (2) (3)) '((2) (3) (4))) ;=> ((3) (2) (1) (2) (3) (4))
+(union '((1) (2) (3)) '((2) (3) (4)) :test #'equal) ;=> ((1) (2) (3) (4))
+(union '((1) (2) (3)) '((2) (3) (4)) :key #'first) ;=> ((1) (2) (3) (4))
 ```
 
 ### set-difference
@@ -999,11 +1001,11 @@ value from list items. Resulting item order is not specified.
 See also SET-EXCLUSIVE-OR, UNION and INTERSECTION.
 
 ``` cl
-(set-difference '(a b c) '(b c d)) => (A)
-(set-difference '("a" "b" "c") '("b" "c" "d")) => ("c" "b" "a")
-(set-difference '("a" "b" "c") '("b" "c" "d") :test #'equal) => ("a")
+(set-difference '(a b c) '(b c d)) ;=> (A)
+(set-difference '("a" "b" "c") '("b" "c" "d")) ;=> ("c" "b" "a")
+(set-difference '("a" "b" "c") '("b" "c" "d") :test #'equal) ;=> ("a")
 (set-difference '((a . 2) (b . 3) (c . 1))
-                '((b . 1) (c . 2) (d . 4)) :key #'car) => ((A . 2))
+                '((b . 1) (c . 2) (d . 4)) :key #'car) ;=> ((A . 2))
 ```
 
 ### subsetp
@@ -1025,9 +1027,9 @@ Set operations with different types:
 | length          | logcount   |             |
 
 ``` cl
-(intersection '(a bed) '(a b e)) => (A B)
-(bit-and #*11110 #*11001) => #*11000
-(logand #bllll0 #bll001) => 24 = #bll000
+(intersection '(a bed) '(a b e)) ;=> (A B)
+(bit-and #*11110 #*11001) ;=> #*11000
+(logand #bllll0 #bll001) ;=> 24 = #bll000
 ```
 
 ### check-type
@@ -1076,9 +1078,9 @@ Note that \*read-eval\* global variable controls read-time evaluation.
 See also: READ-LINE, READ-FROM-STRING, WRITE and WRITE-LINE
 
 ``` cl
-(let ((s (make-string-input-stream "(1 2 3)"))) (read s)) => (1 2 3)
-(let ((s (make-string-input-stream "#(1 2 3)"))) (read s)) => #(1 2 3)
-(let ((s (make-string-input-stream "\"hola\""))) (read s)) => "hola"
+(let ((s (make-string-input-stream "(1 2 3)"))) (read s)) ;=> (1 2 3)
+(let ((s (make-string-input-stream "#(1 2 3)"))) (read s)) ;=> #(1 2 3)
+(let ((s (make-string-input-stream "\"hola\""))) (read s)) ;=> "hola"
 ```
 
 ### cerror
@@ -1113,8 +1115,8 @@ the first list, which is now the head of the spliced-together result. Thus:
 
 ```cl
 (defparameter *x* (list 1 2 3))
-(nconc *x* (list 4 5 6)) => (1 2 3 4 5 6)
-*x* => (1 2 3 4 5 6)
+(nconc *x* (list 4 5 6)) ;=> (1 2 3 4 5 6)
+*x* ;=> (1 2 3 4 5 6)
 ```
 
 ## Chapter-4
@@ -1134,9 +1136,9 @@ item to list found at the place.
 See also PUSH-NEW, ACONS and POP.
 
 ``` cl
-(let ((x 'x)) (push 4 x) x) => (4 . X)
-(let ((x '(3 2 1))) (push 4 x) x) => (4 3 2 1)
-(let ((x '((a b c) (3 2 1) (e f g)))) (push 4 (second x)) x) => ((A B C) (4 3 2 1) (E F G))
+(let ((x 'x)) (push 4 x) x) ;=> (4 . X)
+(let ((x '(3 2 1))) (push 4 x) x) ;=> (4 3 2 1)
+(let ((x '((a b c) (3 2 1) (e f g)))) (push 4 (second x)) x) ;=> ((A B C) (4 3 2 1) (E F G))
 ```
 
 ### fresh-line
@@ -1174,10 +1176,12 @@ filter. For example,
 See MAPCAR.
 
 ``` cl
-(mapcan (lambda (x) (list (+ x 10) 'x)) '(1 2 3 4)) => (11 X 12 X 13 X 14 X)
-(mapcan #'list '(a b c d)) => (A B C D)
-(mapcan #'(lambda (x) (if (= x 10) nil (list x))) list) => ;; the same as (remove 10 list)
-(mapcan (lambda (x) (if (> x 0) (list x) nil)) '(-4 6 -23 1 0 12 )) => (6 1 12)
+(mapcan (lambda (x) (list (+ x 10) 'x)) '(1 2 3 4)) ;=> (11 X 12 X 13 X 14 X)
+(mapcan #'list '(a b c d)) ;=> (A B C D)
+(mapcan #'(lambda (x) (if (= x 10)
+                          nil
+                          (list x))) list) ;=> the same as (remove 10 list)
+(mapcan (lambda (x) (if (> x 0) (list x) nil)) '(-4 6 -23 1 0 12 )) ;=> (6 1 12)
 ```
 
 ### consp
@@ -1190,12 +1194,12 @@ false.
 See CONS and LIST.
 
 ``` cl
-(consp nil) => NIL
-(consp "moo") => NIL
-(consp (cons 1 2)) => T
-(consp '(1 . 2)) => T
-(consp '(1 2 3 4)) => T
-(consp (list 1 2 3 4)) => T
+(consp nil) ;=> NIL
+(consp "moo") ;=> NIL
+(consp (cons 1 2)) ;=> T
+(consp '(1 . 2)) ;=> T
+(consp '(1 2 3 4)) ;=> T
+(consp (list 1 2 3 4)) ;=> T
 ```
 
 ### copy-list
@@ -1274,13 +1278,64 @@ instead.
 Return _item_ consed onto the front of _list_ only if it's not already there.
 **Otherwise, return _list_ unmodified.**
 ```
-(adjoin item list) == (if (member item list) list (cons item list))
+(adjoin item list) == (if (member item list)
+                          list
+                          (cons item list))
 ```
-
 See also: PUSHNEW
+
+### merge
+
+(**merge** _result-type_ _sequence+_ _predicate_ :key) => sequence
+
+The MERGE function takes two sequences and a predicate and returns a sequence produced by
+merging the two sequences, according to the predicate. It's related to the two sorting
+functions in that if each sequence is _already sorted by the same predicate_, then the
+sequence returned by MERGE will also be sorted. _result-type_ in MERGE must be a type
+descriptor specifying the type of sequence to produce.
+```cl
+;; Note that sequence are already sorted
+
+(merge 'vector #(1 3 5) #(2 4 6) #'<) ==> #(1 2 3 4 5 6)
+(merge 'list #(1 3 5) #(2 4 6) #'<)   ==> (1 2 3 4 5 6)
+```
+Like the sorting functions, MERGE takes a **:key** argument. A useful example of a **:key**
+function would be a component selector function for a DEFSTRUCT structure, used to merge a
+sequence of structures. In other words selects DEFSTRUCT field that is used for merging.
+```cl
+;; p. 210
+(defun insert-path (path paths)
+  "Put PATH into the right position, sorted by total cost."
+  (merge 'list (list path) paths #'< :key #'path-total-cost))
+```
 
 ## Koans
 
 Taken from **Lisp-koans**
 
 _(work in progress)_
+
+## Misc
+
+### getf
+
+(**getf** _place_ _key_ _default?_) => list
+
+Argument description:
+- _place_   - property list
+- _key_     - keying value, also know as indicator
+- _default_ - answer when key-value pair is not found, default is NIL
+
+GETF function searches supplied _plist_ for value with matching key. _Plist_ is list of even
+number of items. Each item pair specifies key and value. I.e. (K1 V1 K2 V2 ...). Return
+value is either value for first matching key, or specified default. Keys are matched by **EQ**
+function, therefore only suitable values are symbols and integers.
+
+See also: FIND, ASSOC
+
+```cl
+(getf '(a b 4 d a x) 'a) ;=> B
+(getf '(a b 4 d a x) 'x) ;=> NIL
+(getf '(a b 4 d a x) 'x 'not-found) ;=> NOT-FOUND
+(getf '(a b c) 'c) ;=> ERROR: malformed property list: (A B C)
+```

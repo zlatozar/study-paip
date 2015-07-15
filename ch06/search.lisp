@@ -14,9 +14,11 @@
 ;; To search in a tree you actually need... the tree. Simple way is to load given tree
 ;; and the second (clever) way is to load tree nodes when you need it (on every step) on
 ;; your algorithm. `binary-tree' gives you next nodes you need it. Do not forget that
-;; with this approach tree is infinite. You should pass to successors functions a piece
-;; of data and this piece of data should contain relations. For example if you have a tree
-;; (0 (1 (2) (3)) (4 (5 (6) NIL) NIL)) you should pass (1 (2) (3))) not just 1.
+;; with this approach tree is INFINITE.
+;;
+;; You should pass to successors functions a piece of data and this piece of data should
+;; contain relations. For example if you have a tree (0 (1 (2) (3)) (4 (5 (6) NIL) NIL))
+;; you should pass (1 (2) (3))) not just 1.
 
 ;; NOTE: Name `binary-tree' is a confusing better could be 'gen-successors'. In practice
 ;; it is a lazy function that 'invents' next legal moves.
@@ -24,7 +26,8 @@
 (defun binary-tree (x)
   (list (* 2 x) (+ 1 (* 2 x))))
 
-;; 'Inventions' bigger than N are removed. In this way upper bound is set.
+;; Children bigger than N are removed. In this way upper bound is set and tree
+;; become finite.
 
 (defun finite-binary-tree (n)
   "Return a successor function that generates a binary tree
@@ -38,8 +41,6 @@ with N nodes."
 is `eql' to VALUE"
   #'(lambda (x) (eql x value)))
 
-;;; ____________________________________________________________________________
-
 (defun prepend (x y)
   "Prepend Y to start of X"
   (append y x))
@@ -52,7 +53,7 @@ is `eql' to VALUE"
 ;;;                                                                 Tree search
 
 ;;; As a matter of style it is a good idea to name parameters that are functions
-;;; with -fn suffix. For example: successors-fn, combiner-fn.
+;;; with '-fn' suffix. For example: successors-fn, combiner-fn.
 
 ;; p.191
 (defun tree-search (states goal-p successors combiner)
@@ -67,18 +68,42 @@ and search according to SUCCESSORS and COMBINER."
                      (rest states))
             goal-p successors combiner))))
 
+;; Generate the successors of a state, and then work on the first successor first (left child).
+;; This strategy can be implemented by simply appending the previous states to the end of the
+;; list of new successors on each iteration.
+
 (defun depth-first-search (start goal-p successors)
   "Search new states first until goal is reached."
   (tree-search (list start) goal-p successors #'append))
+
+;; Alternative way - work on successors then there children. It can be implemented
+;; simply by appending the new successor states to the end of the existing states
 
 (defun breadth-first-search (start goal-p successors)
   "Search old states first until goal is reached."
   (tree-search (list start) goal-p successors #'prepend))
 
+;;; ____________________________________________________________________________
+
+;; The higher-order function `sorter' takes a cost function as an argument and returns a
+;; combiner function that takes the lists of old and new states, appends them together,
+;; and sorts the result based on the cost function, lowest cost first.
+
 (defun sorter (cost-fn)
   "Return a combiner function that sorts according to COST-FN."
   #'(lambda (new old)
       (sort (append new old) #'< :key cost-fn)))
+
+;; Exercise 6.9 [m] The sorter function is inefficient for two reasons: it calls `append',
+;; which has to make a copy of the first argument, and it sorts the entire result, rather
+;; than just inserting the new states into the already sorted old states. Write a more
+;; efficient sorter.
+
+(defun sorter (cost-fn)
+  "Return a combiner function that sorts according to COST-FN."
+  #'(lambda (new old)
+      (merge 'list (sort new #'> :key cost-fn)
+             old #'> :key cost-fn)))
 
 (defun best-first-search (start goal-p successors cost-fn)
   "Search lowest cost states first until goal is reached."
@@ -91,6 +116,8 @@ but gives a big penalty for going over PRICE."
                     most-positive-fixnum
                     (- price x))))
 
+;; As `best-first-search' - except that we take only the first BEAM-WIDTH states
+
 (defun beam-search (start goal-p successors cost-fn beam-width)
   "Search highest scoring states first until goal is reached,
 but never consider more than BEAM-WIDTH states at a time."
@@ -99,7 +126,7 @@ but never consider more than BEAM-WIDTH states at a time."
                    (let ((sorted (funcall (sorter cost-fn) old new)))
                      (if (> beam-width (length sorted))
                          sorted
-                         (subseq sorted 0 beam-width))))))
+                         (subseq sorted 0 beam-width))))))  ; ***
 
 ;;; ____________________________________________________________________________
 ;;;                                                                     Example
@@ -108,6 +135,9 @@ but never consider more than BEAM-WIDTH states at a time."
 ;; Consider the task of planning a flight across the North American continent in a small
 ;; airplane, one whose range is limited to 1000 kilometers. Suppose we have a list of
 ;; selected cities with airports, along with their position in longitude and latitude:
+
+;; For city, the option ':type' is specified as list. This means that cities will be
+;; implemented as lists of three elements - name, long and lat
 
 (defstruct (city (:type list)) name long lat)
 
@@ -140,6 +170,8 @@ but never consider more than BEAM-WIDTH states at a time."
   (beam-search start (is dest) #'neighbors
                #'(lambda (c) (air-distance c dest))
                1))
+
+;; (trip (city 'san-francisco) (city 'boston))
 
 ;;; ____________________________________________________________________________
 ;;;                                                          Search Paths p.200
@@ -193,26 +225,26 @@ The points are coordinates in n-dimensional space."
   "Convert degrees and minutes to radians."
   (* (+ (truncate deg) (* (rem deg 1) 100/60)) pi 1/180))
 
-;; New version of `is' function
+;; New version of 'is' function defined above
 (defun is (value &key (key #'identity) (test #'eql))
   "Returns a predicate that tests for a given VALUE."
   #'(lambda (path) (funcall test value (funcall key path))))
 
 (defun path-saver (successors cost-fn cost-left-fn)
+  "Returns function that generate successors paths."
   #'(lambda (old-path)
       (let ((old-state (path-state old-path)))
-        (mapcar
-         #'(lambda (new-state)
-             (let ((old-cost
-                    (+ (path-cost-so-far old-path)
-                       (funcall cost-fn old-state new-state))))
-               (make-path
-                :state new-state
-                :previous old-path
-                :cost-so-far old-cost
-                :total-cost (+ old-cost (funcall cost-left-fn
-                                                 new-state)))))
-         (funcall successors old-state)))))
+        (mapcar #'(lambda (new-state)
+                    (let ((old-cost
+                           (+ (path-cost-so-far old-path)
+                              (funcall cost-fn old-state new-state))))
+                      (make-path
+                       :state new-state
+                       :previous old-path
+                       :cost-so-far old-cost
+                       :total-cost (+ old-cost (funcall cost-left-fn
+                                                        new-state)))))
+                (funcall successors old-state)))))
 
 (defun print-path (path &optional (stream t) depth)
   (declare (ignore depth))
@@ -239,7 +271,7 @@ The points are coordinates in n-dimensional space."
 ;;; ____________________________________________________________________________
 ;;;                         Guessing versus Guaranteeing a Good Solution p. 204
 
-;; "iterative widening" technique - start with a narrow beam width, and if that does
+;; "Iterative Widening" technique - start with a narrow beam width, and if that does
 ;; not lead to an acceptable solution, widen the beam and try again.
 
 (defun iter-wide-search (start goal-p successors cost-fn
@@ -255,6 +287,11 @@ Return the first solution found at any width."
 ;;; ____________________________________________________________________________
 ;;;                                                     Searching graphs p. 206
 
+
+;; `graph-search' is similar to `tree-search', but accepts two additional arguments:
+;; a comparison function (`new-states') that tests if two states are equal, and a list
+;; of states that are no longer being considered, but were examined in the past.
+
 (defun graph-search (states goal-p successors combiner
                      &optional (state= #'eql) old-states)
   "Find a state that satisfies GOAL-P. Start with STATES,
@@ -266,7 +303,7 @@ Don't try the same state twice."
         (t (graph-search
             (funcall
              combiner
-             (new-states states successors state= old-states)
+             (new-states states successors state= old-states) ; ***
              (rest states))
             goal-p successors combiner state=
             (adjoin (first states) old-states
@@ -286,17 +323,18 @@ Don't try the same state twice."
 ;;; ____________________________________________________________________________
 ;;;                                                            A* search p. 209
 
-;; The complication is in deciding which path to keep when two paths reach the same
-;; state. If we have a cost function, then the answer is easy: keep the path with the
-;; cheaper cost. Best-first search of a graph removing duplicate states is
-;; called A*-search.
+;; The next step is to extend the `graph-search' algorithm to handle paths. The
+;; complication is in deciding which path to keep when two paths reach the same state. If
+;; we have a cost function, then the answer is easy: keep the path with the cheaper
+;; cost.
+
+;; Best-first search of a graph removing duplicate states is called A*-search!
 
 (defun a*-search (paths goal-p successors cost-fn cost-left-fn
                   &optional (state= #'eql) old-paths)
-  "Find a path whose state satisfies GOAL-P. Start with PATHS,
-and expand SUCCESSORS, exploring least cost first.
-When there are duplicate states, keep the one with the
-lower cost and discard the other."
+  "Find a path whose state satisfies GOAL-P. Start with PATHS, and expand SUCCESSORS,
+exploring least cost first. When there are duplicate states, keep the one with the lower
+cost and discard the other."
   (dbg :search ";; Search: ~a" paths)
   (cond
     ((null paths) fail)

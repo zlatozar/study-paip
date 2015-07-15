@@ -109,20 +109,23 @@
            #:diff
            #:is
            #:deg->radians
+           #:sorter
+           #:distance
            #:tree-search
            #:depth-first-search
            #:breadth-first-search
-           #:finite-binary-tree
            #:best-first-search
            #:beam-search
            #:iter-wide-search
            #:graph-search
            #:a*-search
+           #:search-all
            #:pat-match-abbrev
            #:expand-pat-match-abbrev)
 
   ;; `ch6-exercises'
-  (:export #:compose))
+  (:export #:compose
+           #:search-n))
 
 ;;; ____________________________________________________________________________
 ;;;                                                                        Done
