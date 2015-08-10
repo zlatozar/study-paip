@@ -184,6 +184,7 @@ In Chapters 5 and 6 'pat-match' will be improved.")
                 #:binding-val
                 #:binding-var)
   (:import-from :ch6
+                #:pat-match
                 #:rule-based-translator
                 #:pat-match-abbrev
                 #:expand-pat-match-abbrev))
@@ -206,9 +207,13 @@ In Chapters 5 and 6 'pat-match' will be improved.")
                 #:starts-with
                 #:length=1)
   (:import-from :ch6
+                #:pat-match
                 #:rule-based-translator
                 #:pat-match-abbrev
-                #:expand-pat-match-abbrev))
+                #:expand-pat-match-abbrev)
+
+  (:export #:infix->prefix
+           #:prefix->infix))
 
 (defpackage #:ch8-exercises
   (:documentation "Selected exercises form Chapter 8")

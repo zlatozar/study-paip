@@ -4,6 +4,7 @@
 
 (in-package #:ch8)
 
+;; General rules
 (setf *simplification-rules*
       (mapcar #'simp-rule '(
                             (x + 0  = x)
@@ -37,6 +38,7 @@
                             (x + y - x = y)
                             )))
 
+;; Associativity and Commutative
 (setf *simplification-rules*
       (append *simplification-rules*
               (mapcar #'simp-rule
@@ -47,8 +49,10 @@
                         (n + s = s + n)
                         ((x + m) + n = x + n + m)
                         (x + (y + n) = (x + y) + n)
-                        ((x + n) + y = (x + y) + n)))))
+                        ((x + n) + y = (x + y) + n)
+                        ))))
 
+;; Logs and Trig
 (setf *simplification-rules*
       (append *simplification-rules*
               (mapcar #'simp-rule '(
@@ -70,7 +74,7 @@
                                     ((sin x) ^ 2 + (cos x) ^ 2 = 1)
                                     ))))
 
-
+;;  Differentiation
 (setf *simplification-rules*
       (append *simplification-rules*
               (mapcar #'simp-rule '(
@@ -79,18 +83,18 @@
                                     (d (u - v) / d x = (d u / d x) - (d v / d x))
                                     (d (- u) / d x   = - (d u / d x))
                                     (d (u * v) / d x = u * (d v / d x) + v * (d u / d x))
-                                    (d (u / v) / d x = (v * (d u / d x) - u * (d v / d x))
-                                     / v ^ 2) ; [This corrects an error in the first printing]
+                                    (d (u / v) / d x = (v * (d u / d x) - u * (d v / d x)) / v ^ 2)
                                     (d (u ^ n) / d x = n * u ^ (n - 1) * (d u / d x))
-                                    (d (u ^ v) / d x = v * u ^ (v - 1) * (d u / d x)
-                                     + u ^ v * (log u) * (d v / d x))
+                                    (d (u ^ v) / d x = v * u ^ (v - 1) * (d u / d x) + u ^ v * (log u) * (d v / d x))
                                     (d (log u) / d x = (d u / d x) / u)
                                     (d (sin u) / d x = (cos u) * (d u / d x))
                                     (d (cos u) / d x = - (sin u) * (d u / d x))
                                     (d (e ^ u) / d x = (e ^ u) * (d u / d x))
-                                    (d u / d x       = 0)))))
+                                    (d u / d x       = 0)
+                                    ))))
 
 
+;; Integration
 (integration-table
  '((Int log(x) d x = x * log(x) - x)
    (Int exp(x) d x = exp(x))

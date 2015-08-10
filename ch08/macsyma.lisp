@@ -4,12 +4,16 @@
 
 (in-package #:ch8)
 
+;; FIXME: `pat-match' do not works for the following example:
+;; (pat-match '(- x x) '(- (* 5 x) (* 5 x)))
+
+;; Re-define `pat-base:variable-p' but it is impossible when use package
 (defun variable-p (exp)
   "Variables are the symbols M through Z."
-  ;; put x,y,z first to find them a little faster
+  ;; put x, y, z first to find them a little faster
   (member exp '(x y z m n o p q r s t u v w)))
 
-;;; From student.lisp:
+;; The same as `ch7::rule' and `ch7::exp':
 (defstruct (rule (:type list)) pattern response)
 (defstruct (exp (:type list)
                 (:constructor mkexp (lhs op rhs)))
@@ -70,7 +74,8 @@
          (list (first exp) (infix->prefix (rest exp))))
         (t (error "Illegal exp"))))
 
-(defvar *simplification-rules* nil) ;Rules are in file macsymar.lisp
+;; Initialize. Rules are in 'macsymar.lisp'
+(defvar *simplification-rules* nil)
 
 (defun ^ (x y) "Exponentiation" (expt x y))
 
@@ -119,13 +124,15 @@
 (defun simplify-exp (exp)
   "Simplify using a rule, or by doing arithmetic,
   or by using the simp function supplied for this operator."
-  (cond ((simplify-by-fn exp))                             ;***
+  (cond ((simplify-by-fn exp))                                         ;***
         ((rule-based-translator exp *simplification-rules*
                                 :rule-if #'exp-lhs :rule-then #'exp-rhs
                                 :action #'(lambda (bindings response)
                                             (simplify (sublis bindings response)))))
         ((evaluable exp) (eval exp))
         (t exp)))
+
+;; Simple test:  (simplify-exp '(- (* 5 X) (* 5 X)))
 
 (defun simplify-by-fn (exp)
   "If there is a simplification fn for this EXP,
@@ -207,14 +214,15 @@
          ,(integrate (exp-rhs exp) x)))
     ((starts-with exp '-)
      (ecase (length (exp-args exp))
-       (1 (integrate (exp-lhs exp) x))     ; Int - f = - Int f
-       (2 `(- ,(integrate (exp-lhs exp) x) ; Int f - g  =
+       (1 (integrate (exp-lhs exp) x))          ; Int - f = - Int f
+       (2 `(- ,(integrate (exp-lhs exp) x)      ; Int f - g  =
               ,(integrate (exp-rhs exp) x)))))  ; Int f - Int g
+
     ;; Now move the constant factors to the left of the integral
     ((multiple-value-bind (const-factors x-factors)
          (partition-if #'(lambda (factor) (free-of factor x))
                        (factorize exp))
-       (identity ;simplify
+       (identity                            ; simplify
         `(* ,(unfactorize const-factors)
             ;; And try to integrate:
             ,(cond ((null x-factors) x)

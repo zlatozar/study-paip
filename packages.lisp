@@ -26,7 +26,9 @@
         #:ch5-final
         #:ch5-exercises
         #:ch6
-        #:ch6-exercises)
+        #:ch6-exercises
+        #:ch7
+        #:ch8)
 
   ;; `inspect'
   (:export #:?a
@@ -125,7 +127,15 @@
 
   ;; `ch6-exercises'
   (:export #:compose
-           #:search-n))
+           #:search-n)
+
+  ;; `ch7'
+
+  ;; `ch8'
+  (:export #:infix->prefix
+           #:prefix->infix)
+
+  )
 
 ;;; ____________________________________________________________________________
 ;;;                                                                        Done
