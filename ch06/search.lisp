@@ -94,17 +94,6 @@ and search according to SUCCESSORS and COMBINER."
   #'(lambda (new old)
       (sort (append new old) #'< :key cost-fn)))
 
-;; Exercise 6.9 [m] The sorter function is inefficient for two reasons: it calls `append',
-;; which has to make a copy of the first argument, and it sorts the entire result, rather
-;; than just inserting the new states into the already sorted old states. Write a more
-;; efficient sorter.
-
-(defun sorter (cost-fn)
-  "Return a combiner function that sorts according to COST-FN."
-  #'(lambda (new old)
-      (merge 'list (sort new #'> :key cost-fn)
-             old #'> :key cost-fn)))
-
 (defun best-first-search (start goal-p successors cost-fn)
   "Search lowest cost states first until goal is reached."
   (tree-search (list start) goal-p successors (sorter cost-fn)))

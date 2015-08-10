@@ -25,6 +25,19 @@ i.e. (compose f g h) = (lambda (x) (f (g (h x))))."
            (reduce #'funcall functions :from-end t
                    :initial-value x)))))
 
+;; Exercise 6.9 [m] The sorter function is inefficient for two reasons: it calls `append',
+;; which has to make a copy of the first argument, and it sorts the entire result, rather
+;; than just inserting the new states into the already sorted old states. Write a more
+;; efficient sorter.
+
+;; FIXME: Do not work as `sorter'
+
+;; (defun sorter (cost-fn)
+;;   "Return a combiner function that sorts according to COST-FN."
+;;   #'(lambda (new old)
+;;       (merge 'list (sort new #'> :key cost-fn)
+;;              old #'> :key cost-fn)))
+
 ;;; ____________________________________________________________________________
 
 ;; Exercise 6.11[m] Write a function that calls `ch6:beam-search' to find the first N
