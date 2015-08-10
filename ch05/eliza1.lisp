@@ -146,6 +146,8 @@
 ;;; ____________________________________________________________________________
 ;;;                                                    Example of ELIZA session
 
+;;; NOTE: There is no punctuation especially comma and sexp are not quoted.
+
 ;;; ch5-first> (eliza)
 ;;; ELIZA> (hello there)
 ;;; (HOW DO YOU DO. PLEASE STATE YOUR PROBLEM.)

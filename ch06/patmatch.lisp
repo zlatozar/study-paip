@@ -299,9 +299,9 @@ The PATTERN looks like ((?if code) . rest)."
 ;; we have to determine what it means to use it. The default is just to substitute
 ;; the bindings of the match into the then-part of the rule.
 
-;; See how can be used in `use-eliza-rules'
+;; See how can be used in `use-eliza-rules' and `ch8::infix->prefix'
 (defun rule-based-translator
-    (input rules &key (matcher 'pat-match)
+    (input rules &key (matcher #'pat-match)
                    (rule-if #'first) (rule-then #'rest) (action #'sublis))
   "Find the first rule in RULES that matches INPUT,
 and apply the action to that rule."

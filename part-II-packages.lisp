@@ -97,8 +97,7 @@ In Chapters 5 and 6 'pat-match' will be improved.")
                 #:random-elt
                 #:flatten
                 #:mklist)
-  (:export #:*eliza-rules*
-           #:read-line-no-punct
+  (:export #:read-line-no-punct
            #:punctuation-p
            #:print-with-spaces
            #:eliza))
@@ -122,7 +121,9 @@ In Chapters 5 and 6 'pat-match' will be improved.")
                 #:dbg
                 #:find-all-if
                 #:undebug
-                #:declare-ignore)
+                #:declare-ignore
+                #:flatten
+                #:random-elt)
   (:shadowing-import-from :paip-aux
                           #:debug)
   (:import-from :ch4-final
@@ -136,8 +137,8 @@ In Chapters 5 and 6 'pat-match' will be improved.")
                 #:make-block-ops
                 #:move-op
                 #:move-ons)
-  (:import-from :ch5-final
-                #:*eliza-rules*)
+  (:import-from :ch5-first
+                #:switch-viewpoint)
 
   (:export #:pat-match
            #:binary-tree
