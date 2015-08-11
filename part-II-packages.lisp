@@ -206,14 +206,10 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:import-from :paip-aux
                 #:starts-with
                 #:length=1)
-  (:import-from :ch6
-                #:pat-match
-                #:rule-based-translator
-                #:pat-match-abbrev
-                #:expand-pat-match-abbrev)
-
   (:export #:infix->prefix
-           #:prefix->infix))
+           #:prefix->infix
+           #:simplify
+           #:simp))
 
 (defpackage #:ch8-exercises
   (:documentation "Selected exercises form Chapter 8")

@@ -4,14 +4,7 @@
 
 (in-package #:ch8)
 
-;; FIXME: `pat-match' do not works for the following example:
-;; (pat-match '(- x x) '(- (* 5 x) (* 5 x)))
-
-;; Re-define `pat-base:variable-p' but it is impossible when use package
-(defun variable-p (exp)
-  "Variables are the symbols M through Z."
-  ;; put x, y, z first to find them a little faster
-  (member exp '(x y z m n o p q r s t u v w)))
+;;; ____________________________________________________________________________
 
 ;; The same as `ch7::rule' and `ch7::exp':
 (defstruct (rule (:type list)) pattern response)
@@ -33,11 +26,11 @@
                   (list (exp-lhs exp) (exp-op exp) (exp-rhs exp))
                   exp))))
 
-;; Define x+ and y+ as a sequence:
+;; Define X+ and Y+ as a sequence:
 (pat-match-abbrev 'x+ '(?+ x))
 (pat-match-abbrev 'y+ '(?+ y))
 
-;; Define n and m as numbers; s as a non-number:
+;; Define N and M as numbers; S as a non-number:
 (pat-match-abbrev 'n '(?is n numberp))
 (pat-match-abbrev 'm '(?is m numberp))
 (pat-match-abbrev 's '(?is s not-numberp))
@@ -74,6 +67,8 @@
          (list (first exp) (infix->prefix (rest exp))))
         (t (error "Illegal exp"))))
 
+;;; ____________________________________________________________________________
+
 ;; Initialize. Rules are in 'macsymar.lisp'
 (defvar *simplification-rules* nil)
 
@@ -92,8 +87,8 @@
   (if (atom exp) exp
       (simplify-exp (mapcar #'simplify exp))))
 
-;;; simplify-exp is redefined below
-
+;; First version:
+;;
 ;; (defun simplify-exp (exp)
 ;;   "Simplify using a rule, or by doing arithmetic."
 ;;   (cond ((rule-based-translator exp *simplification-rules*
@@ -113,7 +108,7 @@
 (defun not-numberp (x) (not (numberp x)))
 
 (defun simp-rule (rule)
-  "Transform a rule into proper format."
+  "Transform a RULE into proper format."
   (let ((exp (infix->prefix rule)))
     (mkexp (expand-pat-match-abbrev (exp-lhs exp))
            (exp-op exp) (exp-rhs exp))))
@@ -123,7 +118,7 @@
 
 (defun simplify-exp (exp)
   "Simplify using a rule, or by doing arithmetic,
-  or by using the simp function supplied for this operator."
+  or by using the `simp' function supplied for this operator."
   (cond ((simplify-by-fn exp))                                         ;***
         ((rule-based-translator exp *simplification-rules*
                                 :rule-if #'exp-lhs :rule-then #'exp-rhs
@@ -222,7 +217,7 @@
     ((multiple-value-bind (const-factors x-factors)
          (partition-if #'(lambda (factor) (free-of factor x))
                        (factorize exp))
-       (identity                            ; simplify
+       (identity                           ; simplify
         `(* ,(unfactorize const-factors)
             ;; And try to integrate:
             ,(cond ((null x-factors) x)
@@ -245,7 +240,7 @@
 
 (defun deriv-divides (factor factors x)
   (assert (starts-with factor '^))
-  (let* ((u (exp-lhs factor))              ; factor = u^n
+  (let* ((u (exp-lhs factor))     ; factor = u^n
          (n (exp-rhs factor))
          (k (divide-factors
              factors (factorize `(* ,factor ,(deriv u x))))))
@@ -270,7 +265,6 @@
 
 (defun integration-table (rules)
   (dolist (i-rule rules)
-    ;; changed infix->prefix to simp-rule - norvig Jun 11 1996
     (let ((rule (simp-rule i-rule)))
       (setf (get (exp-op (exp-lhs (exp-lhs rule))) 'int)
             rule))))

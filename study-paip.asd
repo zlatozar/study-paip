@@ -84,7 +84,8 @@
                (:file "ch07/exercises" :depends-on ("tools/test"))
 
                ;; Chapter 8
-               (:file "ch08/macsyma" :depends-on ("ch06/patmatch"))
+               (:file "ch08/math-patmatch")
+               (:file "ch08/macsyma" :depends-on ("ch08/math-patmatch"))
                (:file "ch08/macsymar" :depends-on ("ch08/macsyma"))
                (:file "ch08/examples" :depends-on ("tutor" "ch08/macsymar"))
                (:file "ch08/exercises" :depends-on ("tools/test"))
