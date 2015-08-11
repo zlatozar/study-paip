@@ -78,6 +78,9 @@ but we can switch to other grammars.")
 ;;; ____________________________________________________________________________
 ;;;                                                         Rule-Based Solution
 
+;; The function `generate' is an interpreter for the "language" defined by the set of
+;; grammar rules.
+
 (defun generate (phrase)
   "Generate a random sentence or phrase"
   (cond ((listp phrase)

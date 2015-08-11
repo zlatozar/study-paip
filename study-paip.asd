@@ -90,4 +90,8 @@
                (:file "ch08/examples" :depends-on ("tutor" "ch08/macsymar"))
                (:file "ch08/exercises" :depends-on ("tools/test"))
 
+               ;; Chapter 9
+               (:file "ch09/rule")
+               (:file "ch09/compilation" :depends-on ("ch09/rule"))
+
                ))

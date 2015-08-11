@@ -146,6 +146,43 @@ Returns searched element if found else nil."
           (find-anywhere item (rest tree)))))
 
 ;;; ____________________________________________________________________________
+;;;                                                                   Chapter 9
+
+;;; The Memoization Facility (p. 270)
+
+(defmacro defun-memo (fn args &body body)
+  "Define a memoized function."
+  `(memoize (defun ,fn ,args . ,body)))
+
+(defun clear-memoize (fn-name)
+  "Clear the hash table from a memo function."
+  (let ((table (get fn-name 'memo)))
+    (when table (clrhash table))))
+
+;; What `memoize' does is fetch the original function and transform it with memo to a
+;; function that, when called, will first look in the table to see if the answer is
+;; already known. If not, the original function is called, and a new value is placed in
+;; the table.
+
+(defun memoize (fn-name &key (key #'first) (test #'eql))
+  "Replace FN-NAME's global definition with a memoized version."
+  (clear-memoize fn-name)
+  (setf (symbol-function fn-name)
+        (memo (symbol-function fn-name)
+              :name fn-name :key key :test test)))
+
+(defun memo (fn &key (key #'first) (test #'eql) name)
+  "Return a memo-function of FN."
+  (let ((table (make-hash-table :test test)))
+    (setf (get name 'memo) table)
+    #'(lambda (&rest args)
+        (let ((k (funcall key args)))
+          (multiple-value-bind (val found-p)
+              (gethash k table)
+            (if found-p val
+                (setf (gethash k table) (apply fn args))))))))
+
+;;; ____________________________________________________________________________
 ;;;                                                                      Macros
 
 (defmacro once-only (variables &rest body)
@@ -252,36 +289,6 @@ NEW-LENGTH, if that is longer than the current length."
 (defun last1 (list)
   "Return the last element (not last cons cell) of LIST"
   (first (last list)))
-
-;;; ____________________________________________________________________________
-;;;                                                    The Memoization Facility
-
-(defmacro defun-memo (fn args &body body)
-  "Define a memoized function."
-  `(memoize (defun ,fn ,args . ,body)))
-
-(defun memo (fn &key (key #'first) (test #'eql) name)
-  "Return a memo-function of FN."
-  (let ((table (make-hash-table :test test)))
-    (setf (get name 'memo) table)
-    #'(lambda (&rest args)
-        (let ((k (funcall key args)))
-          (multiple-value-bind (val found-p)
-              (gethash k table)
-            (if found-p val
-                (setf (gethash k table) (apply fn args))))))))
-
-(defun clear-memoize (fn-name)
-  "Clear the hash table from a memo function."
-  (let ((table (get fn-name 'memo)))
-    (when table (clrhash table))))
-
-(defun memoize (fn-name &key (key #'first) (test #'eql))
-  "Replace FN-NAME's global definition with a memoized version."
-  (clear-memoize fn-name)
-  (setf (symbol-function fn-name)
-        (memo (symbol-function fn-name)
-              :name fn-name :key key :test test)))
 
 ;;; ____________________________________________________________________________
 ;;;                                                         Delayed Computation

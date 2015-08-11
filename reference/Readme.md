@@ -245,6 +245,16 @@ Returns true if OBJECT is of type NUMBER; otherwise, returns false.
 (numberp 12) ;=> T
 (numberp nil) ;=> NIL
 (numberp (cons 1 2)) ;=> NIL
+
+;; Numbers
+9999999999999999999999 ; integers
+#b111                  ; binary => 7
+#o111                  ; octal => 73
+#x111                  ; hexadecimal => 273
+3.14159s0              ; single
+3.14159d0              ; double
+1/2                    ; ratios
+#C(1 2)                ; complex numbers
 ```
 
 ### atom

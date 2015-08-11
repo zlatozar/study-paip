@@ -216,3 +216,11 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:use #:common-lisp
         #:pcl-test
         #:ch8))
+
+;;; ____________________________________________________________________________
+
+(defpackage #:ch9
+  (:documentation "Chapter 9. Efficiency Issues")
+  (:use #:common-lisp)
+  (:import-from :paip-aux
+                #:length=1))

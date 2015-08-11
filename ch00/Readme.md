@@ -1,4 +1,6 @@
-## Chapter 0
+- [Packages](#packages)
+- [Formatting](#formatting)
+- [Macros](#macros)
 
 ### Why lisp?
 
@@ -143,7 +145,7 @@ _(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
       (:use #:common-lisp))
 ```
 
-This saves a tiny bit of memory by not interning any symbols in the `KEYWORD` package—the
+This saves a tiny bit of memory by not interning any symbols in the `KEYWORD` package - the
 (keywords resides automatically in KEYWORDS package) symbol can become garbage after
 DEFPACKAGE (or the code it expands into) is done with it.
 - In the REPL buffer in SLIME you can also pile packages with a REPL shortcut. Type a
@@ -166,7 +168,7 @@ directly to *ch3's* name-to-symbol map. Now if the reader reads the name *BUILD-
 will translate it to the symbol in *ch3's* map, rather than the one that would otherwise be inherited from *ch1*.
 The new symbol is also added to a shadowing symbols list that's
 part of the *ch3* package, so if you later use another package that also exports a
-BUILD-INDEX symbol, the package system will know there's no conflict—that you want the
+BUILD-INDEX symbol, the package system will know there's no conflict - that you want the
 symbol from *ch3* to be used rather than any other symbols with the same name inherited
 from other packages.
 - But if you actually want to use one of the inherited symbols, then you need to resolve the ambiguity
@@ -224,7 +226,7 @@ we get an error instead. **This happens because the whole progn expression is pr
 read before being evaluated.** When read is called, the current package is mine, so bar is
 taken to be mine:bar. It is as if we had asked to export this symbol, instead of
 common-lisp-user:bar, from the user package.
-- Package names live in a flat namespace—package names are just strings, and different
+- Package names live in a flat namespace - package names are just strings, and different
   packages must have textually distinct names. Java style naming is not bad.
 - How to communicate between packages?
 ```
@@ -314,7 +316,7 @@ symbols in a particular package so they can be used in defining forms such as DE
 DEFVAR, and DEFCLASS only when their home package is the current package. In others you have
 warning about **"redefining BAR, originally defined in...".**
 
-### Format
+### Formatting
 
 _(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
 
@@ -328,7 +330,7 @@ _(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
 
 - The second parameter to the format function is a control string, which controls the text formatting.
 You can place control sequences into this string to affect the format of the output.
-- The FORMATlanguage isn’t Lispy at all—its basic syntax is based on characters, not s-expressions,
+- The FORMATlanguage isn’t Lispy at all - its basic syntax is based on characters, not s-expressions,
 and it’s optimized for compactness rather than easy comprehension.
 - The format control string contains literal text and formatting directives.
 Directives are always introduced with a ~ character.
@@ -474,7 +476,7 @@ control string between the two markers will be converted to all lowercase.
 of text, with a colon to make it to capitalize all words, and with both modifiers to
 convert all text to uppercase.
 ``` cl
-format nil "~(~a~)" "tHe Quick BROWN foX") ;=> "the quick brown fox"
+(format nil "~(~a~)" "tHe Quick BROWN foX") ;=> "the quick brown fox"
 (format nil "~@(~a~)" "tHe Quick BROWN foX") ;=> "The quick brown fox"
 (format nil "~:(~a~)" "tHe Quick BROWN foX") ;=> "The Quick Brown Fox"
 (format nil "~:@(~a~)" "tHe Quick BROWN foX") ;=> "THE QUICK BROWN FOX"
@@ -548,9 +550,9 @@ number of items _remaining_ to be processed in the list rather than the number o
 format arguments.
 ``` cl
 ;; ", and 3" is added by ~#[~;, and ~:;, ~]
-(format nil "~{~a~#[~;, and ~:;, ~]~}" (list 1 2 3)) 􏰿 "1, 2, and 3"
+(format nil "~{~a~#[~;, and ~:;, ~]~}" (list 1 2 3)) ;=> "1, 2, and 3"
 ```
-- When **~@{** is nested inside another **~{** or **~@{** directive — it iterates over
+- When **~@{** is nested inside another **~{** or **~@{** directive - it iterates over
 whatever items _remain_ in the list being iterated over by the outer **~{**.
 
 ``` cl
@@ -647,8 +649,8 @@ the expression in the place of the original macro call_.
   "Optional documentation string."
    body-form*)
 ```
-- The job of a macro is to translate a macro form—in other words, a Lisp form whose first
-  element is the name of the macro—into code that does a particular thing.
+- The job of a macro is to translate a macro form - in other words, a Lisp form whose first
+  element is the name of the macro - into code that does a particular thing.
 - How to write MACRO guideline:
 
 ```
@@ -717,7 +719,7 @@ this:
 ```
 However, you don’t need to take apart var-and-range "by hand" because macro parameter
 lists are what are called **destructuring** parameter lists. Destructuring, as the name
-suggests, involves taking apart a structure—in this case the list structure of the forms
+suggests, involves taking apart a structure - in this case the list structure of the forms
 passed to a macro.
 
 Within a destructuring parameter list, a simple parameter name can be replaced with a
@@ -736,7 +738,7 @@ of forms that make up the body of the macro.
      ,@body))
 ```
 In addition to being more concise, destructuring parameter lists also give you automatic
-error checking—with do-primes defined this way, Lisp will be able to detect a call whose
+error checking - with do-primes defined this way, Lisp will be able to detect a call whose
 first argument isn't a three-element list and will give you a meaningful error message
 just as if you had called a function with too few or too many arguments. Also, in
 development environments such as SLIME that indicate what arguments are expected as soon
@@ -753,9 +755,11 @@ the environment will be able to tell you more specifically the syntax of the mac
 Backquoted expression is similar to a quoted expression except you can "unquote"
 particular subexpressions by preceding them with a comma, possibly followed by an **@**
 sign. Without an **@** sign, the comma causes the value of the subexpression to be
-included as is. With an at sign, the value—which must be a list—is "spliced"(append) into
-the enclosing list.  Another useful way to think about the backquote syntax is as a
-particularly concise way of writing code that generates lists. Here is some examples:
+included as is. With an at sign (**@**), the value - which must be a list - is
+"spliced"(append) into the enclosing list. Another useful way to think about the backquote
+syntax is as a particularly concise way of writing code that generates lists.
+
+Here is some examples:
 
 ```
 Backquote Syntax     Equivalent List-Building Code                Result
@@ -763,7 +767,7 @@ Backquote Syntax     Equivalent List-Building Code                Result
 `(a ,(+ 1 2) c)      (list 'a (+ 1 2) 'c)                         (a 3 c)
 `(a (list 1 2) c)    (list 'a '(list 1 2) 'c)                     (a (list 1 2) c)
 `(a ,(list 1 2) c)   (list 'a (list 1 2) 'c)                      (a (1 2) c)
-`(a ,@(list 1 2) c)  (append (list 'a) (list 1 2) (list 'c))      (a 1 2 c)
+`(a ,@(list 1 2) c)  (append (list 'a) (list 1 2) (list 'c))      (a 1 2 c) ; @ interpolates lists.
 ```
 **@** is a perfect way to insert code between two parents **(** and **)**. **@** is useful
 in macros that have `&rest` parameters representing, a body of a code.
