@@ -41,7 +41,7 @@
   (:export #:deftest
            #:check)
 
-  ;; Avoid name collision with CL-USER:DEBUG
+  ;; Avoid name collision with `cl:debug'
   (:shadowing-import-from :paip-aux
                           #:debug)
   ;; `paip-aux'
@@ -91,14 +91,14 @@
   ;; `pat-base'
   (:export #:fail)
 
-  ;; Use optimized version of `paip-aux:mappend'
-  (:shadowing-import-from :ch5-exercises
-                          #:mappend)
-
   ;; `ch05-final'
   (:export #:read-line-no-punct
            #:punctuation-p
            #:print-with-spaces)
+
+  ;; Use optimized version of `paip-aux:mappend'
+  (:shadowing-import-from :ch5-exercises
+                          #:mappend)
 
   ;; `ch5-exercises'
   (:export #:mappend)
