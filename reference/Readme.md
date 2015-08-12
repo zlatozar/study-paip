@@ -11,6 +11,7 @@
     - [atom](#atom)
 - [Chapter-2](#chapter-2)
     - [elt](#elt)
+    - [random](#random)
     - [assoc](#assoc)
     - [list](#list)
     - [make-list](#make-list)
@@ -305,6 +306,20 @@ ELT may by used with conjunction of SETF.
 (let ((a (list 1 2 3 4))) (setf (elt a 1) 'x) a) ;=> (1 X 3 4)
 (let ((a (copy-seq "hola"))) (setf (elt a 1) #\O) a) ;=> "hOla"
 ```
+
+### random
+
+### elt
+
+(**random** _limit_ _random-state?_) => numeric value
+
+Argument description:
+- _sequence_ - positive number, integer or real
+- _index_    - object representing random state. Default is ****random-state**** global
+               variable.
+
+RANDOM function generates random numbers. For integer argument N, result is integer
+between zero (including) and N (excluding).
 
 ### assoc
 
@@ -686,7 +701,7 @@ NTH locates the _Nth_ element of LIST, where the car of the LIST is the
 "zeroth" element.
 
 NTH may be used to specify a PLACE to SETF. Specifically,
-(setf (nth N LIST) NEW-OBJECT) <=> (setf (car (nthcdr N LIST)) NEW-OBJECT)
+```(setf (nth N LIST) NEW-OBJECT) <=> (setf (car (nthcdr N LIST)) NEW-OBJECT)```
 
 See also ELT, FIRST, NTHCDR
 

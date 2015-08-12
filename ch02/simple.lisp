@@ -43,8 +43,18 @@
 (defun Adj () (one-of '(big little blue green adiabatic)))
 (defun Prep () (one-of '(to in by with on)))
 
+
+;; (defun Adj* ()
+;;   "Warning - incorrect definition of Adjectives. "
+;;   (one-of (list nil (append (Adj) (Adj*)))))
+;;
+;; It will cause infinite recursion because 'one-of' parameter should be
+;; created but this creation never ends.
+
 ;;; ____________________________________________________________________________
 ;;;                                                               Grammar rules
+
+;; Represent a grammar that could be easily interpret. That is the power of Lisp.
 
 (defparameter *simple-grammar*
   '((sentence -> (noun-phrase verb-phrase))
@@ -61,6 +71,9 @@ but we can switch to other grammars.")
 
 ;;; ____________________________________________________________________________
 ;;;                                                            Helper functions
+
+;; It is a good idea to impose a layer of abstraction by defining functions to
+;; operate on the rules.
 
 ;; p. 40
 (defun rule-lhs (rule)

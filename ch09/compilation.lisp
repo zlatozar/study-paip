@@ -8,6 +8,8 @@
 ;;; ____________________________________________________________________________
 ;;;                                                         Code from Chapter 2
 
+;; The program we will develop in this chapter generates random English sentences.
+
 (defun rule-lhs (rule)
   "The left hand side of a RULE."
   (first rule))
