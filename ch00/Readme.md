@@ -727,7 +727,7 @@ nested parameter list. The parameters in the nested parameter list will take the
 from the elements of the expression that would have been bound to the parameter the list
 replaced. For instance, you can replace `var-and-range` with a list `(var start end)`, and
 the three elements of the list will automatically be destructured into those three
-parameters. Hm, but what is `&body`?  Typically `&body` parameters are used to hold a list
+parameters. Hm, but _what is_ `&body`? Typically `&body` parameters are used to hold a _list_
 of forms that make up the body of the macro.
 
 ``` cl
@@ -767,10 +767,15 @@ Backquote Syntax     Equivalent List-Building Code                Result
 `(a ,(+ 1 2) c)      (list 'a (+ 1 2) 'c)                         (a 3 c)
 `(a (list 1 2) c)    (list 'a '(list 1 2) 'c)                     (a (list 1 2) c)
 `(a ,(list 1 2) c)   (list 'a (list 1 2) 'c)                      (a (1 2) c)
-`(a ,@(list 1 2) c)  (append (list 'a) (list 1 2) (list 'c))      (a 1 2 c) ; @ interpolates lists.
+`(a ,@(list 1 2) c)                                               (a 1 2 c) ; @ interpolates lists.
 ```
-**@** is a perfect way to insert code between two parents **(** and **)**. **@** is useful
-in macros that have `&rest` parameters representing, a body of a code.
+**@** will place the elements of the list _directly_ inside in the expansion.
+Do you remember what is `&body`? It holds a **list** of forms that make up the body of the
+macro! We have to traverse this list and insert very element in macros body. That's why we
+always see `,@body`.
+
+
+**@** is useful in macros that have `&rest` parameters representing, a body of a code.
 
 Let's test it by hand
 
