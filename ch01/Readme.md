@@ -1,24 +1,46 @@
 #### Chapter 1
 
-- With @ in `examples.lisp`, page in the book is referred - with => expected result
+- With `@` in `examples.lisp`, page in the book is referred - with `:=>` expected result
 e.g. `((+ 2 2) => 4 @ 4)`.
-- Lisp is case insensitive.
+- Lisp is case **insensitive**.
 - Lisp output is in UPPERCASE. In this way differ between input and output.
 Slime also made UPPERCASEd output in red.
 - Every expression return a value.
 
+**atoms** - Atoms are the elementary LISP expressions. They are separated from other
+expressions by blanks, parentheses or a line feed. Atoms are not character strings
+contained in parentheses e.g. ```(a b c)``` is a list.
+**symboilc atoms** (also called **s-atom**) - Atoms are distinguished between numbers and
+those atoms like names e.g. `bread`, `milk`. _"Symbolic"_ because they can stand for
+something else (e.g., as the name of a function or as a variable). In other words, you can
+get a value assigned. Terms that s-atoms represent may begin with characters or digits
+(but if it is a digit then the atom is a number) but may not contain a colon `:` or
+semi-colon `;` nor parentheses or spaces. In LISP, parentheses and spaces (blanks) are
+interpreted as separators of atoms and lists.
+**numbers** - A special type of atom is the number. Unlike symbolic atoms, numbers have
+the particular feature of being unable to accept values as they already have a constant
+value, namely the number itself.
 **expressions** - things that are evaluated to produce a value
-(Every expression is either a single value or a list)
+(Lists and atoms belong to the generic term EXPRESSION)
 **statements** - things that express an action
 
-For instance, in Python, x = 1 is a statement, and (x + 1) is an expression.
+For instance, in Python, `x = 1` is a _statement_, and `(x + 1)` is an _expression_.
 By making everything an expression, however, Lisps remove this limitation.
 Since expressions are nestable, anything in the language can be combined with
 nearly anything else.
 
+- Consing with an example:
+```cl
+(defun replace-third (item list)
+       (cons (first list)
+             (cons (first (rest list))
+                   (cons item (rest (rest (rest list)))))))
+```
+- Anything in LISP that is not explicitly NIL or the empty list or if the evaluation does
+  not evaluate to NIL, has the truth value T!
 - The last expression is returned as the value of the function call.
 - Slime: Use `C-c C-j` to send expression to REPL.
-- If you change code for experiment run `(ql:quickload :study-paip)` before.
+- If you change code for experiment run ```(ql:quickload :study-paip)``` before.
 - Special forms are expressions that return a value.
 - The term special form is used confusingly to refer both to symbols like setf and
 expressions that start with them, like `(setf x 3)`.
@@ -88,6 +110,22 @@ makes it easier to replace with an flet or labels function. All this are the sam
 ```
 - What is the difference between reading and evaluating an expression?
 - Every `atom` is either symbol or nonsymbol. A nonsymbol atom evaluates to itself.
+- With LISP the ordering of elements in a list does matter.
+- Like spaces, parentheses are separators, too. Therefore, the expression ```(abc(def))``` is a
+  list containing the elements ```abc``` and ```(def)```. However, it is recommended to separate
+  elements in a list by spaces to enhance the readability of expression, e.g., ```(abc (def))```.
+- The empty list NIL
+  A particular list called the empty list, contains no elements. They are simply written
+  using matching parentheses: ```()```
+  The empty list plays a particular role in LISP and therefore has been given a name: ```NIL```
+
+  As a sole expression in LISP, the _empty list_ or _NIL_ has a particular status. It is a
+  list as well as an atomical expression with the value of **NIL**. And, if seen as a logical
+  expression, NIL can be interpreted as the truth value of FALSE.
+
+- The symbol T
+  The counterpart to the symbol NIL is the symbol T (true). This symbol also has itself as a
+  value. **T** is a symbol and therefore an atom.
 - Trees in Lisp are represented as nested lists. Try to solve exercise 1.4.
 - If you get error in REPL to not hurry to jump in SLDB. First see the error
   explanation in REPL
@@ -98,7 +136,8 @@ makes it easier to replace with an flet or labels function. All this are the sam
       (last-name (third names)
       ......)
 ```
-- Start solving lisp koans: http://github.com/google/lisp-koans
+- Take [interactive Lisp course|http://art2.ph-freiburg.de/Lisp-Kurs]
+- Start solving [lisp koans|http://github.com/google/lisp-koans]
 
     * Load `contemplate.lsp` with Slime `C-c C-l`
     * Switch to `lisp-koans` package

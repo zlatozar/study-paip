@@ -64,6 +64,7 @@
     - [fresh-line](#fresh-line)
     - [mapcan](#mapcan)
     - [consp](#consp)
+    - [listp](#listp)
     - [copy-list](#copy-list)
 - [Chapter-5](#chapter-5)
     - [read-from-string](#read-from-string)
@@ -72,6 +73,8 @@
     - [progv](#progv)
     - [adjoin](#adjoin)
     - [merge](#merge)
+- [Chapter-9](#chapter-9)
+    - [sharpsign](#sharpsign)
 - [Koans](#koans)
 - [Misc](#misc)
     - [getf](#getf)
@@ -86,12 +89,15 @@ Argument description:
 - _list_ -  lists to be concatenated
 
 APPEND function concatenates list arguments into one list. Resulting list is
-shallow copy of specified lists except for the last which is directly shared.
+shallow copy of specified lists except for the **last** which is directly shared.
+The command to APPEND would be "link the following lists together". If an empty list, NIL
+is an argument, it is not included in the result.
 
 See also MAPCAN, CONS, LIST, LIST\*.
 
 ``` cl
 (append) ;=> NIL
+(append '(I) nil '(do not believe it)) ;=> (I DO NOT BELIEVE IT)
 (append '(1 2 3)) ;=> (1 2 3)
 (append '(1 2 3) '(4 5 6)) ;=> (1 2 3 4 5 6)
 (append '(1 2 3) '(4 5 6) '(7 8 9)) ;=> (1 2 3 4 5 6 7 8 9)
@@ -106,9 +112,9 @@ Argument description:
 - _sequence_ - a proper sequence
 - _N_        - a non-negative integer
 
-Returns the number of elements in SEQUENCE.
-If SEQUENCE is a vector with a fill pointer, the active length as specified by
-the fill pointer is returned.
+Returns the number of elements in SEQUENCE. Only the top level is counted. Elements in
+sub-lists are disregarded. If SEQUENCE is a vector with a fill pointer, the active length
+as specified by the fill pointer is returned.
 
 See also LIST-LENGTH
 
@@ -155,14 +161,15 @@ Argument description:
 - _test_   - function key and item comparison
 - _key_    - function for extracting value before test
 
-MEMBER function searches a list for the first occurrence of an element (item)
-satisfying the test. Return value is tail of the list starting from found
-element or NIL when item is not found.
+If the LISP expression was found, the tail of the list starting with the LISP expression
+is returned. In case the expression could not be found, the function returns NIL.
+MEMBER will only search the top level of the list, so with nested lists it will not go any
+deeper than the top level.
 
 See also MEMBER-IF, POSITION, POSITION-IF, FIND, FIND-IF and FIND-ALL(from the book).
 
 ``` cl
-(member 1 '(0 1 0 0 0 1 0)) ;=> (1 0 0 0 1 0)
+(member 'i '(a i o u)) ;=> (I O U)
 (member 2 '(0 1 0 0 0 1 0)) ;=> NIL
 (member #\h '(#\H #\o #\l #\a)) ;=> NIL
 (member #\h '(#\H #\o #\l #\a) :test #'char-equal) ;=> (#\H #\o #\l #\a)
@@ -359,23 +366,30 @@ cells. That is:
 Argument description:
 - _list_ - list of objects
 
-LIST function makes new list from arguments.
+LIST function makes new list from arguments. If the empty list, NIL is one of the
+arguments, it will be listed in the result. In simple terms, this function will "list the
+following arguments" e.g. ```(list nil '(paip)) ;=> (NIL (PAIP))```. Here is an
+interesting example:
+```cl
+(list 'study-paip) ;=> (study-paip)
+```
+Example shows how a list can be constructed from an atomic expression and with only a
+single element (the atom).
 
 See also LISTP, LIST\*
 
 ``` cl
 (list 1 2 3) ;=> (1 2 3)
-(list 'a #c(1 2) "moo") ;=> (A #C(1 2) "moo")
-(car (list 1 2 3)) ;=> 1
-(cdr (list 1 2 3)) ;=> (2 3)
-(list) ;=> NIL
-(eq (list) nil) ;=> T
-(eq (list) '()) ;=> T
-(equal (list 1) (cons 1 nil)) ;=> T
-(equal (list 1 'a) (cons 1 (cons 'a nil))) ;=> T
+(list 'a '(b c)) ;=> (A (B C)) ; (cons 'a (cons '(b c) nil))
 (equal (list 1 'a 3) (cons 1 (cons 'a (cons 3 nil)))) ;=> T
+
+(list 'a #c(1 2) "moo") ;=> (A #C(1 2) "moo")
+
+(list) ;=> NIL
+(eq (list) '()) ;=> T
+
+;; Be careful
 (equal (list 1 'a 3) '(1 . (a . (3 . nil)))) ;=> T
-(equal '(1 2 3) (list 1 2 3)) ;=> T
 ```
 
 ### make-list
@@ -718,12 +732,14 @@ See also ELT, FIRST, NTHCDR
 Argument description:
 - _sequence_ - a sequence
 
-REVERSE function makes new sequence with reverted order of elements.
+REVERSE function makes new sequence with reverted order of elements. Elements in the
+sub-list are not reversed.
 
 See also MAP, MAPCAR and MAPCAN.
 
 ``` cl
 (reverse '(1 2 3 4)) ;=> (4 3 2 1)
+(reverse '(a (b c) d)) ;=> (D (B C) A)
 (reverse '#(1 2 3 4)) ;=> #(4 3 2 1)
 (reverse "hola") ;=> "aloh"
 (reverse nil) ;=> NIL
@@ -1211,12 +1227,29 @@ See MAPCAR.
 
 ### consp
 
-(**consp** _object_) => T or NIL
+(**consp** _expression_) => T or NIL
 
-CONSP function returns true if the argument refers to cons cell, otherwise it returns
-false.
+CONSP function returns true if the argument refers to `cons` cell, otherwise it returns
+false. If CONSP gets the empty list NIL as its argument, it returns a value of NIL
+because the empty list, in contrast to non-empty lists, is not built by multiple calls to
+CONS. NIL is, however, an atom.
 
-See CONS and LIST.
+The following calls demonstrate this:
+```cl
+(consp NIL) ;=> NIL
+(atom NIL)  ;=> T
+
+;; But:
+(consp '(NIL)) ;=> T
+```
+
+Here the list (NIL) is created by the "CONSing" of NIL to NIL:
+```cl
+(cons NIL NIL) ;=> (NIL)
+
+;; T is just an atomic expression:
+(consp t) ;=>NIL
+```
 
 ``` cl
 (consp nil) ;=> NIL
@@ -1225,6 +1258,19 @@ See CONS and LIST.
 (consp '(1 . 2)) ;=> T
 (consp '(1 2 3 4)) ;=> T
 (consp (list 1 2 3 4)) ;=> T
+```
+
+### listp
+
+(**listp** _expression_) => T or NIL
+
+In contrast to CONSP, LISTP also accepts the empty list (NIL) as a list.
+
+```cl
+(listp '(a b c)) ;=> T
+(listp NIL) ;=> T
+(listp 12)  ;=> NIL
+(listp t)   ;=> NIL
 ```
 
 ### copy-list
@@ -1334,9 +1380,15 @@ sequence of structures. In other words selects DEFSTRUCT field that is used for 
   (merge 'list (list path) paths #'< :key #'path-total-cost))
 ```
 
+## Chapter-6
+
+### sharpsign
+
+
+
 ## Koans
 
-Taken from **Lisp-koans**
+Interesting code taken from **Lisp-koans**
 
 _(work in progress)_
 

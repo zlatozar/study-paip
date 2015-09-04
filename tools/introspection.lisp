@@ -36,9 +36,9 @@ packages."
                           (remove-if #'spec-constraint-p (apropos-list sub-string))
                           #'string-lessp)))
 
-(defun ?? (some-symbol)
-  "Verbosely describe a symbol."
-  (describe some-symbol))
+(defun ?? (&rest rest)
+  "Shortening of `describe'."
+  (apply #'describe rest))
 
 ;;; ____________________________________________________________________________
 ;;;                                                            Examine packages
