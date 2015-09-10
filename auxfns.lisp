@@ -182,6 +182,27 @@ Returns searched element if found else nil."
   (let ((table (get fn-name 'memo)))
     (when table (clrhash table))))
 
+
+;;; Delaying Computation (p. 280)
+
+(defstruct delay value (computed? nil))
+
+;; Notice the dot in lambda expression.
+;;
+;; A lambda-expression is a list with the following syntax:
+;; (lambda lambda-list . body)
+
+(defmacro delay (&rest body)
+  "A computation that can be executed later by `force'."
+  `(make-delay :value #'(lambda () . ,body)))
+
+(defun force (delay)
+  "Do a delayed computation, or fetch its previously-computed value."
+  (if (delay-computed? delay)
+      (delay-value delay)
+      (prog1 (setf (delay-value delay) (funcall (delay-value delay)))
+        (setf (delay-computed? delay) t))))
+
 ;;; ____________________________________________________________________________
 ;;;                                                                      Macros
 
@@ -289,22 +310,6 @@ NEW-LENGTH, if that is longer than the current length."
 (defun last1 (list)
   "Return the last element (not last cons cell) of LIST"
   (first (last list)))
-
-;;; ____________________________________________________________________________
-;;;                                                         Delayed Computation
-
-(defstruct delay value (computed? nil))
-
-(defmacro delay (&rest body)
-  "A computation that can be executed later by `force'."
-  `(make-delay :value #'(lambda () . ,body)))
-
-(defun force (delay)
-  "Do a delayed computation, or fetch its previously-computed value."
-  (if (delay-computed? delay)
-      (delay-value delay)
-      (prog1 (setf (delay-value delay) (funcall (delay-value delay)))
-        (setf (delay-computed? delay) t))))
 
 ;;; ____________________________________________________________________________
 ;;;                                                                 Defresource

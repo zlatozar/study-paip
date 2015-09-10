@@ -75,6 +75,8 @@
     - [merge](#merge)
 - [Chapter-9](#chapter-9)
     - [sharpsign](#sharpsign)
+    - [multiple-value-bind](#multiple-value-bind)
+    - [prog1](#prog1)
 - [Koans](#koans)
 - [Misc](#misc)
     - [getf](#getf)
@@ -1380,11 +1382,21 @@ sequence of structures. In other words selects DEFSTRUCT field that is used for 
   (merge 'list (list path) paths #'< :key #'path-total-cost))
 ```
 
-## Chapter-6
+## Chapter-9
 
 ### sharpsign
 
+It is a conditional read macro characters ```#+``` and ```#-```.  For example, ```#'fn```
+is read as ```(function fn)```. The character sequence ```#+``` is defined so that
+_feature_ expression reads as expression if the _feature_ is defined in the current
+implementation, and as nothing at all if it is not. The sequence ```#-``` acts in just the
+opposite way.
 
+See also: ****features****
+
+### multiple-value-bind
+
+### prog1
 
 ## Koans
 

@@ -63,6 +63,8 @@ to test chapter exercises.")
            #:find-anywhere
            ;; ch09
            #:memoize
+           #:delay
+           #:force
            ))
 
 ;;; ____________________________________________________________________________

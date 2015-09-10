@@ -12,11 +12,14 @@
 (defpackage #:paip
   (:documentation "Expose functions and complete programs from PAIP book.")
   (:use #:common-lisp
+
         ;; tools
         #:inspect
         #:pcl-test
+
         ;; book code
         #:paip-aux
+
         #:ch1-exercises
         #:ch2-exercises
         #:ch3
@@ -28,7 +31,8 @@
         #:ch6
         #:ch6-exercises
         #:ch7
-        #:ch8)
+        #:ch8
+        #:ch9)
 
   ;; `inspect'
   (:export #:?a
@@ -67,6 +71,8 @@
            #:find-anywhere
            ;; ch09
            #:memoize
+           #:delay
+           #:force
            )
 
   ;; `ch1-exercises'
@@ -138,6 +144,18 @@
            #:prefix->infix
            #:simplify
            #:simp)
+  ;; `ch9'
+  (:export #:make-pipe
+           #:head
+           #:tail
+           #:elt-pipe
+           #:enumerate-pipe
+           #:filter-pipe
+           #:map-pipe
+           #:append-pipes
+           #:mapcan-pipe
+           #:combine-all-pipes)
+
   )
 
 ;;; ____________________________________________________________________________

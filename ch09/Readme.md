@@ -1,7 +1,5 @@
 #### Chapter 9
 
-_No files; important functions in ../auxfns.lisp_
-
 There are four very general and language-independent techniques for speeding
 up an algorithm:
 

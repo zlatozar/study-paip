@@ -225,4 +225,15 @@ In Chapters 5 and 6 'pat-match' will be improved.")
         #:inspect)
   (:import-from :paip-aux
                 #:length=1
-                #:memoize))
+                #:memoize)
+  (:export #:make-pipe
+           #:head
+           #:tail
+           ;; Utility functions on pipes
+           #:elt-pipe
+           #:enumerate-pipe
+           #:filter-pipe
+           #:map-pipe
+           #:append-pipes
+           #:mapcan-pipe
+           #:combine-all-pipes))

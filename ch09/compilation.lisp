@@ -48,7 +48,8 @@
 ;; (defun PP ()
 ;;      (append (Prep) (noun-phrase)))
 ;;
-;; Do not forget that 'Prep' and 'noun-phrase' are functions.
+;; Do not forget that 'Prep' and 'noun-phrase' are functions and we have to be
+;; careful when choose names. Packages gave us safety.
 ;;
 ;; Last case is when we have more than one list e.g.
 ;; (noun-phrase -> (Article Adj* Noun PP*) (Name) (Pronoun))
