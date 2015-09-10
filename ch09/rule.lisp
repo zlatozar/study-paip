@@ -22,7 +22,8 @@
 
 ;;; ____________________________________________________________________________
 
-;; It is possible but not handy:
+;; It is possible but not handy (also SBCL warnings):
+;;
 ;; (dolist (rule *grammar*) (eval (compile-rule rule)))
 ;; (dolist (rule *grammar*) (compile (eval (compile-rule rule))))
 
@@ -34,14 +35,22 @@
   "Define a grammar rule"
   (compile-rule rule))
 
-;; Usage:
+;; Better usage (reorder them to avoid SBCL warnings):
 
-;; (defrule Sentence -> (NP VP))
-;; (defrule NP -> (Art Noun))
-;; (defrule VP -> (Verb NP))
 ;; (defrule Art -> the a)
 ;; (defrule Noun -> man ball woman table)
 ;; (defrule Verb -> hit took saw liked)
+;; (defrule NP -> (Art Noun))
+;; (defrule VP -> (Verb NP))
+;; (defrule Sentence -> (NP VP))
 
+;; Then just like in Chapter 2
+;; CL-USER> (sentence)
+
+;; See the process:
+;; (compile-rule '(Noun -> man ball woman table))
 ;; (compile-rule '(Sentence -> (NP VP)))
+;; (compile-rule '(defrule Adj* -> () Adj (Adj Adj*)))
+
+;; or in other way
 ;; (macroexpand-1 '(defrule Adj* -> () Adj (Adj Adj*)))

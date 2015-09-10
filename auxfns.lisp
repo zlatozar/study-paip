@@ -154,11 +154,6 @@ Returns searched element if found else nil."
   "Define a memoized function."
   `(memoize (defun ,fn ,args . ,body)))
 
-(defun clear-memoize (fn-name)
-  "Clear the hash table from a memo function."
-  (let ((table (get fn-name 'memo)))
-    (when table (clrhash table))))
-
 ;; What `memoize' does is fetch the original function and transform it with memo to a
 ;; function that, when called, will first look in the table to see if the answer is
 ;; already known. If not, the original function is called, and a new value is placed in
@@ -181,6 +176,11 @@ Returns searched element if found else nil."
               (gethash k table)
             (if found-p val
                 (setf (gethash k table) (apply fn args))))))))
+
+(defun clear-memoize (fn-name)
+  "Clear the hash table from a memo function."
+  (let ((table (get fn-name 'memo)))
+    (when table (clrhash table))))
 
 ;;; ____________________________________________________________________________
 ;;;                                                                      Macros

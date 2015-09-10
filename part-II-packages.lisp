@@ -221,6 +221,8 @@ In Chapters 5 and 6 'pat-match' will be improved.")
 
 (defpackage #:ch9
   (:documentation "Chapter 9. Efficiency Issues")
-  (:use #:common-lisp)
+  (:use #:common-lisp
+        #:inspect)
   (:import-from :paip-aux
-                #:length=1))
+                #:length=1
+                #:memoize))

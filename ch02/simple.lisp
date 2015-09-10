@@ -17,7 +17,7 @@
 (defun Verb ()        (one-of '(hit took saw liked)))
 
 (defun one-of (set)
-  "Pick one element of `set', and make a list of it."
+  "Pick one element of SET, and make a list of it."
   (list (random-elt set)))
 
 (defun random-elt (choices)

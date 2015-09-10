@@ -61,6 +61,8 @@ to test chapter exercises.")
            ;; ch08
            #:length=1
            #:find-anywhere
+           ;; ch09
+           #:memoize
            ))
 
 ;;; ____________________________________________________________________________
