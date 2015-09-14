@@ -77,6 +77,11 @@
     - [sharpsign](#sharpsign)
     - [multiple-value-bind](#multiple-value-bind)
     - [prog1](#prog1)
+    - [pop](#pop)
+    - [set-difference](#set-difference)
+    - [time](#time)
+    - [proclaim](#proclaim)
+    - [multiple-value-prog1](#multiple-value-prog1)
 - [Koans](#koans)
 - [Misc](#misc)
     - [getf](#getf)
@@ -1396,7 +1401,51 @@ See also: ****features****
 
 ### multiple-value-bind
 
+One great feature in Common Lisp is the ability for a single form to return _multiple
+values_.  The key thing to understand about multiple values is that returning multiple
+values is quite different from returning a list - if a form returns multiple values,
+unless you do something specific to capture the multiple values, all but the _primary
+value_ will be silently discarded. There are two aspects to using multiple values -
+returning multiple values and getting at the non primary values returned by forms that
+return multiple values. **MULTIPLE-VALUE-BIND** creates variable bindings like LET does,
+filling them with the multiple values returned by a form.
+
+```cl
+(defun show-value (key hash-table)
+  (multiple-value-bind (value present) (gethash key hash-table)
+    (if present
+      (format nil "Value ~a actually present." value)
+      (format nil "Value ~a because key not found." value))))
+```
+
+See also: VALUES, VALUES-LIST
+
 ### prog1
+
+### multiple-value-prog1
+
+In particular, the PROG1 macro, which evaluates a number of forms like a PROGN before
+returning the value of the first form, returns that form's _primary value_ only. Likewise,
+PROG2, which returns the _value of the second_ of its subforms, returns only the primary
+value. _The special operator MULTIPLE-VALUE-PROG1 is a variant of PROG1 that returns all
+the values returned by the first form_. It's a minor wart that PROG1 doesn't already behave
+like MULTIPLE-VALUE-PROG1, but neither is used often enough that it matters much. **The OR
+and COND macros are also not always transparent to multiple values, returning only the
+primary value of certain subforms.**
+
+### pop
+
+### time
+
+### proclaim
+
+```cl
+(defvar *x*)
+
+;; is almost the same as
+
+(proclaim '(special *x*))
+```
 
 ## Koans
 
@@ -1415,7 +1464,7 @@ Argument description:
 - _key_     - keying value, also know as indicator
 - _default_ - answer when key-value pair is not found, default is NIL
 
-GETF function searches supplied _plist_ for value with matching key. _Plist_ is list of even
+GETF function searches supplied _plist_ for value with matching key. _plist_ is list of even
 number of items. Each item pair specifies key and value. I.e. (K1 V1 K2 V2 ...). Return
 value is either value for first matching key, or specified default. Keys are matched by **EQ**
 function, therefore only suitable values are symbols and integers.

@@ -120,7 +120,7 @@
     (format t "~&  Count     Secs   Mins Time% Name")
     (dolist (name fn-names)
       (format t "~&~7D ~8,2F ~6,2F  ~3d% ~A"
-                                        ; a convenient side effect:
+              ;; a convenient side effect:
               (setf *inf-count* (profile-count name))
               (fast-time->seconds (profile-time name))
               (fast-time->minutes (profile-time name))

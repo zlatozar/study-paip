@@ -207,7 +207,7 @@ Returns searched element if found else nil."
 ;;;                                                                      Macros
 
 (defmacro once-only (variables &rest body)
-  "Returns the code built by BODY.  If any of VARIABLES
+  "Returns the code built by BODY. If any of VARIABLES
   might have side effects, they are evaluated once and stored
   in temporary variables that are then passed to BODY."
   (assert (every #'symbolp variables))

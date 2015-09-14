@@ -87,9 +87,19 @@ quoted or unquoted symbol."
       (second form)
       form))
 
-(defmacro ?mac (expr)
-  "Bind *gensym-counter* to 0, macroexpand-1 the EXPR and pprint result.
-If expression starts with a quotation, unquotes it first."
-  `(let ((*gensym-counter* 0)
-	 (*print-case* :downcase))
-     (pprint (macroexpand-1 ',(ensure-unquoted expr)))))
+(defmacro ?mac (form)
+  "Pretty prints the macro expansion of FORM."
+  `(let* ((*gensym-counter* 0)
+          (exp1 (macroexpand-1 ',form))
+	  (exp (macroexpand exp1))
+          (*print-case* :downcase)
+	  (*print-circle* nil))
+     (cond ((equal exp exp1)
+	    (format t "~&Macro expansion~%:")
+	    (pprint exp))
+	   (t (format t "~&First step of expansion:~%")
+	      (pprint exp1)
+	      (format t "~%~%Final expansion:")
+	      (pprint exp)))
+     (format t "~%~%")
+     (values)))
