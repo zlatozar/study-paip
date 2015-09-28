@@ -77,11 +77,12 @@
     - [sharpsign](#sharpsign)
     - [multiple-value-bind](#multiple-value-bind)
     - [prog1](#prog1)
+    - [multiple-value-prog1](#multiple-value-prog1)
     - [pop](#pop)
     - [set-difference](#set-difference)
     - [time](#time)
     - [proclaim](#proclaim)
-    - [multiple-value-prog1](#multiple-value-prog1)
+    - [unwind-protect](#unwind-protect)
 - [Koans](#koans)
 - [Misc](#misc)
     - [getf](#getf)
@@ -1439,6 +1440,8 @@ primary value of certain subforms.**
 
 ### proclaim
 
+PROCLAIM names a function for making global declarations.
+
 ```cl
 (defvar *x*)
 
@@ -1446,6 +1449,60 @@ primary value of certain subforms.**
 
 (proclaim '(special *x*))
 ```
+
+DECLAIM names a macro for making global declarations (like PROCLAIM) which are also
+effective at _compile-time_.
+
+```cl
+(proclaim '(special *x*))
+(defun foo () (print *x*))
+```
+
+the compiler will complain that foo reads an unknown special variable ****x****, while
+
+```cl
+(declaim (special *x*))
+(defun foo () (print *x*))
+```
+will cause no warnings.
+
+DECLARE is just a symbol for making local declarations in the beginning of some
+forms. DECLARE is the easy one - it has a block limited scope. Here is an example:
+
+Both PROCLAIM and DECLARE give the system some supplemental information in the form of a
+declaration. For example, you an use a declaration for improving the efficiency of
+executing a program without affecting the result of the execution. By inserting a DECLARE
+expression in the definition of factorial:
+
+```cl
+(defun fact(x)
+  (declare (integer x))
+  (if (zerop x) 1
+      (* x (fact (1- x)))))
+```
+you give the system the information that the parameter is always an integer.
+
+### unwind-protect
+
+You'll occasionally use UNWIND-PROTECT directly. More often you'll use it as the basis for
+**WITH-** style macros, that evaluate any number of body forms in a context where they
+have access to some resource that needs to be cleaned up after they're done, regardless of
+whether they return normally or bail via a restart or other nonlocal exit.
+
+For example, if you were writing a database library that defined functions `open-connection`
+and `close-connection`, you might write a macro like this:
+
+```cl
+(defmacro with-database-connection ((var &rest open-args) &body body)
+  `(let ((,var (open-connection ,@open-args)))
+    (unwind-protect (progn ,@body)
+      (close-connection ,var))))
+```
+
+and not have to worry about closing the database connection, since the UNWIND-PROTECT will
+make sure it gets closed no matter what happens in the body of the
+with-database-connection form.
+
 
 ## Koans
 

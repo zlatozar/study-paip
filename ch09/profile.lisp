@@ -20,12 +20,16 @@
   "Stop profiling FN-NAMES. With no args, stop all profiling."
   `(progn
      (mapcar #'unprofile1
-             ,(if fn-names `',fn-names '*profiled-functions*))
+             ,(if fn-names `',fn-names '*profiled-functions*)) ; equivalent to '(quote ,fn-names). See `kwote'
      (setf *profiled-functions*
            ,(if (null fn-names)
                 nil
                 `(set-difference *profiled-functions*
                                  ',fn-names)))))
+
+;; The 'quote' is constant and the variable X is evaluated.
+(defun kwote (x)
+  (list 'quote x))
 
 (defun profile1 (fn-name)
   "Make the function count how often it is called"
@@ -68,6 +72,11 @@
 (defun fast-time->minutes (time)
   "Convert a fast-time interval into minutes."
   (/ (/ time internal-time-units-per-second) 60))
+
+;; Inline expansion is a compiler optimization technique that reduces the overhead of a
+;; function call by simply not doing the call: instead, the compiler effectively rewrites
+;; the program to appear as though the definition of the called function was inserted at
+;; each call site.
 
 (proclaim '(inline profile-enter profile-exit inc-profile-time))
 
@@ -129,6 +138,9 @@
     (terpri)))
 
 (defun profile-time (fn-name) (get fn-name 'profile-time))
+
+;; Note the use of `unwind-protect' to produce the report and call `unprofile' even if the
+;; computation is aborted
 
 (defmacro with-profiling (fn-names &rest body)
   `(progn

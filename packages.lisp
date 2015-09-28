@@ -145,7 +145,8 @@
            #:simplify
            #:simp)
   ;; `ch9'
-  (:export #:make-pipe
+  (:export #:kwote
+           #:make-pipe
            #:head
            #:tail
            #:elt-pipe
@@ -154,7 +155,8 @@
            #:map-pipe
            #:append-pipes
            #:mapcan-pipe
-           #:combine-all-pipes)
+           #:combine-all-pipes
+           #:with-profiling)
 
   )
 
