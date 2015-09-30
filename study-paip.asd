@@ -95,5 +95,9 @@
                (:file "ch09/compilation" :depends-on ("ch09/rule"))
                (:file "ch09/profile")
                (:file "ch09/pipes")
+               (:file "ch09/examples" :depends-on ("ch09/profile"))
+
+               ;; Chapter 10
+               (:file "ch10/low-level")
 
                ))

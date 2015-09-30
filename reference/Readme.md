@@ -83,6 +83,11 @@
     - [time](#time)
     - [proclaim](#proclaim)
     - [unwind-protect](#unwind-protect)
+- [Chapter-10](#chapter-10)
+    - [the](#the)
+    - [svref](#svref)
+    - [simple-vector](#simple-vector)
+    - [simple-array](#simple-array)
 - [Koans](#koans)
 - [Misc](#misc)
     - [getf](#getf)
@@ -776,24 +781,28 @@ See also COPY-SEQ and MAP.
 
 ### aref
 
-(**aref** _array_ _subscripts\*) => element
+(**aref** _array_ _index+_) => element pointed by the _index_
 
 Argument description:
-- _array_      - an array
-- _subscripts_ - a list of valid array indices
+- _array_ - an array
+- _index_ - a list of valid array indices
 
 AREF function accesses specified elements of arrays. Every array index is
 counted from zero. Accessing out-of-bounds indices signals condition, or causes
 crash and/or undefined behavior, depending on compilation safety mode. **Note that
 vectors (including strings which are special vectors) are treated as one
-dimensional arrays so aref works on them too.**
+dimensional arrays so AREF works on them too.**
 
 AREF with conjunction of SETF may be used to set array elements.
+
+See also: SVREF
 
 ``` cl
 (aref "hola" 0) ;=> #\h
 (aref "hola" 3) ;=> #\a
 (aref #(5 3 6 8) 1) ;=> 3
+
+;; Two dimensional
 (aref (make-array '(10 10) :initial-element 'moo) 9 9) ;=> MOO
 
 (let ((a (make-array '(3 3) :initial-element 'moo)))
@@ -1375,8 +1384,8 @@ descriptor specifying the type of sequence to produce.
 ```cl
 ;; Note that sequence are already sorted
 
-(merge 'vector #(1 3 5) #(2 4 6) #'<) ==> #(1 2 3 4 5 6)
-(merge 'list #(1 3 5) #(2 4 6) #'<)   ==> (1 2 3 4 5 6)
+(merge 'vector #(1 3 5) #(2 4 6) #'<) ;=> #(1 2 3 4 5 6)
+(merge 'list #(1 3 5) #(2 4 6) #'<)   ;=> (1 2 3 4 5 6)
 ```
 Like the sorting functions, MERGE takes a **:key** argument. A useful example of a **:key**
 function would be a component selector function for a DEFSTRUCT structure, used to merge a
@@ -1386,6 +1395,13 @@ sequence of structures. In other words selects DEFSTRUCT field that is used for 
 (defun insert-path (path paths)
   "Put PATH into the right position, sorted by total cost."
   (merge 'list (list path) paths #'< :key #'path-total-cost))
+```
+
+TIP:
+```cl
+Here's a quick way to add an item to a sorted list:
+
+(merge 'list (list item) sorted-list test)
 ```
 
 ## Chapter-9
@@ -1502,6 +1518,53 @@ and `close-connection`, you might write a macro like this:
 and not have to worry about closing the database connection, since the UNWIND-PROTECT will
 make sure it gets closed no matter what happens in the body of the
 with-database-connection form.
+
+### the
+
+(**the** _value-type_ _form_) => result*
+
+Argument description:
+- _value-type_ - specifies type
+- _form_       - the form that will be evaluated. _Result should be the same as specified._
+
+```cl
+(let ((i 100))
+    (declare (fixnum i))
+    (the fixnum (1+ i))) ;=>  101
+```
+
+### svref
+
+(**svref** _vector_ _index+_) => element pointed by the _index_
+
+Argument description:
+- _vector_ - a vector
+- _index_  - a list of valid vector indices
+
+The same as AREF but for vector.
+
+See also: AREF
+
+### simple-vector
+
+SIMPLE-VECTOR and SIMPLE-ARRAY. Simple vectors and arrays are those that do not share
+structure with other arrays, do not have fill pointers, and are not adjustable. In many
+implementations it is faster to AREF a SIMPLE-VECTOR than a VECTOR. It is certainly much
+faster than taking an ELT of a sequence of unknown type. Declare your arrays to be simple
+(if they in fact are).
+
+### simple-array
+
+An array that is not displaced or adjustable.
+
+The concept of a simple array exists to allow the implementation to use a specialized
+representation and to allow the user to declare that certain values will always be simple
+arrays.
+
+In HyperSpec for SIMPLE-ARRAY definition is used word _dimension_ which is a bit
+misleading when you read ```(simple-array fixnum *)```. It is equivalent to
+```(simple-array(*))```. Actually the length of the list is the dimension, values are the
+dimensions length. When it is a star ```*``` it means unknown length.
 
 
 ## Koans

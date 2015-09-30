@@ -151,3 +151,7 @@
           (progn . ,body)
        (profile-report ',fn-names)
        (unprofile . ,fn-names))))
+
+(defun assert-equal (x y)
+  (assert (equal x y) (x y)
+	  "Expected ~a to be equal to ~a" x y))

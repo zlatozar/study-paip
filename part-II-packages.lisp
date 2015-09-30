@@ -143,6 +143,7 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:export #:pat-match
            #:binary-tree
            #:finite-binary-tree
+           #:prompt-generator
            #:prepend
            #:diff
            #:is
@@ -227,6 +228,7 @@ In Chapters 5 and 6 'pat-match' will be improved.")
                 #:length=1
                 #:memoize)
   (:export #:kwote
+           #:assert-equal
            ;; Pipes
            #:make-pipe
            #:head
@@ -241,3 +243,10 @@ In Chapters 5 and 6 'pat-match' will be improved.")
            ;; Profiling
            #:with-profiling
            ))
+
+;;; ____________________________________________________________________________
+
+(defpackage #:ch10
+  (:documentation "Chapter 10. Low-Level Efficiency Issues")
+  (:use #:common-lisp
+        #:inspect))

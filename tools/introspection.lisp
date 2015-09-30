@@ -90,7 +90,7 @@ quoted or unquoted symbol."
 (defmacro ?mac (form)
   "Pretty prints the macro expansion of FORM."
   `(let* ((*gensym-counter* 0)
-          (exp1 (macroexpand-1 ',form))
+          (exp1 (macroexpand-1 ',(ensure-unquoted form)))
 	  (exp (macroexpand exp1))
           (*print-case* :downcase)
 	  (*print-circle* nil))

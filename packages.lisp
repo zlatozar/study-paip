@@ -115,6 +115,7 @@
   (:export #:pat-match
            #:binary-tree
            #:finite-binary-tree
+           #:prompt-generator
            #:prepend
            #:diff
            #:is
@@ -144,8 +145,10 @@
            #:prefix->infix
            #:simplify
            #:simp)
+
   ;; `ch9'
   (:export #:kwote
+           #:assert-equal
            #:make-pipe
            #:head
            #:tail
