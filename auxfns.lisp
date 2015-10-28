@@ -203,6 +203,78 @@ Returns searched element if found else nil."
       (prog1 (setf (delay-value delay) (funcall (delay-value delay)))
         (setf (delay-computed? delay) t))))
 
+;; p. 312 ex. 9.1
+(defun sort* (seq pred &key key)
+  "Sort without altering the sequence"
+  (sort (copy-seq seq) pred :key key))
+
+;;; ____________________________________________________________________________
+;;;                                                                  Chapter 10
+
+;; p. 333
+(defun reuse-cons (x y x-y)
+  "Return (cons x y), or reuse X-Y if it is equal to (cons x y)"
+  (if (and (eql x (car x-y)) (eql y (cdr x-y)))
+      x-y
+      (cons x y)))
+
+;;; QUEUE p. 341
+
+;;; A queue is a (last . contents) pair
+
+(defun queue-contents (q) (cdr q))
+
+(defun make-queue ()
+  "Build a new queue, with no elements."
+  (let ((q (cons nil nil)))
+    (setf (car q) q)))
+
+(defun enqueue (item q)
+  "Insert ITEM at the end of the queue."
+  (setf (car q)
+        (setf (rest (car q))
+              (cons item nil)))
+  q)
+
+(defun dequeue (q)
+  "Remove an item from the front of the queue."
+  (pop (cdr q))
+  (if (null (cdr q)) (setf (car q) q))
+  q)
+
+(defun front (q) (first (queue-contents q)))
+
+(defun empty-queue-p (q) (null (queue-contents q)))
+
+(defun queue-nconc (q list)
+  "Add the elements of LIST to the end of the queue."
+  (setf (car q)
+        (last (setf (rest (car q)) list))))
+
+;;; ____________________________________________________________________________
+;;;                                                                  Chapter 11
+
+(defun unique-find-if-anywhere (predicate tree
+                                &optional found-so-far)
+  "Return a list of leaves of TREE satisfying PREDICATE,
+with duplicates removed."
+  (if (atom tree)
+      (if (funcall predicate tree)
+          (adjoin tree found-so-far)
+          found-so-far)
+      (unique-find-if-anywhere
+       predicate
+       (first tree)
+       (unique-find-if-anywhere predicate (rest tree)
+                                found-so-far))))
+
+(defun find-if-anywhere (predicate tree)
+  "Does PREDICATE apply to any atom in the TREE?"
+  (if (atom tree)
+      (funcall predicate tree)
+      (or (find-if-anywhere predicate (first tree))
+          (find-if-anywhere predicate (rest tree)))))
+
 ;;; ____________________________________________________________________________
 ;;;                                                                      Macros
 
@@ -346,72 +418,6 @@ NEW-LENGTH, if that is longer than the current length."
            ,@body
            (,deallocate var)))))
 
-;;; ____________________________________________________________________________
-;;;                                                                      Queues
-
-;;; A queue is a (last . contents) pair
-
-(defun queue-contents (q) (cdr q))
-
-(defun make-queue ()
-  "Build a new queue, with no elements."
-  (let ((q (cons nil nil)))
-    (setf (car q) q)))
-
-(defun enqueue (item q)
-  "Insert ITEM at the end of the queue."
-  (setf (car q)
-        (setf (rest (car q))
-              (cons item nil)))
-  q)
-
-(defun dequeue (q)
-  "Remove an item from the front of the queue."
-  (pop (cdr q))
-  (if (null (cdr q)) (setf (car q) q))
-  q)
-
-(defun front (q) (first (queue-contents q)))
-
-(defun empty-queue-p (q) (null (queue-contents q)))
-
-(defun queue-nconc (q list)
-  "Add the elements of LIST to the end of the queue."
-  (setf (car q)
-        (last (setf (rest (car q)) list))))
-
-;;;; Other:
-
-(defun sort* (seq pred &key key)
-  "Sort without altering the sequence"
-  (sort (copy-seq seq) pred :key key))
-
-(defun reuse-cons (x y x-y)
-  "Return (cons x y), or reuse X-Y if it is equal to (cons x y)"
-  (if (and (eql x (car x-y)) (eql y (cdr x-y)))
-      x-y
-      (cons x y)))
-
-(defun unique-find-if-anywhere (predicate tree
-                                &optional found-so-far)
-  "Return a list of leaves of TREE satisfying PREDICATE,
-with duplicates removed."
-  (if (atom tree)
-      (if (funcall predicate tree)
-          (adjoin tree found-so-far)
-          found-so-far)
-      (unique-find-if-anywhere
-       predicate
-       (first tree)
-       (unique-find-if-anywhere predicate (rest tree)
-                                found-so-far))))
-
-(defun find-if-anywhere (predicate tree)
-  "Does PREDICATE apply to any atom in the TREE?"
-  (if (atom tree)
-      (funcall predicate tree)
-      (or (find-if-anywhere predicate (first tree))
-          (find-if-anywhere predicate (rest tree)))))
 
 ;;; ____________________________________________________________________________
 

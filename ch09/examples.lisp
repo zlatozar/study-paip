@@ -7,42 +7,25 @@
 
 (in-package #:ch9)
 
-;;; ____________________________________________________________________________
-;;;                                                              Implementation
+(defexamples 9 "Efficiency Issues"
+  ""
+  "One of the reasons Lisp has enjoyed a long history is because it is an"
+  "ideal language for what is called rapid-prototyping or rapid development."
+  "Most real AI programs deal with large amounts of data. Thus, efficiency"
+  "is important. This chapter shows some ways to make programs efficient."
 
-(defun smallest-divisor (n)
-  (find-divisor n 2))
-
-(defun find-divisor (n test-divisor)
-  (declare (optimize (safety 0) (speed 3)))
-  (declare (fixnum n test-divisor))
-  (cond ((> (the fixnum (* test-divisor test-divisor)) n) n)
-	((divides? test-divisor n) test-divisor)
-	(t (find-divisor n (1+ test-divisor)))))
-
-(defun divides? (a b)
-  (declare (optimize (safety 0) (speed 3)))
-  (declare (fixnum a b))
-  (zerop (rem b a)))
-
-(defun prime? (n)
-  (= n (smallest-divisor n)))
-
-(defun primes (a b)
-  (loop for i from a to b when (prime? i)
-       collect i))
-
-;;; ____________________________________________________________________________
-;;;                                                              Profiling/Test
-
-(defvar *answers* (primes 1 1000))
-
-(defun test-it (&optional (profile t))
-  "Time a test run, check the results"
-  (let ((answers (if profile
-                     ;; Profile functions that you are interesting of
-		     (with-profiling (divides? primes prime? find-divisor)
-		       (primes 1 1000))
-		     (time (primes 1 1000)))))
-    (assert-equal answers *answers*)
-    t))
+  (:section "9.1 Caching Results of Previous Computations: Memoization")
+  ""
+  ((defun fib (n) (if (<= n 1) 1 (+ (fib (- n 1)) (fib (- n 2))))) @ 269)
+  ((setf memo-fib (memo #'fib)) @ 270)
+  ((trace fib))
+  ((funcall memo-fib 3) :=> 3 @ 270)
+  ((funcall memo-fib 3) :=> 3)
+  ((untrace fib))
+  ((memoize 'fib) @ 272)
+  ((trace fib))
+  ((fib 5) :=> 8)
+  ((fib 5) :=> 8)
+  ((fib 6) :=> 13)
+  ((untrace fib))
+  )

@@ -19,9 +19,14 @@
 
   :serial t
   :components ((:file "aux-packages")
+
                (:file "part-I-packages" :depends-on ("aux-packages"))
                (:file "part-II-packages" :depends-on ("part-I-packages"))
-               (:file "packages" :depends-on ("part-II-packages"))
+               (:file "part-III-packages" :depends-on ("part-II-packages"))
+               (:file "part-IV-packages" :depends-on ("part-III-packages"))
+               (:file "part-V-packages" :depends-on ("part-IV-packages"))
+
+               (:file "packages" :depends-on ("part-III-packages"))
 
                ;; Helper functions
                (:file "tools/introspection" :depends-on ("packages"))
@@ -95,9 +100,20 @@
                (:file "ch09/compilation" :depends-on ("ch09/rule"))
                (:file "ch09/profile")
                (:file "ch09/pipes")
-               (:file "ch09/examples" :depends-on ("ch09/profile"))
+               (:file "ch09/examples" :depends-on ("tutor"))
+               (:file "ch09/exercises" :depends-on ("ch09/profile"))
 
                ;; Chapter 10
                (:file "ch10/low-level")
+               (:file "ch10/examples" :depends-on ("tutor"))
+
+               ;; Chapter 11
+               (:file "ch11/unify" :depends-on ("ch06/patmatch"))
+
+               (:file "ch11/prolog1" :depends-on ("ch11/unify"))
+               (:file "ch11/examples-prolog1" :depends-on ("ch11/prolog1"))
+
+               (:file "ch11/prolog" :depends-on ("ch11/unify"))
+               (:file "ch11/examples-prolog" :depends-on ("ch11/prolog"))
 
                ))

@@ -123,8 +123,8 @@ makes it easier to replace with an flet or labels function. All this are the sam
   list as well as an atomical expression with the value of **NIL**. And, if seen as a logical
   expression, NIL can be interpreted as the truth value of FALSE.
 
-- The symbol T
-  The counterpart to the symbol NIL is the symbol T (true). This symbol also has itself as a
+- The symbol **T**
+  The counterpart to the symbol NIL is the symbol **T** (true). This symbol also has itself as a
   value. **T** is a symbol and therefore an atom.
 - Trees in Lisp are represented as nested lists. Try to solve exercise 1.4.
 - If you get error in REPL to not hurry to jump in SLDB. First see the error
@@ -136,6 +136,12 @@ makes it easier to replace with an flet or labels function. All this are the sam
       (last-name (third names)
       ......)
 ```
+- The compilation error message:
+```
+; caught ERROR:
+;   illegal function call
+```
+almost always means that function is not defined or couldn't be found
 - Take [interactive Lisp course|http://art2.ph-freiburg.de/Lisp-Kurs]
 - Start solving [lisp koans|http://github.com/google/lisp-koans]
 

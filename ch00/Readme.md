@@ -316,6 +316,10 @@ symbols in a particular package so they can be used in defining forms such as DE
 DEFVAR, and DEFCLASS only when their home package is the current package. In others you have
 warning about **"redefining BAR, originally defined in...".**
 
+- Error message like: ```The name "CH09" does not designate any package.```
+means that there is no ```(defpackage #:ch09 ...``` clause in files that you load.
+Check your **.asd** file or for typo error.
+
 ### Formatting
 
 _(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_

@@ -63,8 +63,22 @@ to test chapter exercises.")
            #:find-anywhere
            ;; ch09
            #:memoize
+           #:memo
+           #:clear-memoize
            #:delay
            #:force
+           ;; ch10
+           #:reuse-cons
+           #:queue-contents
+           #:make-queue
+           #:enqueue
+           #:dequeue
+           #:front
+           #:empty-queue-p
+           #:queue-nconc
+           ;; ch11
+           #:unique-find-if-anywhere
+           #:find-if-anywhere
            ))
 
 ;;; ____________________________________________________________________________
@@ -85,4 +99,4 @@ To run all examples:
     (tutor:do-examples :all)
 
 To run examples from particular chapter:
-    (tutor:do-examples <chapter number>)")
+    (tutor:do-examples <chapter number>)~2%")

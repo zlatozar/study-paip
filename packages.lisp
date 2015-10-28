@@ -32,7 +32,8 @@
         #:ch6-exercises
         #:ch7
         #:ch8
-        #:ch9)
+        #:ch9
+        #:ch11-final)
 
   ;; `inspect'
   (:export #:?a
@@ -62,7 +63,7 @@
            #:dbg-indent
            #:member-equal
            ;; ch05
-           #:flatten
+           #:flatten      ;; see the version in `ch10' p. 329
            #:mklist
            #:random-elt
            #:starts-with
@@ -73,6 +74,18 @@
            #:memoize
            #:delay
            #:force
+           ;; ch10
+           #:reuse-cons
+           #:queue-contents
+           #:make-queue
+           #:enqueue
+           #:dequeue
+           #:front
+           #:empty-queue-p
+           #:queue-nconc
+           ;; ch11
+           #:unique-find-if-anywhere
+           #:find-if-anywhere
            )
 
   ;; `ch1-exercises'
@@ -161,9 +174,14 @@
            #:combine-all-pipes
            #:with-profiling)
 
+  ;; `ch11-final'
+  (:export #:<-
+           #:?-)
+
   )
+
 
 ;;; ____________________________________________________________________________
 ;;;                                                                        Done
 
-(format *debug-io* "~2%Loading is done. Happy hacking!")
+(format *debug-io* "~%Loading is done. Happy hacking!~%")

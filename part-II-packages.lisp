@@ -16,7 +16,6 @@
   (:import-from :paip-aux
                 #:find-all))
 
-
 (defpackage #:ch4-final
   (:documentation "Chapter 4. GPS: The General Problem Solver (final version)")
   (:use #:common-lisp
@@ -217,36 +216,3 @@ In Chapters 5 and 6 'pat-match' will be improved.")
   (:use #:common-lisp
         #:pcl-test
         #:ch8))
-
-;;; ____________________________________________________________________________
-
-(defpackage #:ch9
-  (:documentation "Chapter 9. Efficiency Issues")
-  (:use #:common-lisp
-        #:inspect)
-  (:import-from :paip-aux
-                #:length=1
-                #:memoize)
-  (:export #:kwote
-           #:assert-equal
-           ;; Pipes
-           #:make-pipe
-           #:head
-           #:tail
-           #:elt-pipe
-           #:enumerate-pipe
-           #:filter-pipe
-           #:map-pipe
-           #:append-pipes
-           #:mapcan-pipe
-           #:combine-all-pipes
-           ;; Profiling
-           #:with-profiling
-           ))
-
-;;; ____________________________________________________________________________
-
-(defpackage #:ch10
-  (:documentation "Chapter 10. Low-Level Efficiency Issues")
-  (:use #:common-lisp
-        #:inspect))

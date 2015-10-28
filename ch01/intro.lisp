@@ -28,6 +28,9 @@
   '(Mr Mrs Miss Ms Sir Madam Dr Admiral Major General)
   "A list of titles that can appear at the start of a name.")
 
+;; 'rest' is often preferred stylistically over 'cdr' when the argument is to being
+;; subjectively viewed as a list rather than as a cons.
+
 (defun first-name (name)
   "Select the first name from a NAME represented as a list."
   (if (member (first name) *titles*)

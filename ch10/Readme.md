@@ -27,3 +27,15 @@ places.
 ## Avoid generic functions
 
 - Avoid Complex Argument Lists
+
+## Avoid unnecessary consing
+
+There are actually two relevant measures of the amount of space consumed by a program: the
+amount of storage allocated, and the amount of storage retained (garbage collection).
+_Garbage collection is particularly worrisome for real-time systems, because it can happen_
+_at any time._
+
+- Use ```nconc```, ```nreverse``` and ```delete```
+- The most common kind of unnecessary copying can be eliminated by simple reorganization of your code!
+- Use vectors instead of lists
+- Reuse values rather than creating copies
