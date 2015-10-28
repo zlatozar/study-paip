@@ -143,29 +143,32 @@ program.  If you think in these terms - and it's hard at first, after years of
 
 Example debugging session could be found [here](debugging-sbcl.md).
 
-- **C-c C-y** - slime-call-defun
+- **C-c C-y** - ```slime-call-defun```<br/>
 Type it when you are inside the function. It will sends expression `(<func-name>  )` to
-REPL. You have to fill parameters only (if any)
-- **C-c M-o** - slime-repl-clear-buffer
+REPL. You have to fill parameters only (if any).
+- **C-c M-o** - ```slime-repl-clear-buffer```<br/>
 Type it when you are in REPL. It will clear the buffer like **C-l** in shell.
-- **C-c E** - slime-edit-value
+- **C-c E** - ```slime-edit-value```<br/>
 When there is a error - go to the frame and type 'v' to see buggy code. Next go to the
 particular value in a function and type **C-c E** to change it. Finally **C-M-x** to
 re-evaluate _defun_.
-- **C-c ~** -  slime-sync-package-and-default-directory
+- **C-c ~** -  ```slime-sync-package-and-default-directory```
 - **C-u C-c C-c** - compile function for debug
 - **C-u C-c C-k** - compile file for debug
 - **M-- C-c C-k** - compile file for speed
 - **C-c C-d C-d** - describe symbol at point
 - **C-c C-d h** - hyperspec lookup
-- **C-c C-b** - slime-interrupt
-- **C-x C-e** - slime-eval-last-expression
+- **C-c C-b** - ```slime-interrupt```
+- **C-x C-e** - ```slime-eval-last-expression```<br/>
 Evaluates form immediately preceding cursor
-- **C-c C-m** - slime-macroexpand-1
+- **C-c C-m** - ```slime-macroexpand-1``` <br/>
 Place the cursor on the opening parenthesis of a macro form in your source code
-- **M-.** - jumps to source definition (try it from: Debugger, REPL and source file)
-- **C-c <** - slime-list-callers
-- **C-c >** - slime-list-callees
+- **M-.** - jumps to source definition (try it from: Debugger(SLDB), REPL and source file)<br/>
+Did you notice that when compilation error occurs, SLIME do not show the file and the
+line? Well go to the last green line in SLDB and type **M-.** and you will be in the right
+file right function. Of course use **M-,** to return.
+- **C-c <** - ```slime-list-callers```
+- **C-c >** - ```slime-list-callees```
 
 - Examining Frames in SLDB
   * **t** toggle details
@@ -185,11 +188,11 @@ alias lisp='rlwrap sbcl'
 
 #### How Lisp helps
 
-- compile, compile-file, load
-- describe, documentation
-- apropos
-- trace
-- step
-- inspect
-- assert
-- time
+- ```compile```, ```compile-file```, ```load```
+- ```describe```, ```documentation```
+- ```apropos```
+- ```trace```
+- ```step```
+- ```inspect```
+- ```assert```
+- ```time```
