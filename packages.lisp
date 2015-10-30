@@ -36,10 +36,10 @@
         #:ch11-final)
 
   ;; `inspect'
-  (:export #:?a
-           #:??
-           #:?p~
-           #:?p+
+  (:export #:??
+           #:?p
+           #:?p%
+           #:?p*
            #:?mac)
 
   ;; `pcl-test'

@@ -14,11 +14,9 @@
 It contains functions that could help during coding sessions.")
   (:use #:common-lisp)
   (:export #:??
-           #:?a
-           #:?p~
-           #:?p+
-           #:?p*
+           #:?p
            #:?p%
+           #:?p*
            #:?mac))
 
 (defpackage #:pcl-test

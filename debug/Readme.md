@@ -159,7 +159,7 @@ particular value in a function and type **C-c E** to change it. Finally **C-M-x*
 - **C-u C-c C-k** - compile file for debug
 - **M-- C-c C-k** - compile file for speed
 - **C-c C-d C-d** - describe symbol at point
-- **C-c C-d h** - hyperspec look up
+- **C-c C-d h** - HyperSpec look up
 - **C-c C-b** - ```slime-interrupt```
 
 - **C-x C-e** - ```slime-eval-last-expression```<br/>
