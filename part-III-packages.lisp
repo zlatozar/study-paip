@@ -21,6 +21,7 @@
            #:assert-equal
            ;; Pipes
            #:make-pipe
+           #:empty-pipe
            #:head
            #:tail
            #:elt-pipe
@@ -30,6 +31,10 @@
            #:append-pipes
            #:mapcan-pipe
            #:combine-all-pipes
+           ;; see exercises
+           #:pipe-null-p
+           #:reduce-pipe
+           #:pipe->list
            ;; Profiling
            #:with-profiling))
 
@@ -39,7 +44,23 @@
   (:documentation "Chapter 10. Low-Level Efficiency Issues")
   (:use #:common-lisp
         #:inspect
-        #:tutor))
+        #:tutor)
+  (:import-from :paip-aux
+                #:reuse-cons)
+  (:export #:make-trie
+           #:put-trie
+           #:get-trie
+           #:delete-trie
+           #:find-trie
+           #:follow-arc))
+
+(defpackage #:ch10-exercises
+  (:documentation "Selected exercises from Chapter 10")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor)
+  (:import-from :paip-aux
+                #:reuse-cons))
 
 (defpackage #:ch11
   (:documentation "Chapter 11. Logic Programming (unification)")

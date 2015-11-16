@@ -33,6 +33,7 @@
         #:ch7
         #:ch8
         #:ch9
+        #:ch10
         #:ch11-final)
 
   ;; `inspect'
@@ -40,6 +41,7 @@
            #:?p
            #:?p%
            #:?p*
+           #:!!
            #:?mac)
 
   ;; `pcl-test'
@@ -76,6 +78,8 @@
            #:force
            ;; ch10
            #:reuse-cons
+           #:defresource
+           #:with-resource
            #:queue-contents
            #:make-queue
            #:enqueue
@@ -163,6 +167,7 @@
   (:export #:kwote
            #:assert-equal
            #:make-pipe
+           #:empty-pipe
            #:head
            #:tail
            #:elt-pipe
@@ -172,7 +177,19 @@
            #:append-pipes
            #:mapcan-pipe
            #:combine-all-pipes
+           ;; see exercises
+           #:pipe-null-p
+           #:reduce-pipe
+           #:pipe->list
            #:with-profiling)
+
+  ;; `ch10'
+  (:export #:make-trie
+           #:put-trie
+           #:get-trie
+           #:delete-trie
+           #:find-trie
+           #:follow-arc)
 
   ;; `ch11-final'
   (:export #:<-

@@ -3,6 +3,8 @@
 ;;; Code from Paradigms of Artificial Intelligence Programming
 ;;; Copyright (c) 1991 Peter Norvig
 
+;;;; File rule.lisp
+
 (in-package #:ch9)
 
 (defparameter *grammar*

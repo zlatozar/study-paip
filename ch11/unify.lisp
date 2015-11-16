@@ -9,17 +9,19 @@
 
 (defparameter *occurs-check* t "Should we do the occurs check?")
 
+;; The `unify' function is identical to `ch6:pat-match'
 (defun unify (x y &optional (bindings no-bindings))
   "See if X and Y match with given bindings."
   (cond ((eq bindings fail) fail)
-        ((eql x y) bindings)
+        ((eql x y) bindings)  ; *** matching logical variable against itself must always succeed
         ((variable-p x) (unify-variable x y bindings))
-        ((variable-p y) (unify-variable y x bindings))
+        ((variable-p y) (unify-variable y x bindings)) ; ***
         ((and (consp x) (consp y))
          (unify (rest x) (rest y)
                 (unify (first x) (first y) bindings)))
         (t fail)))
 
+;; Close to `ch6::match-variable'
 (defun unify-variable (var x bindings)
   "Unify VAR with X, using (and maybe extending) bindings."
   (cond ((get-binding var bindings)
@@ -30,6 +32,7 @@
          fail)
         (t (extend-bindings var x bindings))))
 
+;; variable with a structure containing that variable.
 (defun occurs-check (var x bindings)
   "Does VAR occur anywhere inside X?"
   (cond ((eq var x) t)
@@ -43,7 +46,7 @@
 
 (defun subst-bindings (bindings x)
   "Substitute the value of variables in BINDINGS into X,
-  taking recursively bound variables into account."
+taking recursively bound variables into account."
   (cond ((eq bindings fail) fail)
         ((eq bindings no-bindings) x)
         ((and (variable-p x) (get-binding x bindings))

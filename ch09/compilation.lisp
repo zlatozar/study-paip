@@ -3,6 +3,8 @@
 ;;; Code from Paradigms of Artificial Intelligence Programming
 ;;; Copyright (c) 1991 Peter Norvig
 
+;;;; File compilation.lisp
+
 (in-package #:ch9)
 
 ;;; ____________________________________________________________________________
@@ -64,6 +66,7 @@
 ;; Note the comma before COND. It means that COND will be executed and only
 ;; particular case will be in resulted function.
 
+;; Constructs function that could be executed - data is a code!
 (defun compile-rule (rule)
   "Translate a grammar rule into a Lisp function definition"
   (let ((rhs (rule-rhs rule)))

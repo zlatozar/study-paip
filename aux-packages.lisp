@@ -17,6 +17,7 @@ It contains functions that could help during coding sessions.")
            #:?p
            #:?p%
            #:?p*
+           #:!!
            #:?mac))
 
 (defpackage #:pcl-test
@@ -67,6 +68,8 @@ to test chapter exercises.")
            #:force
            ;; ch10
            #:reuse-cons
+           #:defresource
+           #:with-resource
            #:queue-contents
            #:make-queue
            #:enqueue

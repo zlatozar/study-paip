@@ -12,7 +12,23 @@
 with `let`, and to define local functions with `label`.
 - The `defstruct` special form defines a structure type and automatically defines functions
 to get at components of the structure.
-- The printed representation of a structure starts with a `#S` and is followed by a list
+- Every time you try to reload a file that uses ```defconstant``` into the SLIME REPL,
+it complains about me rebinding the constants.
+
+Here is possible solutions:
+    * Move constants into their own file, which, hopefully, doesn't change very often.
+    * Change the constants into vars until you build a release candidate.
+    In other words, temporarily change ```defconstant``` to ```defvar```.
+
+- A _dotted list_ is like a list except that the CDR of the last cons does not have to be
+  NIL. This name comes from the printed representation, which includes a 'dot' character
+  (period). Here is an example: ```(a b . c)```
+
+This dotted list is made of two conses. The CAR of the first cons is the symbol **a**, and the
+CDR of the first cons is the second cons. The car of the second cons is the symbol **b**, and
+the CDR of the second cons is the symbol **c**.
+
+- The printed representation of a _structure_ starts with a `#S` and is followed by a list
 consisting of the type of the structure and alternating pairs of slot names and values.
 - Structures are more efficient than lists - less place and single step access.
 - `when` and `unless` are preferred when there is only one possibility, `if` when there are

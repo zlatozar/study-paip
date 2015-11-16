@@ -83,6 +83,11 @@ Includes variable, function, type, compiler macro, method
 		    type
 		    (documentation symbol type)))))))
 
+;; Or just type 'C-d C-d' in Slime
+(defmacro !! (&rest rest)
+  "Describe REST using `describe'"
+  `(apply #'describe (quote ,rest))) ; see `ch9:kwote'
+
 ;;; ____________________________________________________________________________
 ;;;                                                            Examine packages
 

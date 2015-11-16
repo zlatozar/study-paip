@@ -112,6 +112,22 @@ _(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
 - In \*PACKAGE\* - current package name is stored
 - `a:boo` or `a::foo` are examples of qualified names
 - With `:` refer package external symbols, with `::` refer any symbol.
+- The operation of getting a symbol from a print name and a current package is called
+**interning**. Interning use the following procedure:
+
+```
+1. If a symbol with the given print name is registered in the current package, the system
+returns that symbol. If not, go to 2.
+
+2. If a symbol with the given print name is an external symbol of the package which the
+current package is using, the system returns that symbol. If not, got to 3.
+
+3. The system creates a new symbol with the given print name, registers it as an internal
+symbol in the current package, and return the new symbol.
+```
+Interning is being done when the system reads a form or some data, but it also can be done
+using the function ```(intern <character string> <package>*)```.
+
 - *Uninterned* symbols are written with a leading `#:`
 - The package in which a symbol is first interned is called the symbol's _home package_.
 - A package inherits symbols from other packages by using (`:use` clause) the other
@@ -131,13 +147,25 @@ _(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
 - **Macros** (along with any supporting code which the macro functions invoke) must
   be defined before code which refers to them is compiled; and if they're redefined
   then that code must be recompiled. If inline functions aren't already defined then
-  the calls to them won’t be inlined.
+  the calls to them _won't be inlined_.
 - Any code required to evaluate the initial values for global variables must be defined
   before these variables' defining forms (`defvar`, `defparameter` or `defconstant`) are
   loaded.
 - Constants are best defined before you refer to them.
 - Packages don't provide direct control over who can call what function or access what
   variable. There is no access qualifiers like in Java.
+- The **keyword** package is a special package for registering keywords.
+  The symbols in this package could be accessed with ```keyword:<symbol-name>``` but by
+  convention we use ```:<symbol-name>```.
+
+Unlike other packages, when the system registers a new symbol in the **keyword** package,
+the keyword is registered as an external symbol in the **keyword** package and becomes a
+_variable_ with a constant value which is the symbol itself. In other words, if the system
+evaluates this keyword it gets the keyword itself.
+```cl
+> :this-is-a-keyword
+:this-is-a-keyword
+```
 - Instead of keywords, use uninterned symbols, using the `#:` syntax.
 
 ``` cl
@@ -688,7 +716,7 @@ and another that returns the next prime number greater or equal to its argument.
   (loop for n from number when (primep n) return n))
 ```
 
-Without the `do-primes` macro, you could write such a loop with DO this:
+Without the `do-primes` macro, you could write such a loop with **DO** this:
 ``` cl
 (do ((p (next-prime 0) (next-prime (1+ p))))
     ((> p 19))
@@ -721,6 +749,8 @@ this:
          ((> ,var ,end))
        ,@body)))
 ```
+TIP: Do you know that ``` `(,x ,y)``` could be written as ```(cons x (cons y ()))```?
+
 However, you don’t need to take apart var-and-range "by hand" because macro parameter
 lists are what are called **destructuring** parameter lists. Destructuring, as the name
 suggests, involves taking apart a structure - in this case the list structure of the forms
@@ -731,9 +761,17 @@ nested parameter list. The parameters in the nested parameter list will take the
 from the elements of the expression that would have been bound to the parameter the list
 replaced. For instance, you can replace `var-and-range` with a list `(var start end)`, and
 the three elements of the list will automatically be destructured into those three
-parameters. Hm, but _what is_ `&body`? Typically `&body` parameters are used to hold a _list_
-of forms that make up the body of the macro.
+parameters. Hm, but _what is_ `body`? Typically `body` parameters are used to hold a _list_
+_of forms_(functions logic implementation) that make up the body of the macro. Here is a
+good example that clearly points where is the `body`:
 
+```cl
+(defmacro define (name-and-parameters &rest body)
+  `(defun ,(first name-and-parameters) ,(rest name-and-parameters)
+    ,@body))
+```
+
+Now better version:
 ``` cl
 ;; improved attempt
 (defmacro do-primes ((var start end) &body body)
@@ -742,7 +780,7 @@ of forms that make up the body of the macro.
      ,@body))
 ```
 In addition to being more concise, destructuring parameter lists also give you automatic
-error checking - with do-primes defined this way, Lisp will be able to detect a call whose
+error checking - with `do-primes` defined this way, Lisp will be able to detect a call whose
 first argument isn't a three-element list and will give you a meaningful error message
 just as if you had called a function with too few or too many arguments. Also, in
 development environments such as SLIME that indicate what arguments are expected as soon

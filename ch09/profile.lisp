@@ -27,7 +27,8 @@
                 `(set-difference *profiled-functions*
                                  ',fn-names)))))
 
-;; The 'quote' is constant and the variable X is evaluated.
+;; The `quote' is constant and the variable X is evaluated.
+;; We can use it in `unprofile' instead of `',fn-names
 (defun kwote (x)
   (list 'quote x))
 

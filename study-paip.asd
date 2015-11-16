@@ -105,6 +105,8 @@
 
                ;; Chapter 10
                (:file "ch10/low-level")
+               (:file "ch10/trie")
+               (:file "ch10/exercises")
                (:file "ch10/examples" :depends-on ("tutor"))
 
                ;; Chapter 11

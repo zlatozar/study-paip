@@ -17,8 +17,8 @@
   (declare (optimize (safety 0) (speed 3)))
   (declare (fixnum n test-divisor))
   (cond ((> (the fixnum (* test-divisor test-divisor)) n) n)
-	((divides? test-divisor n) test-divisor)
-	(t (find-divisor n (1+ test-divisor)))))
+        ((divides? test-divisor n) test-divisor)
+        (t (find-divisor n (1+ test-divisor)))))
 
 (defun divides? (a b)
   (declare (optimize (safety 0) (speed 3)))
@@ -30,7 +30,7 @@
 
 (defun primes (a b)
   (loop for i from a to b when (prime? i)
-       collect i))
+     collect i))
 
 ;;; ____________________________________________________________________________
 ;;;                                                              Profiling/Test
@@ -41,8 +41,30 @@
   "Time a test run, check the results"
   (let ((answers (if profile
                      ;; Profile functions that you are interesting of
-		     (with-profiling (divides? primes prime? find-divisor)
-		       (primes 1 1000))
-		     (time (primes 1 1000)))))
+                     (with-profiling (divides? primes prime? find-divisor)
+                       (primes 1 1000))
+                     (time (primes 1 1000)))))
     (assert-equal answers *answers*)
     t))
+
+;;; ____________________________________________________________________________
+;;;                                                                        Pips
+
+(defun pipe-null-p (p)
+  (or (eql p empty-pipe)
+      (null p)))
+
+(defun reduce-pipe (fn s pipe)
+  (if (pipe-null-p pipe)
+      s
+      (reduce-pipe fn
+                   (funcall fn s (head pipe))
+                   (tail pipe))))
+
+(defun pipe->list (pipe)
+  (labels ((force (p)
+             (if (pipe-null-p p)
+                 empty-pipe
+                 (cons (head p)
+                       (force (tail p))))))
+    (force pipe)))

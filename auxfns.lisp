@@ -154,7 +154,7 @@ Returns searched element if found else nil."
   "Define a memoized function."
   `(memoize (defun ,fn ,args . ,body)))
 
-;; What `memoize' does is fetch the original function and transform it with memo to a
+;; What `memoize' does is fetch the original function and transform it with `memo' to a
 ;; function that, when called, will first look in the table to see if the answer is
 ;; already known. If not, the original function is called, and a new value is placed in
 ;; the table.
@@ -166,6 +166,7 @@ Returns searched element if found else nil."
         (memo (symbol-function fn-name)
               :name fn-name :key key :test test)))
 
+;; `memo' works by returning a function that has an internal hash-table
 (defun memo (fn &key (key #'first) (test #'eql) name)
   "Return a memo-function of FN."
   (let ((table (make-hash-table :test test)))
@@ -178,10 +179,9 @@ Returns searched element if found else nil."
                 (setf (gethash k table) (apply fn args))))))))
 
 (defun clear-memoize (fn-name)
-  "Clear the hash table from a memo function."
+  "Clear the hash table from a `memo' function."
   (let ((table (get fn-name 'memo)))
     (when table (clrhash table))))
-
 
 ;;; Delaying Computation (p. 280)
 
@@ -213,10 +213,62 @@ Returns searched element if found else nil."
 
 ;; p. 333
 (defun reuse-cons (x y x-y)
-  "Return (cons x y), or reuse X-Y if it is equal to (cons x y)"
+  "Return (cons X Y), or reuse X-Y if it is equal to (cons X Y)"
   (if (and (eql x (car x-y)) (eql y (cdr x-y)))
       x-y
       (cons x y)))
+
+;;; Defresource p. 337
+
+;; Here is how to use it.
+;; Let's say we had structure called 'buffer' then:
+;;
+;; (defresource buffer :constructor (make-buffer)
+;;              :size 100 :initial-copies 10)
+(defmacro defresource (name &key constructor (initial-copies 0)
+                              (size (max initial-copies 10)))
+  (let ((resource (symbol '* (symbol name '-resource*)))
+        (deallocate (symbol 'deallocate- name))
+        (allocate (symbol 'allocate- name)))
+    `(progn
+       (defparameter ,resource (make-array ,size :fill-pointer 0))
+       (defun ,allocate ()
+         "Get an element from the resource pool, or make one."
+         (if (= (fill-pointer ,resource) 0)
+             ,constructor
+             (vector-pop ,resource)))
+       (defun ,deallocate (,name)
+         "Place a no-longer-needed element back in the pool."
+         (vector-push-extend ,name ,resource))
+       ,(if (> initial-copies 0)
+            `(mapc #',deallocate (loop repeat ,initial-copies
+                                    collect (,allocate))))
+       ',name)))
+
+(defmacro with-resource ((var resource &optional protect) &rest body)
+  "Execute body with VAR bound to an instance of RESOURCE."
+  (let ((allocate (symbol 'allocate- resource))
+        (deallocate (symbol 'deallocate- resource)))
+    (if protect
+        `(let ((,var nil))
+           (unwind-protect (progn (setf ,var (,allocate)) ,@body)
+             (unless (null ,var) (,deallocate ,var))))
+        `(let ((,var (,allocate)))
+           ,@body
+           (,deallocate var)))))
+
+;;; NOTE:
+;;;
+;;; In ANSI Common Lisp, the effects of adding a definition
+;;; (or most anything else) to a symbol in the 'CL-USER' package is undefined.
+;;;
+;;; Therefore, it would be best to rename the function SYMBOL to something
+;;; else. This has not been done (for compatibility with the book).
+
+;; Shadows SYMBOL form 'CL-USER' package
+(defun symbol (&rest args)
+  "Concatenate symbols or strings to form an interned symbol"
+  (intern (format nil "~{~a~}" args)))
 
 ;;; QUEUE p. 341
 
@@ -278,10 +330,11 @@ with duplicates removed."
 ;;; ____________________________________________________________________________
 ;;;                                                                      Macros
 
+;; Because multiple evaluation is a problem. See also PCL implementation.
 (defmacro once-only (variables &rest body)
   "Returns the code built by BODY. If any of VARIABLES
-  might have side effects, they are evaluated once and stored
-  in temporary variables that are then passed to BODY."
+might have side effects, they are evaluated once and stored
+in temporary variables that are then passed to BODY."
   (assert (every #'symbolp variables))
   (let ((temps nil))
     (dotimes (i (length variables)) (push (gensym) temps))
@@ -296,8 +349,8 @@ with duplicates removed."
                  .,body)))))
 
 (defun side-effect-free? (exp)
-  "Is exp a constant, variable, or function,
-  or of the form (THE type x) where x is side-effect-free?"
+  "Is EXP a constant, variable, or function,
+or of the form (THE type x) where x is side-effect-free?"
   (or (atom exp) (constantp exp)
       (starts-with exp 'function)
       (and (starts-with exp 'the)
@@ -305,11 +358,11 @@ with duplicates removed."
 
 (defmacro funcall-if (fn arg)
   (once-only (fn)
-             `(if ,fn (funcall ,fn ,arg) ,arg)))
+    `(if ,fn (funcall ,fn ,arg) ,arg)))
 
 (defmacro read-time-case (first-case &rest other-cases)
   "Do the first case, where normally cases are
-  specified with #+ or possibly #- marks."
+specified with #+ or possibly #- marks."
   (declare (ignore other-cases))
   first-case)
 
@@ -346,7 +399,7 @@ and (and exp1 exp2...) if there are several EXPS."
 
 (defun seq-ref (seq index)
   "Return code that indexes into a sequence, using
-the pop-lists/aref-vectors strategy."
+the `pop'-lists/`aref'-vectors strategy."
   `(if (listp ,seq)
        (prog1 (first ,seq)
          (setq ,seq (the list (rest ,seq))))
@@ -362,19 +415,6 @@ NEW-LENGTH, if that is longer than the current length."
 
 ;;; ____________________________________________________________________________
 
-;;; NOTE:
-;;;
-;;; In ANSI Common Lisp, the effects of adding a definition
-;;; (or most anything else) to a symbol in the 'CL-USER' package is undefined.
-;;;
-;;; Therefore, it would be best to rename the function SYMBOL to something
-;;; else. This has not been done (for compatibility with the book).
-
-;; Shadows SYMBOL form 'CL-USER' package
-(defun symbol (&rest args)
-  "Concatenate symbols or strings to form an interned symbol"
-  (intern (format nil "~{~a~}" args)))
-
 (defun new-symbol (&rest args)
   "Concatenate symbols or strings to form an uninterned symbol"
   (make-symbol (format nil "~{~a~}" args)))
@@ -382,42 +422,6 @@ NEW-LENGTH, if that is longer than the current length."
 (defun last1 (list)
   "Return the last element (not last cons cell) of LIST"
   (first (last list)))
-
-;;; ____________________________________________________________________________
-;;;                                                                 Defresource
-
-(defmacro defresource (name &key constructor (initial-copies 0)
-                              (size (max initial-copies 10)))
-  (let ((resource (symbol '* (symbol name '-resource*)))
-        (deallocate (symbol 'deallocate- name))
-        (allocate (symbol 'allocate- name)))
-    `(progn
-       (defparameter ,resource (make-array ,size :fill-pointer 0))
-       (defun ,allocate ()
-         "Get an element from the resource pool, or make one."
-         (if (= (fill-pointer ,resource) 0)
-             ,constructor
-             (vector-pop ,resource)))
-       (defun ,deallocate (,name)
-         "Place a no-longer-needed element back in the pool."
-         (vector-push-extend ,name ,resource))
-       ,(if (> initial-copies 0)
-            `(mapc #',deallocate (loop repeat ,initial-copies
-                                    collect (,allocate))))
-       ',name)))
-
-(defmacro with-resource ((var resource &optional protect) &rest body)
-  "Execute body with VAR bound to an instance of RESOURCE."
-  (let ((allocate (symbol 'allocate- resource))
-        (deallocate (symbol 'deallocate- resource)))
-    (if protect
-        `(let ((,var nil))
-           (unwind-protect (progn (setf ,var (,allocate)) ,@body)
-             (unless (null ,var) (,deallocate ,var))))
-        `(let ((,var (,allocate)))
-           ,@body
-           (,deallocate var)))))
-
 
 ;;; ____________________________________________________________________________
 

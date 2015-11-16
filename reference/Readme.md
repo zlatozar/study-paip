@@ -84,6 +84,7 @@
     - [proclaim](#proclaim)
     - [unwind-protect](#unwind-protect)
 - [Chapter-10](#chapter-10)
+    - [intern](#intern)
     - [the](#the)
     - [svref](#svref)
     - [simple-vector](#simple-vector)
@@ -1419,7 +1420,7 @@ See also: ****features****
 ### multiple-value-bind
 
 One great feature in Common Lisp is the ability for a single form to return _multiple
-values_.  The key thing to understand about multiple values is that returning multiple
+values_. The key thing to understand about multiple values is that returning multiple
 values is quite different from returning a list - if a form returns multiple values,
 unless you do something specific to capture the multiple values, all but the _primary
 value_ will be silently discarded. There are two aspects to using multiple values -
@@ -1429,6 +1430,8 @@ filling them with the multiple values returned by a form.
 
 ```cl
 (defun show-value (key hash-table)
+  ;; Specify a list of the variables you want to bind each value to, followed by the
+  ;; expression that will return multiple values.
   (multiple-value-bind (value present) (gethash key hash-table)
     (if present
       (format nil "Value ~a actually present." value)
@@ -1518,6 +1521,31 @@ and `close-connection`, you might write a macro like this:
 and not have to worry about closing the database connection, since the UNWIND-PROTECT will
 make sure it gets closed no matter what happens in the body of the
 with-database-connection form.
+
+### intern
+
+(**intern** _character-string_ _package*_) => symbol, status
+
+Argument description:
+- _character-string_ - a string
+- _package_          - a package designator, default is current package.
+
+INTERN is multiple-valued function. The first value is the symbol that you wanted.
+The second one is one of the following:
+```
+:intern     (if it has been registered as an internal symbol)
+:external   (if it has been registered as an external symbol)
+:inherited  (if it has been registered as an external symbol of the package used)
+:nil        (if newly created)
+```
+Here is some examples:
+
+```cl
+(intern "NIL") ;=> nil :inherited
+
+(intern "MOO") => MOO, NIL
+(intern "MOO") => MOO, :INTERNAL
+```
 
 ### the
 
