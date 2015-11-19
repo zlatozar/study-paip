@@ -1,4 +1,4 @@
-#### Chapter 2
+## Chapter 2
 
 Here is how we can represent simple tiny English grammar:
 

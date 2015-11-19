@@ -1,4 +1,4 @@
-#### Chapter 10
+## Chapter 10
 
 What happens when you already are using the best imaginable algorithms, and performance is
 still a problem? One answer is to find what parts of the program are used most frequently
@@ -12,7 +12,7 @@ optimization techniques.
     * Avoid unnecessary consing.
     * Use the right data structure.
 
-## Use declarations
+#### Use declarations
 
 On general-purpose computers running Lisp, much time is spent on type-checking. You can
 gain efficiency at the cost of robustness by declaring, or _promising_, that certain
@@ -24,11 +24,11 @@ declare a function ```inline``` when the function is recursive, when its definit
 likely to change, or when the function's definition is long and it is called from many
 places.
 
-## Avoid generic functions
+#### Avoid generic functions
 
 - Avoid Complex Argument Lists
 
-## Avoid unnecessary consing
+#### Avoid unnecessary consing
 
 There are actually two relevant measures of the amount of space consumed by a program: the
 amount of storage allocated, and the amount of storage retained (garbage collection).
@@ -53,7 +53,7 @@ _at any time._
 
 - Reuse values rather than creating copies
 
-- ```reuse-cons```
+- For what ```reuse-cons``` is good for?
 
 Here is "standard" definition of `remq` using consing:
 ```cl
@@ -73,10 +73,9 @@ At first sight it is not big optimization if we use `reuse-cons`:
 		       (remq item (rest list))
 		       list))))
 ```
+Think twice! **What happen if recursive call returns the same list(no elements areremoved)?**
 
-Think twice! **What happen if recursive call returns the same list(no elements are
-removed)?** Let's change code a little bit:
-
+Let's change code a little bit:
 ```cl
 (defun reuse-cons (x y x-y)
   "Return (cons X Y), or reuse X-Y if it is equal to (cons X Y)"
@@ -114,7 +113,7 @@ Of course it is not big optimization if remove frequently. Try this:
 PAIP> (remq 1 '(1 2 1 3 1 4 5 1 6 1 7 8 1 9 1 10))
 ```
 
-## Resource pools
+#### Resource pools
 
 Sometimes it pays to manage explicitly the storage of instances of some data type. A pool
 of these instances may be called a resource. Explicit management of a resource
@@ -124,3 +123,216 @@ is appropriate when:
 2. It is easy/possible to be sure when instances are no longer needed
 3. Instances are fairly large structures or take a long time to initialize, so that it
 is worth reusing them instead of creating new ones.
+
+## Variables
+
+```cl
+;; 'find-package' also searches in package nicknames
+(defun make-variable () (gentemp "X" #.(find-package "KEYWORD")))
+```
+
+The reader character sequence ```#.``` means to evaluate at read time, rather than at
+execution time. _"read-time eval"_ means, that it would be evaluated each time the code
+itself is read. In lisp, when we want to define a non-lisp syntax, it doesn't make sense
+to use the lisp reader - that is only for reading lisp. The read macro is the device we
+use to process non-lisp syntax before the lisp reader gets its paws on it. Meaning that
+you have turned the syntax into lisp.
+
+#### Data structures
+
+_Lisp is a language that pushes you towards thinking in terms of tree-shaped_
+_data-structures and recursive algorithms rather than array/matrix shaped data-structures_
+_and for-loop based iteration._
+
+**The key point in TRIE implementation is that tree could be represented as list and**
+**list could be represented with cons cells!**
+
+Here is how tree(nested list) could linearized:
+
+```
+(a (b c) d)
+=> (cons a (cons (cons b (cons c nil)) (cons d nil)))
+=> (cons a cons cons b cons c nil cons d nil)
+```
+In the **trie** implementation ```cons``` are represented with ```"."```.
+Let's add some data and ```trace``` the ```find-trie```:
+
+```cl
+
+(setf a-trie (make-trie))
+(trace find-trie)
+
+(put-trie '(a) a-trie 10)
+(put-trie '(a b) a-trie 20)
+
+;; See the structure of the tree
+(get-trie '(a b) a-trie)
+```
+
+Remember that instead of ```cons``` we use ```"."``` and instead of
+```A``` for example a structure is used (because we want to store value)
+
+Here is the result and how could be interpreted.
+```
+;; Find (A B) in (cons 'A (cons 'B nil)). We start with cons
+0: (FIND-TRIE (A B) NIL
+  #S(CH10::TRIE
+     :VALUE NIL
+     :ARCS (("."
+              . #S(CH10::TRIE
+                  :VALUE NIL
+                  :ARCS ((A
+                          . #S(CH10::TRIE
+                               :VALUE NIL
+                               :ARCS (("."
+                                       . #S(CH10::TRIE
+                                            :VALUE NIL
+                                            :ARCS ((B
+                                                    . #S(CH10::TRIE
+                                                         :VALUE NIL
+                                                         :ARCS ((NIL
+                                                                 . #S(CH10::TRIE
+                                                                      :VALUE 20
+                                                                      :ARCS NIL))))))))
+                                      (NIL
+                                       . #S(CH10::TRIE
+                                            :VALUE 10
+                                            :ARCS NIL)))))))))))
+;; Gave me everything after first cons
+1: (FIND-TRIE "." NIL
+  #S(CH10::TRIE
+     :VALUE NIL
+     :ARCS (("."
+             . #S(CH10::TRIE
+                  :VALUE NIL
+                  :ARCS ((A
+                          . #S(CH10::TRIE
+                               :VALUE NIL
+                               :ARCS (("."
+                                       . #S(CH10::TRIE
+                                            :VALUE NIL
+                                            :ARCS ((B
+                                                    . #S(CH10::TRIE
+                                                         :VALUE NIL
+                                                         :ARCS ((NIL
+                                                                 . #S(CH10::TRIE
+                                                                      :VALUE 20
+                                                                      :ARCS NIL))))))))
+                                      (NIL
+                                       . #S(CH10::TRIE
+                                            :VALUE 10
+                                            :ARCS NIL)))))))))))
+;; Here is everything after first cons
+1: FIND-TRIE returned
+     #S(CH10::TRIE
+        :VALUE NIL
+        :ARCS ((A
+                . #S(CH10::TRIE
+                     :VALUE NIL
+                     :ARCS (("."
+                             . #S(CH10::TRIE
+                                  :VALUE NIL
+                                  :ARCS ((B
+                                          . #S(CH10::TRIE
+                                               :VALUE NIL
+                                               :ARCS ((NIL
+                                                       . #S(CH10::TRIE
+                                                            :VALUE 20
+                                                            :ARCS NIL))))))))
+                            (NIL . #S(CH10::TRIE :VALUE 10 :ARCS NIL)))))))
+
+;; Search for A in a arc that starts with A
+1: (FIND-TRIE A NIL
+              #S(CH10::TRIE
+                 :VALUE NIL
+                 :ARCS ((A
+                         . #S(CH10::TRIE
+                              :VALUE NIL
+                              :ARCS (("."
+                                      . #S(CH10::TRIE
+                                           :VALUE NIL
+                                           :ARCS ((B
+                                                   . #S(CH10::TRIE
+                                                        :VALUE NIL
+                                                        :ARCS ((NIL
+                                                                . #S(CH10::TRIE
+                                                                     :VALUE 20
+                                                                     :ARCS NIL))))))))
+                                     (NIL
+                                      . #S(CH10::TRIE
+                                           :VALUE 10
+                                           :ARCS NIL))))))))
+;; Here is the arc after A
+1: FIND-TRIE returned
+     #S(CH10::TRIE
+        :VALUE NIL
+        :ARCS (("."
+                . #S(CH10::TRIE
+                     :VALUE NIL
+                     :ARCS ((B
+                             . #S(CH10::TRIE
+                                  :VALUE NIL
+                                  :ARCS ((NIL
+                                          . #S(CH10::TRIE
+                                               :VALUE 20
+                                               :ARCS NIL))))))))
+               (NIL . #S(CH10::TRIE :VALUE 10 :ARCS NIL))))
+
+;; Search B in (cons 'B nil)
+1: (FIND-TRIE (B) NIL
+              #S(CH10::TRIE
+                 :VALUE NIL
+                 :ARCS (("."
+                         . #S(CH10::TRIE
+                              :VALUE NIL
+                              :ARCS ((B
+                                      . #S(CH10::TRIE
+                                           :VALUE NIL
+                                           :ARCS ((NIL
+                                                   . #S(CH10::TRIE
+                                                        :VALUE 20
+                                                        :ARCS NIL))))))))
+                        (NIL . #S(CH10::TRIE :VALUE 10 :ARCS NIL)))))
+
+  ;; After cons please
+  2: (FIND-TRIE "." NIL
+                #S(CH10::TRIE
+                   :VALUE NIL
+                   :ARCS (("."
+                           . #S(CH10::TRIE
+                                :VALUE NIL
+                                :ARCS ((B
+                                        . #S(CH10::TRIE
+                                             :VALUE NIL
+                                             :ARCS ((NIL
+                                                     . #S(CH10::TRIE
+                                                          :VALUE 20
+                                                          :ARCS NIL))))))))
+                          (NIL . #S(CH10::TRIE :VALUE 10 :ARCS NIL)))))
+
+  ;; Here is B
+  2: FIND-TRIE returned
+       #S(CH10::TRIE
+          :VALUE NIL
+          :ARCS ((B
+                  . #S(CH10::TRIE
+                       :VALUE NIL
+                       :ARCS ((NIL
+                               . #S(CH10::TRIE :VALUE 20 :ARCS NIL)))))))
+
+  ;; It is atom please give me its value
+  2: (FIND-TRIE B NIL
+                #S(CH10::TRIE
+                   :VALUE NIL
+                   :ARCS ((B
+                           . #S(CH10::TRIE
+                                :VALUE NIL
+                                :ARCS ((NIL
+                                        . #S(CH10::TRIE
+                                             :VALUE 20
+                                             :ARCS NIL))))))))
+
+... return from recursion ...
+20
+T
+```

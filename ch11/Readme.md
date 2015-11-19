@@ -1,11 +1,11 @@
-#### Chapter 11
+## Chapter 11
 
 The idea behind logic programming is that the programmer should state the _relationships_
 that describe a problem and its solution. These relationships act as constraints on the
 algorithms that can solve the problem, but the system itself, rather than the programmer,
 is responsible for the details of the algorithm.
 
-## Ideas behind the Prolog
+### Ideas behind the Prolog
 
 * Prolog encourages the use of a single uniform data base.
 
@@ -27,7 +27,7 @@ indicate backward chaining.)
 and _rules_, which are used to state contingent facts. For example, we can represent the
 rule that Sandy likes _anyone_ who likes cats as follows:
 ```cl
-;;  |    head      | |     tail    |
+;;  |---- head ----| |---- tail ---|
 (<- (likes Sandy ?x) (likes ?x cats))
 ```
 You can interpret this in two ways:
@@ -79,7 +79,7 @@ another answer to use in its place.
 Abstractly, the unification problem is the following: Given two descriptions X and Y, can
 we find an object Z that fits both descriptions?
 
-## Infinite unification
+### Infinite unification
 
 _infinite unification_ - attempt to unify a variable with a structure containing that
 variable.
@@ -90,4 +90,4 @@ Here ((?x f ?x)) really means ((?x . ((f ?x)))) , so ?X is bound to (F ?X) _The 
 _way to deal with such infinite structures is just to ban them._ This is known in
 unification circles as the occurs check.
 
-## Programming in Prolog
+### Programming in Prolog

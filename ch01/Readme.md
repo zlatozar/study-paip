@@ -1,4 +1,4 @@
-#### Chapter 1
+## Chapter 1
 
 - With `@` in `examples.lisp`, page in the book is referred - with `:=>` expected result
 e.g. `((+ 2 2) => 4 @ 4)`.

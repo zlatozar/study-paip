@@ -1,4 +1,4 @@
-#### Chapter 4
+## Chapter 4
 
 - General Problem Solver(**GPS**) - a single computer program that could solve any problem,
 given a suitable description of the problem.

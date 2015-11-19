@@ -1,4 +1,4 @@
-#### Chapter 6
+## Chapter 6
 
 - If we left out the prompt, we could write a complete Lisp interpreter using just four
 symbols:

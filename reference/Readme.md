@@ -200,12 +200,13 @@ Argument description:
 
 Common Lisp provides two functions for invoking a function through a function object:
 FUNCALL and APPLY. They differ only in how they obtain the arguments to pass to the
-function. Loosely say: `(apply fn '(1 2 3 4 5))` is `(fn 1 2 3 4 5)`
+function. Loosely say:<br/>
+```(apply fn '(1 2 3 4 5))``` is ```(fn 1 2 3 4 5)```<br/>
 
 APPLY takes a function, plus one more argument which must **evaluate to a list.**
 
 It so happens that apply can do one additional trick. Alternatively, APPLY can look like
-this: `(apply fn arg1 arg2 ... list-arg)`
+this: ```(apply fn arg1 arg2 ... list-arg)```<br/>
 The last argument must evaluate to a list. Here, APPLY builds a list before passing it to
 the function. This list is built by taking each of the _arg1_, _arg2_, arguments and
 concatenating their values to the front of the list returned by _list-arg_.
@@ -451,10 +452,7 @@ Example:
 
 Bindings can be recursive and can refer to each other.
 
-```cl
-(labels (function-definition*)
-        _body-of-labels_) ;=> an object
-```
+(**labels** _(function-definition+)_ _body-of-labels_) ;=> an object
 
 Example:
 ```cl
@@ -728,8 +726,8 @@ Argument description:
 NTH locates the _Nth_ element of LIST, where the car of the LIST is the
 "zeroth" element.
 
-NTH may be used to specify a PLACE to SETF. Specifically,
-```(setf (nth N LIST) NEW-OBJECT) <=> (setf (car (nthcdr N LIST)) NEW-OBJECT)```
+NTH may be used to specify a PLACE to SETF. Specifically,<br/>
+```(setf (nth N LIST) NEW-OBJECT) <=> (setf (car (nthcdr N LIST)) NEW-OBJECT)```<br/>
 
 See also ELT, FIRST, NTHCDR
 
@@ -1353,12 +1351,11 @@ corresponding value, and then the _body-forms_ are evaluated. The difference bet
 and LET is that because _symbols-list_ is evaluated at runtime, the names of the variables
 to bind can be determined dynamically.
 
-STYLE:
-If you want to bind a list of values to a list of lexical variables, use
-```(MULTIPLE-VALUE-BIND (..) (VALUES-LIST ..) ..)```
-or
-```(MULTIPLE-VALUE-SETQ (..) (VALUES-LIST ..))```
-instead.
+STYLE:<br/>
+If you want to bind a list of values to a list of lexical variables, use<br/>
+```(MULTIPLE-VALUE-BIND (..) (VALUES-LIST ..) ..)```<br/>
+or<br/>
+```(MULTIPLE-VALUE-SETQ (..) (VALUES-LIST ..))```<br/> instead.
 
 ### adjoin
 

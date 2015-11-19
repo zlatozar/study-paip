@@ -141,7 +141,7 @@ program.  If you think in these terms - and it's hard at first, after years of
 
 #### SLIME helpful commands
 
-Example debugging session could be found [here](debugging-sbcl.md).
+Example of debugging session could be found [here](debugging-sbcl.md).
 
 - **C-c C-y** - ```slime-call-defun```<br/>
 Type it when you are inside the function. It will sends expression ```(defun <func-name> ...)``` to REPL.<br/>
@@ -182,6 +182,11 @@ file right function. Of course use **M-,** to return.
   * **e** eval in frame
   * **i** inspect in frame (you can go deeper and deeper with pressing 'Enter')
 
+#### Is there a way to reset the state of the environment?
+
+There is no way without restarting the process.
+In SLIME you can use **M-x** _slime-restart-inferior-lisp_.
+
 - In *.sbclrc* put following code:
 ``` cl
 ;; Add maximum debug information
@@ -192,13 +197,13 @@ file right function. Of course use **M-,** to return.
 alias lisp='rlwrap sbcl'
 ```
 
-#### How Lisp helps
+#### How Lisp helps (p. 85)
 
 - ```compile```, ```compile-file```, ```load```
 - ```describe```, ```documentation```
 - ```apropos```
 - ```trace```
-- ```step```
+- ```step``` (**step** _(function-name params)_)
 - ```inspect```
-- ```assert```
+- ```assert``` (see example on p. 89)
 - ```time```

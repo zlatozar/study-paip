@@ -1,4 +1,4 @@
-#### Chapter 9
+## Chapter 9
 
 There are **four** very general and language-independent techniques for speeding
 up an algorithm:

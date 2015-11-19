@@ -245,6 +245,7 @@ Returns searched element if found else nil."
                                     collect (,allocate))))
        ',name)))
 
+;; Guarantees resource deallocation
 (defmacro with-resource ((var resource &optional protect) &rest body)
   "Execute body with VAR bound to an instance of RESOURCE."
   (let ((allocate (symbol 'allocate- resource))
@@ -272,7 +273,11 @@ Returns searched element if found else nil."
 
 ;;; QUEUE p. 341
 
-;;; A queue is a (last . contents) pair
+;; A queue is a (last . contents) pair.
+;; car of q is the last element. cdr is the contents.
+;;
+;; empty queue is a cons cell where the cdr(content) is nil,
+;; and the car(last) is the cons itself.
 
 (defun queue-contents (q) (cdr q))
 

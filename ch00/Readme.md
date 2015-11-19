@@ -166,6 +166,14 @@ evaluates this keyword it gets the keyword itself.
 > :this-is-a-keyword
 :this-is-a-keyword
 ```
+On page 340 in book you will see how to create variable as keyword runtime:
+```cl
+(proclaim '(inline variable-p make-variable))
+(defun variable-p(x) "Is Χ a variable?" (keywordp x))
+;; 'find-package' also searches in package nicknames
+(defun make-variable () (gentemp "X" #.(find-package "KEYWORD")))
+```
+
 - Instead of keywords, use uninterned symbols, using the `#:` syntax.
 
 ``` cl
@@ -659,8 +667,8 @@ generate the code that will then be compiled.
 Normally you'd think of **x** as a variable that will hold the argument passed in a call
 to foo. But at macro expansion time, such as when the compiler is running the WHEN macro,
 the only data available is the source code.  Instead,the values the compiler passes to
-WHEN are the Lisp lists representing the source code, namely , `(> x 10)` and `(print
-'big)` .Suppose that WHEN is defined, with something like the following macro:
+WHEN are the Lisp lists representing the source code, namely , `(> x 10)` and `(print'big)`.
+Suppose that WHEN is defined, with something like the following macro:
 ``` cl
 (defmacro when (condition &rest body)
   `(if ,condition (progn ,@body)))
@@ -812,7 +820,7 @@ Backquote Syntax     Equivalent List-Building Code                Result
 `(a ,@(list 1 2) c)                                               (a 1 2 c) ; @ interpolates lists.
 ```
 **@** will place the elements of the list _directly_ inside in the expansion.
-Do you remember what is `&body`? It holds a **list** of forms that make up the body of the
+Do you remember what is `body`? It holds a **list** of forms that make up the body of the
 macro! We have to traverse this list and insert very element in macros body. That's why we
 always see `,@body`.
 
