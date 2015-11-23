@@ -45,7 +45,8 @@ If EXTEND? is true, make a new node if necessary"
         ((atom key)
          (follow-arc key extend? trie))
         ;; Why in this way? Because we search for next key in trie
-        ;; that contains the previous one!
+        ;; that contains the previous one! And previous one is searched
+        ;; in a trie that starts with cons. Do you see that pattern in (cons 'A (cons 'B nil))?
         (t (find-trie (cdr key)
                       extend?
                       (find-trie (car key)

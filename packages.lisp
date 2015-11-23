@@ -11,6 +11,7 @@
 
 (defpackage #:paip
   (:documentation "Expose functions and complete programs from PAIP book.")
+  (:nicknames #:norvig #:pn)
   (:use #:common-lisp
 
         ;; tools
@@ -34,6 +35,7 @@
         #:ch8
         #:ch9
         #:ch10
+        #:ch11
         #:ch11-final)
 
   ;; `inspect'
@@ -191,7 +193,12 @@
            #:find-trie
            #:follow-arc)
 
-  ;; `ch11-final'
+  ;; `ch11'
+  (:export #:unify
+           #:unifier
+           #:subst-bindings)
+
+  ;; `ch11-final'. Prolog user interface
   (:export #:<-
            #:?-)
 

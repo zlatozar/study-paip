@@ -210,22 +210,17 @@ this: ```(apply fn arg1 arg2 ... list-arg)```<br/>
 The last argument must evaluate to a list. Here, APPLY builds a list before passing it to
 the function. This list is built by taking each of the _arg1_, _arg2_, arguments and
 concatenating their values to the front of the list returned by _list-arg_.
-Argument list is constructed as
+
+Argument list is constructed as:
 ``` cl
 (append (all but list-arg) (first (last list-arg)))
 ```
+For example: <br/>
+```(apply #'+ 1 2 3 '(4 5 6))```, the concatenation results in the list '(1 2 3 4 5 6). Thus ```(apply #'+ 1 2 3 '(4 5 6))```<br/>
+is the same thing as ```(apply #'+ '(1 2 3 4 5 6))``` which is the same thing as ```(apply #'+ 1 2 3 4 5 6 '())```<br/>
+which of course is the same thing as ```(apply #'+ 1 2 3 4 5 6 nil)```
 
-For example, in
-`
-(apply #'+ 1 2 3 '(4 5 6)), the concatenation results in the list '(1 2 3 4 5 6). Thus
-(apply #'+ 1 2 3 '(4 5 6)) is the same thing as
-(apply #'+ '(1 2 3 4 5 6)) which is the same thing as
-(apply #'+ 1 2 3 4 5 6 '()) which of course is the same thing as
-(apply #'+ 1 2 3 4 5 6 nil)
-`
-
-Note that there is limitation of maximal number of arguments,
-see CALL-ARGUMENTS-LIMIT constant.
+Note that there is limitation of maximal number of arguments, see CALL-ARGUMENTS-LIMIT constant.
 
 See also FUNCALL, LAMBDA and EVAL.
 

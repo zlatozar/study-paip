@@ -3,7 +3,7 @@
 ;;; Code from Paradigms of Artificial Intelligence Programming
 ;;; Copyright (c) 1991 Peter Norvig
 
-;;;; student.lisp: Chapter 7's STUDENT program to solve algebra word problems.
+;;;; prolog1.lisp: First version of Prolog implementation
 
 (in-package #:ch11-first)
 
@@ -57,7 +57,7 @@
                    (prove (first goals) bindings)))))
 
 (defun rename-variables (x)
-  "Replace all variables in x with new ones."
+  "Replace all variables in X with new ones."
   (sublis (mapcar #'(lambda (var) (cons var (gensym (string var))))
                   (variables-in x))
           x))
@@ -65,7 +65,7 @@
 (defun unique-find-anywhere-if (predicate tree
                                 &optional found-so-far)
   "Return a list of leaves of tree satisfying predicate,
-  with duplicates removed."
+with duplicates removed."
   (if (atom tree)
       (if (funcall predicate tree)
           (adjoin tree found-so-far)
