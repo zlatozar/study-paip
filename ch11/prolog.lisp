@@ -9,11 +9,14 @@
 
 ;;;; Does not include destructive unification (11.6); see `prologc.lisp'
 
-;; clauses are represented as (head . body) cons cells
+;; When we have key value properties list fit perfectly - just first rest.
+;; Compare with parsing in `ch2::rule-rhs'.
+
+;; Clauses are represented as (head . body) cons cells
 (defun clause-head (clause) (first clause))
 (defun clause-body (clause) (rest clause))
 
-;; clauses are stored on the predicate's plist
+;; Clauses are stored on the predicate's plist
 (defun get-clauses (pred) (get pred 'clauses))
 (defun predicate (relation) (first relation))
 (defun args (x) "The arguments of a relation" (rest x))
@@ -26,8 +29,8 @@
   `(add-clause ',(replace-?-vars clause)))
 
 (defun add-clause (clause)
-  "Add a clause to the data base, indexed by head's predicate."
-  ;; the predicate must be a non-variable symbol.
+  "Add a clause to the data base, indexed by head's predicate.
+the predicate must be a non-variable symbol."
   (let ((pred (predicate (clause-head clause))))
     (assert (and (symbolp pred) (not (variable-p pred))))
     (pushnew pred *db-predicates*)
@@ -44,7 +47,7 @@
   (setf (get predicate 'clauses) nil))
 
 (defun rename-variables (x)
-  "Replace all variables in x with new ones."
+  "Replace all variables in X with new ones."
   (sublis (mapcar #'(lambda (var) (cons var (gensym (string var))))
                   (variables-in x))
           x))
@@ -72,6 +75,7 @@ with duplicates removed."
 
 (defmacro ?- (&rest goals) `(top-level-prove ',(replace-?-vars goals)))
 
+;; Idea first was introduced in `ch4-final::achieve-all'
 (defun prove-all (goals bindings)
   "Find a solution to the conjunction of goals."
   (cond ((eq bindings fail) fail)

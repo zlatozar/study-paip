@@ -271,6 +271,7 @@ or if there is an appropriate op for it that is applicable."
 ;; doesn't do anything about it. One thing we could do is try to vary the order (given and
 ;; reversed) of the conjunct goals. That is, we could change `achieve-all' as follows:
 
+;; Very important idea we use it again in `ch11-final::prove-all'
 (defun achieve-all (state goals goal-stack)
   "Achieve each goal, trying several orderings."
   (some #'(lambda (goals) (achieve-each state goals goal-stack))
@@ -286,6 +287,7 @@ or if there is an appropriate op for it that is applicable."
              (subsetp goals current-state :test #'equal))
         current-state)))
 
+;; How to choose
 (defun orderings (l)
   (if (> (length l) 1)
       (list l (reverse l))

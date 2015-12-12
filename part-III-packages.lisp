@@ -107,5 +107,6 @@
                 #:fail
                 #:no-bindings
                 #:variable-p)
-  (:export #:<-
+  (:export #:unique-find-anywhere-if
+           #:<-
            #:?-))

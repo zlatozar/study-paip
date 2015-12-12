@@ -28,7 +28,6 @@
   ((<- (length (?x . ?y) (1+ ?n)) (length ?y ?n)))
   ""
   "Here are some queries:"
-
   ((?- (length (a b c d) ?n)) :input ";")
   ((?- (length ?list (1+ (1+ 0)))) :input ";")
   ((?- (length ?list ?n)) :input ";;.")
@@ -38,6 +37,10 @@
 
   (:section "11.4 The Zebra Puzzle")
   ""
+  "From previous section:"
+  ((<- (member ?item (?item . ?rest))) @ 358)
+  ((<- (member ?item (?x . ?rest)) (member ?item ?rest)))
+
   "First we define the NEXTO and IRIGHT (to the immediate right) relations:"
 
   ((<- (nextto ?x ?y ?list) (iright ?x ?y ?list)) @ 374)

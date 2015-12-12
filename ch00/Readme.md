@@ -98,7 +98,7 @@ Other languages have different block delimiters depending on the kind of block b
 delimited. The C family, for example, has **()** for argument lists and sub-expressions,
 **[]** for arrays, **{}** for code blocks and dictionaries. It also uses commas and
 semicolons as block delimiters. If you compare apples and apples, Lisp usually has fewer
-block delimiters than C-like languages.  _Lisp programmers never have to worry about such
+block delimiters than C-like languages. _Lisp programmers never have to worry about such
 things: if you want to close a_ _block, you type a ")"._ It's always a no brainer, which
 leaves Lisp programmers with more mental capacity to focus on the problem they actually
 want to solve.
@@ -106,6 +106,9 @@ want to solve.
 ### Packages
 
 _(Notes taken during reading "Practical Common Lisp" by Peter Seibel)_
+
+Do not forget that Common Lisp standard has just a **flat** package system!
+And because of that there is no automatic reexport because you do not have parent package.
 
 - Packages are fundamentally a part of the lisp `READER` and not the `EVALUATOR`.
   Packages control how the `READER` maps strings onto symbols.
@@ -128,16 +131,19 @@ symbol in the current package, and return the new symbol.
 Interning is being done when the system reads a form or some data, but it also can be done
 using the function ```(intern <character string> <package>*)```.
 
-- *Uninterned* symbols are written with a leading `#:`
+- **Uninterned** symbols are written with a leading `#:`
 - The package in which a symbol is first interned is called the symbol's _home package_.
 - A package inherits symbols from other packages by using (`:use` clause) the other
   packages. Only external symbols in the used packages are inherited.
 - An existing symbol can be imported into another package by adding it to the package's
   name-to-symbol table.
-- Present symbol can be *uninterned* from a package, which causes it to be removed from the
+- Present symbol can be **uninterned** from a package, which causes it to be removed from the
   name-to-symbol table and, if it's a shadowing symbol, from the shadowing list.
-- *CL-USER* uses the package *COMMON-LISP*, which exports all the names defined by the
+- **CL-USER** uses the package **COMMON-LISP**, which exports all the names defined by the
   language standard.
+
+**Tip**: Never work in **CL-USER** package - just create your own.
+
 - Every package has one official name and zero or more _nicknames_.
 - The REPL can't start in the COMMON-LISP package because you're not allowed to intern new
   symbols in it. That's way we use CL-USER.
@@ -165,8 +171,11 @@ evaluates this keyword it gets the keyword itself.
 ```cl
 > :this-is-a-keyword
 :this-is-a-keyword
+
+(defun make-keyword (thing)
+  (values (intern (string-upcase thing) :keyword)))
 ```
-On page 340 in book you will see how to create variable as keyword runtime:
+On page **340** in book you will see how to create variable as keyword runtime:
 ```cl
 (proclaim '(inline variable-p make-variable))
 (defun variable-p(x) "Is Χ a variable?" (keywordp x))

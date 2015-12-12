@@ -189,17 +189,16 @@
   (:export #:make-trie
            #:put-trie
            #:get-trie
-           #:delete-trie
-           #:find-trie
-           #:follow-arc)
+           #:delete-trie)
 
   ;; `ch11'
   (:export #:unify
-           #:unifier
-           #:subst-bindings)
+           #:unifier)
 
-  ;; `ch11-final'. Prolog user interface
-  (:export #:<-
+  ;; `ch11-final'
+  (:export #:unique-find-anywhere-if
+           ;; Prolog user interface
+           #:<-
            #:?-)
 
   )

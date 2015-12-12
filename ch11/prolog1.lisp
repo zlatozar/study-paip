@@ -56,6 +56,10 @@
                        (prove-all (rest goals) goal1-solution))
                    (prove (first goals) bindings)))))
 
+;; Just as arguments to a function can have different values in different recursive calls
+;; to the function, so the variables in a clause are allowed to take on different values in
+;; different recursive uses.
+
 (defun rename-variables (x)
   "Replace all variables in X with new ones."
   (sublis (mapcar #'(lambda (var) (cons var (gensym (string var))))
