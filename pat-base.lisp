@@ -75,7 +75,10 @@
 ;; The answer is a list of variable bindings in dotted pair notation; each element of
 ;; the list is a (variable . value) pair.
 
-;; Basic version p.158
+;; Basic version p.158.  It shows also how to use list-consing recursion. `pat-match' has
+;; as a parameter 'bindings' - it is a CONS parameter. As each recursive call returns, we
+;; (possibly) add to this CONS parameter.
+
 (defun pat-match (pattern input &optional (bindings no-bindings))
   "Match PATTERN against INPUT in the context of the BINDINGS"
   (cond ((eq bindings fail) fail)
@@ -89,9 +92,7 @@
                     (pat-match (first pattern) (first input) bindings)))
         (t fail)))
 
-;; Following function is a good example of conditional consing/adding. It show also how to
-;; use list-consing recursion. `pat-match' has as a parameter 'bindings' - it is CONS
-;; parameter. As each recursive call returns, we (possibly) add to this CONS parameter.
+;; Following function is a good example of conditional consing/adding
 
 (defun extend-bindings (var val bindings)
   "Add a (var . value) pair to a binding list."

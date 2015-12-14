@@ -9,17 +9,23 @@
 
 ;;;; Does not include destructive unification (11.6); see `prologc.lisp'
 
-;; When we have key value properties list fit perfectly - just first rest.
+;; When we have key value, properties list fit perfectly. Value is just first rest.
 ;; Compare with parsing in `ch2::rule-rhs'.
 
-;; Clauses are represented as (head . body) cons cells
+;; Clauses are represented as (head . body) cons cells.
 (defun clause-head (clause) (first clause))
 (defun clause-body (clause) (rest clause))
 
-;; Clauses are stored on the predicate's plist
-(defun get-clauses (pred) (get pred 'clauses))
+;; Clauses are stored on the predicate's plist.
+;; Predicate is the relation name: (<- (likes Sandy cats)). 'likes' is the predicate.
+(defun get-clauses (pred) (get pred 'clauses)) ; (<predicate name> clauses)
 (defun predicate (relation) (first relation))
+
 (defun args (x) "The arguments of a relation" (rest x))
+
+;; Stores relations names for example for:
+;;
+;; (<- (likes Sandy ?x) (likes ?x cats)) => 'likes' will be stored in *db-predicate*
 
 (defvar *db-predicates* nil
   "a list of all predicates stored in the database.")
@@ -28,9 +34,12 @@
   "Add a clause to the data base."
   `(add-clause ',(replace-?-vars clause)))
 
+;; Creates plist (clauses <all clauses as list>) and assign it to symbol.
+;; Symbol name is the name of the predicate.
+
 (defun add-clause (clause)
-  "Add a clause to the data base, indexed by head's predicate.
-the predicate must be a non-variable symbol."
+  "Add a clause to the data base, indexed by head's predicate - relation
+name. It must be a non-variable symbol."
   (let ((pred (predicate (clause-head clause))))
     (assert (and (symbolp pred) (not (variable-p pred))))
     (pushnew pred *db-predicates*)
@@ -136,7 +145,7 @@ Then ask the user if more solutions are desired."
   (and (variable-p x) (not (eq x '?))))
 
 (defun replace-?-vars (exp)
-    "Replace any ? within exp with a var of the form ?123."
+    "Replace any ? within EXP with a var of the form ?123."
     (cond ((eq exp '?) (gensym "?"))
 	  ((atom exp) exp)
 	  (t (reuse-cons (replace-?-vars (first exp))

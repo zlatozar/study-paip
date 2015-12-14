@@ -107,6 +107,17 @@
                 #:fail
                 #:no-bindings
                 #:variable-p)
-  (:export #:unique-find-anywhere-if
+  (:export #:add-clause
+           #:unique-find-anywhere-if
            #:<-
            #:?-))
+
+(defpackage #:ch11-exercises
+  (:documentation "Selected exercises from Chapter 11")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor)
+  (:import-from :ch11-final
+                #:add-clause)
+  (:export #:fact
+           #:rule))

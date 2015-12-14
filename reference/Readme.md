@@ -89,6 +89,8 @@
     - [svref](#svref)
     - [simple-vector](#simple-vector)
     - [simple-array](#simple-array)
+- [Chapter-11](#chapter-11)
+    - [get](#get)
 - [Koans](#koans)
 - [Misc](#misc)
     - [getf](#getf)
@@ -955,7 +957,7 @@ the tree. **subst** substitutes a single value for another, while **sublis**
 takes a list of substitutions in the form of an association list of (old . new)
 pairs.
 
-_Note_ that the order of old and new in the alist for **sublis** is reversed from
+**Note** that _the order_ of old and new in the alist for **sublis** is reversed from
 the order of arguments to **subst**.
 
 ``` cl
@@ -1586,6 +1588,36 @@ misleading when you read ```(simple-array fixnum *)```. It is equivalent to
 ```(simple-array(*))```. Actually the length of the list is the dimension, values are the
 dimensions length. When it is a star ```*``` it means unknown length.
 
+## Chapter-11
+
+### get
+
+(**get** _symbol_ _indicator_ _default*_) => value
+
+_Note that there is no way to distinguish an absent property from one whose value is default._
+
+The GET function retrieves a property of a symbol given the indicator. SETF understands
+GET as a place description; that is how new properties are stored on the property
+list. Let’s give the symbol FRED a property called SEX with value MALE, a property called
+AGE with value 23, and a property called SIBLINGS with value (GEORGE WANDA).
+
+```cl
+(setf (get 'fred 'sex) 'male)
+(setf (get 'fred 'age) 23)
+(setf (get 'fred 'siblings) '(george wanda))
+
+;; The actual property list of FRED looks like this: (siblings (george wanda) age 23 sex male)
+(describe 'fred)
+
+(get 'fred 'age) ;=> 23
+
+;; The value of a property can be changed at any time. Suppose FRED has a birthday:
+(incf (get 'fred 'age)) ;=> 24
+(get 'fred 'age) ;=> 24
+```
+
+Like GETF, GET is SETFable, so you can attach arbitrary information to a symbol like this:
+```(setf (get 'some-symbol 'my-key) "information")```
 
 ## Koans
 

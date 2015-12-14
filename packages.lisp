@@ -36,7 +36,8 @@
         #:ch9
         #:ch10
         #:ch11
-        #:ch11-final)
+        #:ch11-final
+        #:ch11-exercises)
 
   ;; `inspect'
   (:export #:??
@@ -201,6 +202,9 @@
            #:<-
            #:?-)
 
+  ;; `ch11-exercises'
+  (:export #:fact
+           #:rule)
   )
 
 

@@ -18,41 +18,43 @@ _queries_  that ask questions about how terms are related with respect to a coll
 facts and rules. **Terms** include such simple objects as _atoms_, _numbers_, and
 _variables_, and more complex objects called _structures_.
 
-```term``` is _atom_ or _variable_ or _structure_
+- ```term``` is _atom_ or _variable_ or _structure_
 
-```(symbolic) atom``` is any sequence of lower- and uppercase letters, digits, and the
-                      special symbol _underscore_ ```_``` that begins with a lowercase
-                      letter. They refer to specific objects, and to specific relations
+- ```(symbolic) atom``` is any sequence of lower- and uppercase letters, digits, and the
+                        special symbol _underscore_ ```_``` that begins with a lowercase
+                        letter. They refer to specific objects, and to specific relations
 
-```(logical) variable``` is any sequence of lower and uppercase letters, digits, and the
-                         special symbol _underscore_ that begins with uppercase letter or
-                         the underscore.
-```list``` is **[]**
+- ```(logical) variable``` is any sequence of lower and uppercase letters, digits, and the
+                           special symbol _underscore_ that begins with uppercase letter or
+                           the underscore.
 
-**NOTE:** List in Prolog implementation are
+- ```list``` is **[]**
 
-```;``` is logical **OR**
+**NOTE:** It is not mentioned in book but list in Lisp implementation is cons cells: ```(first . rest)```
 
-```,``` is logical **AND**
+- ```;``` is logical **OR**
 
-```=``` represents unification in Prolog
+- ```,``` is logical **AND**
 
-```relation``` relates a collection of terms. E.g. _identifier(component [, component]...)_
+- ```=``` represents unification in Prolog
+
+- ```relation``` relates a collection of terms. E.g. _identifier(component [, component]...)_
 A relation with **n** components is called an _n-ary_ relation. **n** is said to be the
 _arity_ of the relation. A _0-ary_ relation is called a _propositional relation_ or just
 _proposition_.
 
-```fact``` asserts the truth of a relation. _fact_ is _relation._ **Note** the period that
-follows the relation.
+- ```fact``` asserts the truth of a relation. _fact_ is _relation._ **Note** the period that
+             follows the relation.
 
-```rule``` is _conclusion :- condition [,condition] ..._**.**. **rule** asserts the conditional
+- ```rule``` is _conclusion :- condition [,condition] ..._**.**. **rule** asserts the conditional
 truth of a relation. Each rule must contains at least one condition. Like **facts**, rules
 are terminated with a period.
 
-```clauses``` are rules or facts
+- ```clauses``` are rules or facts.
 
-```query``` is **?-** _relation [, relation]..._ **.**. **query** - a question asking
-whether a sequence of terms are related. Like **facts**, queries are terminated with a period.
+- ```query``` is **?-** _relation [, relation]..._ **.**. **query** - a question asking
+              whether a sequence of terms are related. Like **facts**, queries are
+              terminated with a period.
 
 - When Prolog seeks to resolve a query or condition of a rule, it searches that data base of
   facts and rules from top to bottom for either a fact relation of the conclusion relation
@@ -212,6 +214,10 @@ allows two variables to be matched against each other.
 (unify '(f ?x) '(f ?y)) ;=> ((?X . ?Y))
 ```
 
+It does provide a way of stating that variables are equal to other variables or
+expressions. It does not provide a way of automatically solving equations or applying
+constraints other than equality.
+
 * Prolog provides automatic backtracking (once again)
 
 In Prolog, each query leads to a search for relations in the data base that satisfy the
@@ -226,6 +232,16 @@ another answer to use in its place.
 **Rule**: _If a value is fully determined by other values, then avoid guessing the value_
 _and later testing if it is correct._
 
+```prolog
+uniq3(A,B,C),         % Guess at A,B,C.
+B is (A+C) mod 10     % Then test if B is OK.
+
+% write this:
+
+uniq2(A,C),          % Guess at A and C.
+B is (A+C) mod 10,   % Calculate B once.
+uniq3(A,B,C)         % Test that all values are unique.
+```
 Abstractly, the unification problem is the following: _Given two descriptions X and Y, can_
 _we find an object Z that fits both descriptions?_
 
@@ -240,3 +256,5 @@ _infinite unification_ - attempt to unify a variable with a structure containing
 Here ```((?x f ?x))``` really means ```((?x . ((f ?x))))``` which is ```((?x . ((f ((f ?x))))))``` and so on.
 _The easiest _way to deal with such infinite structures is just to ban them._ This is known in
 unification circles as the **occurs check**.
+
+### Implementation notes

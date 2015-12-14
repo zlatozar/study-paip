@@ -48,6 +48,8 @@
   ((<- (iright ?left ?right (?left ?right . ?rest))))
   ((<- (iright ?left ?right (?x . ?rest))
        (iright ?left ?right ?rest)))
+  ""
+  "Second we need to define EQUAL. = is unification."
   ((<- (= ?x ?x)))
   ""
   "Now we define the zebra puzzle:"

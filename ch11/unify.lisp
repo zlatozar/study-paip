@@ -35,7 +35,7 @@
          fail)
         (t (extend-bindings var x bindings))))
 
-;; Variable with a structure containing that variable.
+;; When try to unify variable with a structure containing that variable.
 (defun occurs-check (var x bindings)
   "Does VAR occur anywhere inside X?"
   (cond ((eq var x) t)
@@ -47,8 +47,12 @@
 
 ;;; ____________________________________________________________________________
 
-;; The function `subst-bindings' acts like `sublis', except that it
-;; substitutes recursive bindings.
+;; The function `subst-bindings' acts like `sublis', except that it substitutes recursive
+;; bindings. Variables can be bound to other variables, which are in turn bound to
+;; expressions so try:
+;;
+;; (trace subst-bindings)
+;; (subst-bindings '((?X . A) (?Y . ?X) (?Χ . ?Y)) '?Χ) ;=> A
 
 (defun subst-bindings (bindings x)
   "Substitute the value of variables in BINDINGS into X,
