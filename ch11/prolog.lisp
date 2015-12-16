@@ -17,15 +17,15 @@
 (defun clause-body (clause) (rest clause))
 
 ;; Clauses are stored on the predicate's plist.
-;; Predicate is the relation name: (<- (likes Sandy cats)). 'likes' is the predicate.
-(defun get-clauses (pred) (get pred 'clauses)) ; (<predicate name> clauses)
+(defun get-clauses (pred) (get pred 'clauses)) ; e.g. plist for predicate LIKES is (CLAUSES (((LIKES SANDY ?X) (LIKES ?X CATS))))
 (defun predicate (relation) (first relation))
 
 (defun args (x) "The arguments of a relation" (rest x))
 
 ;; Stores relations names for example for:
 ;;
-;; (<- (likes Sandy ?x) (likes ?x cats)) => 'likes' will be stored in *db-predicate*
+;; (<- (likes Sandy ?x) (likes ?x cats)) => 'likes' will be stored in *db-predicate*.
+;; Then using 'clause' indicator we can extract predicate's plist.
 
 (defvar *db-predicates* nil
   "a list of all predicates stored in the database.")
@@ -35,7 +35,8 @@
   `(add-clause ',(replace-?-vars clause)))
 
 ;; Creates plist (clauses <all clauses as list>) and assign it to symbol.
-;; Symbol name is the name of the predicate.
+;; In Lisp, every symbol has a property list. You can see stored:
+;;        (symbol-plist '<predicate-name>)
 
 (defun add-clause (clause)
   "Add a clause to the data base, indexed by head's predicate - relation
@@ -106,6 +107,9 @@ with duplicates removed."
         ;; a primitive function to call
         (funcall clauses (rest goal) bindings
                  other-goals))))
+
+;; Note that this version `top-level-prove' need not call `show-prolog-solutions' itself,
+;; since the printing will be handled by the primitive for `show-prolog-vars'.
 
 (defun top-level-prove (goals)
   (prove-all `(,@goals (show-prolog-vars ,@(variables-in goals)))

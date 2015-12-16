@@ -5,7 +5,16 @@ that describe a problem and its solution. These relationships act as constraints
 algorithms that can solve the problem, but the system itself, rather than the programmer,
 is responsible for the details of the algorithm.
 
+We shall view functional programming as computation in evaluation mode (no information
+guessing is allowed) and relational programming as computation in a deduction mode
+(information guessing is allowed.)
+
 ### Prolog
+
+A Prolog program consists of a collection of _procedures_. Each procedure defines a
+particular _predicate_, being a certain relationship between its arguments. A procedure
+consists of one or more assertions, or _clauses_. It is convenient to think of two kinds of
+clauses: _facts_ and _rules_.
 
 _In Prolog, there's not often a finely detailed step-by-step recipe._ If you find the
 relation you have to write few lines of code.
@@ -18,7 +27,7 @@ _queries_  that ask questions about how terms are related with respect to a coll
 facts and rules. **Terms** include such simple objects as _atoms_, _numbers_, and
 _variables_, and more complex objects called _structures_.
 
-- ```term``` is _atom_ or _variable_ or _structure_
+- ```term``` is _atom_ or _variable_ or _structure_(compound terms e.g. list)
 
 - ```(symbolic) atom``` is any sequence of lower- and uppercase letters, digits, and the
                         special symbol _underscore_ ```_``` that begins with a lowercase
@@ -28,13 +37,15 @@ _variables_, and more complex objects called _structures_.
                            special symbol _underscore_ that begins with uppercase letter or
                            the underscore.
 
-- ```list``` is **[]**
+Programmers can consider logical variables as named 'holes' in data structures.
+
+- ```list``` is **[H|T]**
 
 **NOTE:** It is not mentioned in book but list in Lisp implementation is cons cells: ```(first . rest)```
 
 - ```;``` is logical **OR**
 
-- ```,``` is logical **AND**
+- ```,``` is logical **AND**, separates goals
 
 - ```=``` represents unification in Prolog
 
@@ -56,14 +67,6 @@ are terminated with a period.
               whether a sequence of terms are related. Like **facts**, queries are
               terminated with a period.
 
-- When Prolog seeks to resolve a query or condition of a rule, it searches that data base of
-  facts and rules from top to bottom for either a fact relation of the conclusion relation
-  of a rule that will unify with the query of condition relation.
-
-- A basic computational mechanism in Prolog is _relational resolution_. A query or condition
-  relation and a conclusion relation _resolve_ if the have the same relation name, the same
-  relation arity, and their terms in each respective component position unify.
-
 #### Unification
 
 Unification is a process of matching terms.
@@ -72,6 +75,27 @@ A principle called _unification_ governs the process of instantiating variables 
 terms. Unification is basically an attempt to _match_ two terms, by instantiating the
 variables contained in the terms. _Thus, substitution plays a central role in the process._
 A _substitution_ is a set of mappings from variables to terms.
+
+**Tip:** Unification also serves as the parameter passing mechanism, and provides a constructor and
+     selector of data structures.
+
+If two variables unify with each other, then they _co-refer_: that is, the both refer to the
+same term. The anonymous variable will unify with any term, and does not co-refer with any
+term.
+
+##### Execution model
+
+Given a program consisting of clauses, the way to use the program is to pose _queries_
+about it.
+
+- When Prolog seeks to resolve a query or condition of a rule, it searches that data base of
+  facts and rules from top to bottom for either a fact relation of the conclusion relation
+  of a rule that will unify with the query of condition relation.
+
+- A basic computational mechanism in Prolog is _relational resolution_. A query or condition
+  relation and a conclusion relation _resolve_ if the have the same relation name, the same
+  relation arity, and their terms in each respective component position unify.
+
 
 #### Backtracking
 
@@ -92,6 +116,10 @@ bindings. In case (a), the Prolog interpreter is looking for extra solutions, wh
 case (b) it is still looking for the first solution. So backtracking may serve to find
 extra solutions to a problem, or to continue the search for a first solution, when a first
 set of assumptions (i.e. variable bindings) turns out not to lead to a solution.
+
+**Tip:** Automatic backtracking provides generate-and-test as the basic control flow
+     model. This is more general than the strict unidirectional sequential flow of control in
+     conventional languages.
 
 #### Programming in Prolog
 
@@ -134,7 +162,32 @@ captures:
 #### Arithmetic
 
 One restriction on the use of _arithmetic expressions_ is that the variables in them must
-already have values.
+already have values. Prolog provides a built-in predicate for the purpose of evaluating
+terms according to the rules of arithmetic. This predicate is called ```is```, and it can
+be written as an infix operator.
+
+```prolog
+?- X is 2+2*2.
+X=6
+
+coeff(A,X,B,Y) :- Y is A*X+B.
+?- coeff(2, 2, 2, 6).
+yes
+?- coeff(1+7, 2*2, 4, V).
+Y=36
+```
+
+#### How Prolog finds solution?
+
+```prolog
+drinks(john, water).
+drinks(jeremy, milk).
+drinks(camilla, beer).
+drinks(jeremy, X) :- drinks(john, X).
+```
+Find out what jeremy drinks.
+
+![Prolog solution](how_prolog_finds_solutions.png "Solution")
 
 ### Implement Prolog in Common Lisp
 
@@ -153,19 +206,19 @@ and _rules_, which are used to state contingent facts. For example, we can repre
 rule that Sandy likes _anyone_ who likes cats as follows:
 
 ```cl
-;; Use AND for clauses in body: Likes Lee AND Kim
-
-;;  |---- head ----| |--- body ----|
-(<- (likes Sandy ?x) (likes ?x cats))
+;;     |---- head ----| |--- body ----|
+   (<- (likes Sandy ?x) (likes ?x cats))
+;; |------- predicate 'likes' ---------|
 
 ;; Exercise 11.2 suggest alternative syntax
 (fact (likes Kim Robin))
 (rule (likes Sandy ?x) if (likes ?x cats))
 ```
-You can interpret this in two ways:
-    - "For any X, Sandy likes Χ **if** Χ likes cats." - _declarative interpretation_
-    - "If you ever want to show that Sandy likes some X, one way to do it is to show that
-      Χ likes cats." - _procedural interpretation_ (**backward-chaining** interpretation)
+You can interpret this in two ways:<br/>
+- _"For any X, Sandy likes Χ **if** Χ likes cats."_ - **declarative interpretation**
+
+- _"If you ever want to show that Sandy likes some X, one way to do it is to show that_
+  _Χ likes cats."_ - **procedural interpretation** (_backward-chaining_ interpretation)
 
 **Tip:** Fact is just a rule that has no body
 
@@ -258,3 +311,32 @@ _The easiest _way to deal with such infinite structures is just to ban them._ Th
 unification circles as the **occurs check**.
 
 ### Implementation notes
+
+- **Predicate** is the relation name: ```(<- (likes Sandy cats))```. _'likes'_ is the predicate.
+
+- _In Lisp, every symbol has a property list._ Property lists provide basically the same
+  facilities as association lists and hash tables: You can store a value in a property list
+  under a given key (called an **indicator**), and later look things up in the property list by
+  supplying the indicator. You can see stored: ```(symbol-plist '<predicate-name>)```
+
+It is very convenient to store in *db-predicates* only clause heads and using fact that it
+is a symbol to add to it as plist clause body as list with indicator 'clauses'.
+
+- The goals that are not matched against data base but rather causes some procedure to take
+  action are called _primitives_, because they are built-in to the language, and new ones may
+  not be defined by the user. _Primitives_ will be represented as Lisp functions.
+
+- You can't port directly Prolog programs in Lisp-Prolog. For example:
+
+```prlog
+len([], 0).
+len([H|T], N) :- len(T, Nt), N is Nt + 1.
+```
+and
+```cl
+(<- (length () 0))
+(<- (length (?h . ?t) (1+ ?n)) (length ?t ?n))
+```
+
+This is because we do not have primitive ```is``` that should evaluate ```(1+ (1+ 0))```
+to ```2```. To accomplish this Exercise 11.11 should be made.

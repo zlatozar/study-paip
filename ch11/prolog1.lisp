@@ -40,6 +40,12 @@
   "Remove the clauses for a single predicate."
   (setf (get predicate 'clauses) nil))
 
+;; To prove a goal, first find all the candidate clauses for that goal. For each candidate,
+;; check if the goal unifies with the head of the clause. If it does, try to prove all the
+;; goals in the body of the clause. For facts, there will be no goals in the body, so
+;; success will be immediate. For rules, the goals in the body need to be proved one at a
+;; time, making sure that bindings from the previous step are maintained.
+
 (defun prove (goal bindings)
   "Return a list of possible solutions to goal."
   (mapcan #'(lambda (clause)
@@ -66,9 +72,13 @@
                   (variables-in x))
           x))
 
+(defun variables-in (exp)
+  "Return a list of all the variables in EXP."
+  (unique-find-anywhere-if #'variable-p exp))
+
 (defun unique-find-anywhere-if (predicate tree
                                 &optional found-so-far)
-  "Return a list of leaves of tree satisfying predicate,
+  "Return a list of leaves of tree satisfying PREDICATE,
 with duplicates removed."
   (if (atom tree)
       (if (funcall predicate tree)
@@ -81,7 +91,7 @@ with duplicates removed."
                                  found-so-far))))
 
 (defun find-anywhere-if (predicate tree)
-  "Does predicate apply to any atom in the tree?"
+  "Does PREDICATE apply to any atom in the TREE?"
   (if (atom tree)
       (funcall predicate tree)
       (or (find-anywhere-if predicate (first tree))
@@ -111,7 +121,3 @@ with duplicates removed."
         (format t "~&~a = ~a" var
                 (subst-bindings bindings var))))
   (princ ";"))
-
-(defun variables-in (exp)
-  "Return a list of all the variables in EXP."
-  (unique-find-anywhere-if #'variable-p exp))

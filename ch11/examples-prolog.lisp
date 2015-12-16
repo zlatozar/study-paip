@@ -23,9 +23,15 @@
   "the character it reads, so you may or may not see the ; and . characters."
   ""
   "Let's add the definition of the relation LENGTH:"
+  ""
+  "We say that a list has length ?n if there are N elements in the list. Given a"
+  "list (?head . ?tail) and an integer N, the goal length(L, N) succeeds if the length of the list L is N."
+  ""
+  "The base case says that the length of the NULL list is O."
+  "The recursive case says the length of any non-nil list is the length of its tail ?y plus ?n."
 
   ((<- (length () 0)) @ 370)
-  ((<- (length (?x . ?y) (1+ ?n)) (length ?y ?n)))
+  ((<- (length (?h . ?t) (1+ ?n)) (length ?t ?n)))
   ""
   "Here are some queries:"
   ((?- (length (a b c d) ?n)) :input ";")

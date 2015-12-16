@@ -91,6 +91,7 @@
     - [simple-array](#simple-array)
 - [Chapter-11](#chapter-11)
     - [get](#get)
+    - [pushnew](#pushnew)
 - [Koans](#koans)
 - [Misc](#misc)
     - [getf](#getf)
@@ -1594,6 +1595,12 @@ dimensions length. When it is a star ```*``` it means unknown length.
 
 (**get** _symbol_ _indicator_ _default*_) => value
 
+_In Lisp, every symbol has a property list._ Property lists provide basically the same
+facilities as association lists and hash tables: You can store a value in a property list
+under a given key (called an indicator), and later look things up in the property list by
+supplying the indicator. Property lists are organized as lists of alternating indicators
+and values, like this: ```(ind-1 val-1 ind2-2 val-2 ...)```
+
 _Note that there is no way to distinguish an absent property from one whose value is default._
 
 The GET function retrieves a property of a symbol given the indicator. SETF understands
@@ -1607,7 +1614,7 @@ AGE with value 23, and a property called SIBLINGS with value (GEORGE WANDA).
 (setf (get 'fred 'siblings) '(george wanda))
 
 ;; The actual property list of FRED looks like this: (siblings (george wanda) age 23 sex male)
-(describe 'fred)
+(symbol-plist 'fred)
 
 (get 'fred 'age) ;=> 23
 
@@ -1616,8 +1623,17 @@ AGE with value 23, and a property called SIBLINGS with value (GEORGE WANDA).
 (get 'fred 'age) ;=> 24
 ```
 
-Like GETF, GET is SETFable, so you can attach arbitrary information to a symbol like this:
+Like GETF, GET is SETFable, so you can attach arbitrary information to a symbol like this:<br/>
 ```(setf (get 'some-symbol 'my-key) "information")```
+
+See also: GETF
+
+### pushnew
+
+(**pushnew** _item_ _place_) => list
+
+PUSHNEW is a generalized assignment operator like PUSH, but it first checks to make sure
+the element is not a member of the list, so it is useful for adding an element to a set.
 
 ## Koans
 
