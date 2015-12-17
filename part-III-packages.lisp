@@ -108,6 +108,10 @@
                 #:no-bindings
                 #:variable-p)
   (:export #:add-clause
+           #:clause-head
+           #:get-clauses
+           #:predicate
+           #:*db-predicates*
            #:unique-find-anywhere-if
            #:<-
            #:?-))
@@ -121,3 +125,35 @@
                 #:add-clause)
   (:export #:fact
            #:rule))
+
+(defpackage #:ch12-first
+  (:documentation "Chapter 12. Compiling Logic Programs (first version)")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor)
+  (:import-from :pat-base
+                #:variable-p))
+
+(defpackage #:ch12-second
+  (:documentation "Chapter 12. Compiling Logic Programs (second version)")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor)
+  (:import-from :pat-base
+                #:variable-p))
+
+(defpackage #:ch12-final
+  (:documentation "Chapter 12. Compiling Logic Programs (final version)")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor)
+  (:import-from :paip-aux
+                #:length=1
+                #:reuse-cons)
+  (:import-from :pat-base
+                #:variable-p)
+  (:import-from :ch11-final
+                #:clause-head
+                #:get-clauses
+                #:predicate
+                #:*db-predicates*))

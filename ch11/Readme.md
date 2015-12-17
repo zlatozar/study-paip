@@ -339,4 +339,26 @@ and
 ```
 
 This is because we do not have primitive ```is``` that should evaluate ```(1+ (1+ 0))```
-to ```2```. To accomplish this Exercise 11.11 should be made.
+to ```2```. To accomplish this **Exercise 11.11** should be made.
+
+- It turns out the user must be concerned not only about the logic of the problem but also
+with the flow of control. Prolog is smart enough to backtrack and find all solutions when
+the search space is small enough, but when it is infinite (or even very large), the
+programmer still has a responsibility to guide the flow of control.
+
+- _Instead of enumerating complete candidate solutions, unification allows us to specify_
+_partial candidates._ Unification serves the same purpose as the delay macro. It allows us
+to delay deciding the value of some attribute as long as possible, but to immediately
+reject a solution that tries to give two different values to the same attribute. That way,
+we save time if we end up backtracking before the computation is made, but we are still
+able to fill in the value later on.
+
+- Prolog is generally not as efficient as an assembly language, but it can be more concise
+as a specification language. The user writes specifications: lists of axioms that describe
+the relationships that can hold in the problem domain. If these specifications are in the
+right form, Prolog's automatic backtracking can find a solution, even though the
+programmer does not provide an explicit algorithm.
+
+- Note that there is no way in Prolog to express a **true definition**. We would like to say
+that _"P is the parent of C if and only if C is the child of P,"_ but Prolog makes us express
+the biconditional in one direction only.

@@ -7,15 +7,6 @@
 
 (in-package #:tutor)
 
-(defexamples 12 "Compiling Logic Programs"
-  "This chapter presents a compiler that translates from Prolog to Lisp."
-  "Unfortunatley, there's not much to see in terms of examples."
-  "But we load the files for you, in case you want to play with them."
-  ((requires "prologc1" "prologc2" "prologcp"))
-  ((prolog-compile 'likes) @ 389)
-  ((prolog-compile 'member))
-  )
-
 (defexamples 13 "Object Oriented Programming"
   "It is only natural that a wide range of programming styles have been"
   "introduced to attack the wide range of problems in this book."

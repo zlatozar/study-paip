@@ -71,10 +71,10 @@ with duplicates removed."
           (adjoin tree found-so-far)
           found-so-far)
       (unique-find-anywhere-if
-        predicate
-        (first tree)
-        (unique-find-anywhere-if predicate (rest tree)
-                                 found-so-far))))
+       predicate
+       (first tree)
+       (unique-find-anywhere-if predicate (rest tree)
+                                found-so-far))))
 
 (defun find-anywhere-if (predicate tree)
   "Does predicate apply to any atom in the tree?"
@@ -97,12 +97,12 @@ with duplicates removed."
   (let ((clauses (get-clauses (predicate goal))))
     (if (listp clauses)
         (some
-          #'(lambda (clause)
-              (let ((new-clause (rename-variables clause)))
-                (prove-all
-                  (append (clause-body new-clause) other-goals)
-                  (unify goal (clause-head new-clause) bindings))))
-          clauses)
+         #'(lambda (clause)
+             (let ((new-clause (rename-variables clause)))
+               (prove-all
+                (append (clause-body new-clause) other-goals)
+                (unify goal (clause-head new-clause) bindings))))
+         clauses)
         ;; The predicate's "clauses" can be an atom:
         ;; a primitive function to call
         (funcall clauses (rest goal) bindings
@@ -138,8 +138,8 @@ Then ask the user if more solutions are desired."
     (#\. nil)
     (#\newline (continue-p))
     (otherwise
-      (format t " Type ; to see more or . to stop")
-      (continue-p))))
+     (format t " Type ; to see more or . to stop")
+     (continue-p))))
 
 (defun variables-in (exp)
   "Return a list of all the variables in EXP."
@@ -149,9 +149,9 @@ Then ask the user if more solutions are desired."
   (and (variable-p x) (not (eq x '?))))
 
 (defun replace-?-vars (exp)
-    "Replace any ? within EXP with a var of the form ?123."
-    (cond ((eq exp '?) (gensym "?"))
-	  ((atom exp) exp)
-	  (t (reuse-cons (replace-?-vars (first exp))
-			 (replace-?-vars (rest exp))
-			 exp))))
+  "Replace any ? within EXP with a var of the form ?123."
+  (cond ((eq exp '?) (gensym "?"))
+        ((atom exp) exp)
+        (t (reuse-cons (replace-?-vars (first exp))
+                       (replace-?-vars (rest exp))
+                       exp))))

@@ -111,13 +111,16 @@
 
                ;; Chapter 11
                (:file "ch11/unify" :depends-on ("ch06/patmatch"))
-
                (:file "ch11/prolog1" :depends-on ("ch11/unify"))
                (:file "ch11/examples-prolog1" :depends-on ("tutor" "ch11/prolog1"))
-
                (:file "ch11/prolog" :depends-on ("ch11/unify"))
                (:file "ch11/examples-prolog" :depends-on ("tutor" "ch11/prolog"))
-
                (:file "ch11/exercises" :depends-on ("tools/test" "ch11/prolog"))
+
+               ;; Chapter 12
+               (:file "ch12/prologc1" :depends-on ("ch11/prolog"))
+               (:file "ch12/prologc2" :depends-on ("ch11/prolog"))
+               (:file "ch12/prologc" :depends-on ("ch11/prolog"))
+               (:file "ch12/prologcp" :depends-on ("ch12/prologc"))
 
                ))

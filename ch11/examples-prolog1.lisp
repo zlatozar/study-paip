@@ -73,4 +73,4 @@
   ((?- (likes ?who Sandy)))
   ((?- (likes Robin Lee)))
   ((?- (likes ?x ?y) (likes ?y ?x)) @ 366)
-)
+  )

@@ -27,9 +27,6 @@
   "We say that a list has length ?n if there are N elements in the list. Given a"
   "list (?head . ?tail) and an integer N, the goal length(L, N) succeeds if the length of the list L is N."
   ""
-  "The base case says that the length of the NULL list is O."
-  "The recursive case says the length of any non-nil list is the length of its tail ?y plus ?n."
-
   ((<- (length () 0)) @ 370)
   ((<- (length (?h . ?t) (1+ ?n)) (length ?t ?n)))
   ""
@@ -91,4 +88,4 @@
   "   ((?- (zebra ?houses ?water-drinker ?zebra-owner)))"
   ""
   "NOTE: It is not included as an example because it takes a minute or so to run."
-)
+  )

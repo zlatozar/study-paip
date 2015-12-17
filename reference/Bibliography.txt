@@ -57,3 +57,5 @@ NOT IN PAIP BIBLIOGRAPHY
 
 21. Stuart Russell, Peter Norvig. "Artificial Intelligence: A Modern Approach"
     3d ed. Prentice Hall.
+
+22. Clocksin, William. (2003) "Clause and Effect: Prolog Programming for the Working Programmer"

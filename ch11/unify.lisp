@@ -70,5 +70,5 @@ taking recursively bound variables into account."
 
 ;; Shows the structure that results from unifying two structures
 (defun unifier (x y)
- "Return something that unifies with both X and Y (or fail)."
- (subst-bindings (unify x y) x))
+  "Return something that unifies with both X and Y (or fail)."
+  (subst-bindings (unify x y) x))

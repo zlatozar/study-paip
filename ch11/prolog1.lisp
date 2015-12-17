@@ -85,10 +85,10 @@ with duplicates removed."
           (adjoin tree found-so-far)
           found-so-far)
       (unique-find-anywhere-if
-        predicate
-        (first tree)
-        (unique-find-anywhere-if predicate (rest tree)
-                                 found-so-far))))
+       predicate
+       (first tree)
+       (unique-find-anywhere-if predicate (rest tree)
+                                found-so-far))))
 
 (defun find-anywhere-if (predicate tree)
   "Does PREDICATE apply to any atom in the TREE?"
@@ -102,8 +102,8 @@ with duplicates removed."
 (defun top-level-prove (goals)
   "Prove the goals, and print variables readably."
   (show-prolog-solutions
-    (variables-in goals)
-    (prove-all goals no-bindings)))
+   (variables-in goals)
+   (prove-all goals no-bindings)))
 
 (defun show-prolog-solutions (vars solutions)
   "Print the variables in each of the solutions."
