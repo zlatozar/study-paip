@@ -114,7 +114,7 @@ makes it easier to replace with an flet or labels function. All this are the sam
 - Like spaces, parentheses are separators, too. Therefore, the expression ```(abc(def))``` is a
   list containing the elements ```abc``` and ```(def)```. However, it is recommended to separate
   elements in a list by spaces to enhance the readability of expression, e.g., ```(abc (def))```.
-- The empty list NIL
+- The empty list **NIL**
   A particular list called the empty list, contains no elements. They are simply written
   using matching parentheses: ```()```
   The empty list plays a particular role in LISP and therefore has been given a name: ```NIL```
@@ -151,3 +151,6 @@ almost always means that function is not defined or couldn't be found
     * Send s-expression to REPL to see result `C-c C-j`. If it is correct should return `T`
     * When finish with koan file reload `contemplate` (choose _[CONTINUE]_ Go ahead and
 change the value.). In this way next koan file will be suggested.
+
+Tip: _In programming the you can't see data only algorithms on that data. In Excel is vice
+    versa._

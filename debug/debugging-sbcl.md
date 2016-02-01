@@ -387,6 +387,9 @@ To analyze the problem, we will execute the function **step-by-step**. First, we
 the trace (using **untrace**) because the step-by-step shows more or less the same
 information.
 
+TIP: Be sure that you have ```(declare (optimize debug))``` in function that
+     you will step.
+
 ```
 CL-USER> (untrace place-queens)
 T
@@ -445,4 +448,5 @@ returns `nil`? It should return list. That is the problem!
     (list 'end))
 ```
 
-That's all!
+The main idea of developing in COMMON LISP is that the whole system is one "image" that
+you continuously modify until it fits your needs. That's all!

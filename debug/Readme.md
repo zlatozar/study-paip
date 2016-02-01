@@ -24,13 +24,32 @@ natural order of running. This cycle is pretty much mandated by these prerequisi
 This is reflected in the tool structure: the editor, compiler, execution shell, and
 debugger are all separate programs.
 
-In Lisp, things are different. In Lisp, you're sitting "within" the running program at all
-times. The execution shell is the Lisp REPL. The debugger is always present, and takes
-control whenever there's an unhandled exception.  The compiler is just part of your
-execution shell. And the shell has access to all of your subroutines. The only thing
-that's not necessarily integrated is the editor, and most Lisp coders use editors that
-integrate themselves with Lisp; usually, this is SLIME under Emacs, or an editor built
-into the vendor's Lisp.
+In Lisp, things are different.  The main idea of developing in COMMON LISP is that the
+whole system is one "image" that you continuously modify until it fits your needs.  You
+will still work with text source files, but you should not view them as the output of one
+tool (the editor) that is fed into another tool (the preprocessor, the compiler, or the
+interpreter), but rather as keeping track of what you did to modify the image and how to
+repeat that.
+
+In Lisp, you're sitting "within" the running program at all times. The execution shell is
+the Lisp REPL. The debugger is always present, and takes control whenever there's an
+un-handled exception. The compiler is just part of your execution shell. And the shell has
+access to all of your subroutines. The only thing that's not necessarily integrated is the
+editor, and most Lisp coders use editors that integrate themselves with Lisp; usually,
+this is SLIME under Emacs, or an editor built into the vendor's Lisp. This has two effects:
+
+- Each form returns something which means that you can query the state of the image at any
+  time, and, for example, find out the value of a variable or test whether a function
+  does what it’s supposed to do.
+
+- Many forms also have side effects that modify the image. A DEFUN form, for example,
+  returns a function name but it also adds a new function to the Lisp image or alters an
+  existing function.
+
+There is no division into separate tools like preprocessors, compilers, assemblers,
+linkers, and so on. And in a certain sense there isn’t even a “program” (although we
+certainly also use that term in the Lisp world), there’s just this one image that you’re
+working in and on all the time.
 
 Let's suppose you had the following simple program to test numbers that a user enters, and
 tell whether they're divisible by 10. It has an obvious bug.
@@ -115,7 +134,7 @@ program is running in.  And once you've tested your addition, you can compile it
 `(compile 'divisible-by-10-p)` if you want to. Or just leave it interpreted while you go
 debug another part of your program, still within the same session.
 
-In real life, I rarely use the debugger like this, though.  Usually, I'll test an inner
+In real life, I rarely use the debugger like this, though. Usually, I'll test an inner
 function directly from the REPL.  If it fails, I hypothesize about the problematic
 function and call it directly, or possibly turn on some **traces** instead.  Since you
 have all of your program's subroutines and variables at the Lisp REPL, you can do one-shot
@@ -168,6 +187,8 @@ Evaluates form immediately preceding cursor
 - **C-c C-m** - ```slime-macroexpand-1``` <br/>
 Place the cursor on the opening parenthesis of a macro form in your source code.
 
+- **C-c I** - ```slime-inspect``` and enter an expression, the value of which will be inspected.
+
 - **M-.** - jumps to source definition (try it from: Debugger(SLDB), REPL and source file)<br/>
 Did you notice that when compilation error occurs, SLIME do not show the file and the line?<br/>
 Well, go to the last green line in SLDB and type **M-.** and you will be in the right<br/>
@@ -186,6 +207,13 @@ file right function. Of course use **M-,** to return.
 
 There is no way without restarting the process.
 In SLIME you can use **M-x** _slime-restart-inferior-lisp_.
+
+There is workaround - you can "undefine" something that you have defined, like a function,
+a macro, a variable, a class, a condition, and so forth:
+  ** Use FMAKUNBOUND to remove the association between a function and its name
+  ** Use MAKUNBOUND to make a symbol unbound
+
+#### SBCL configuration
 
 - In *.sbclrc* put following code:
 ``` cl
@@ -207,3 +235,14 @@ alias lisp='rlwrap sbcl'
 - ```inspect```
 - ```assert``` (see example on p. 89)
 - ```time```
+
+#### SBCL profiling
+
+Let's profile ```main``` from ```foo``` package.
+
+```cl
+CL-USER> (require :sb-sprof)
+("SB-SPROF")
+CL-USER> (sb-sprof:with-profiling (:report :flat)
+           (foo:main 40))
+```

@@ -1114,6 +1114,17 @@ printed in a form that could be processed by `read`. The function `princ` is use
 in a human-readable format. This means that `read` cannot recover the original form; read
 would interpret it as two symbols, not one string.
 
+|  Shortcut      |          Equivalent to                              |
+|----------------|-----------------------------------------------------|
+| (PRINC <obj>)  |  (WRITE <obj> :ESCAPE NIL :READABLY NIL)            |
+| (PRIN1 <obj>)  |  (WRITE <obj> :ESCAPE T)                            |
+| (PRINT <obj>)  |  (PROGN (TERPRI) (PRIN1 <obj>) (WRITE-CHAR #\Space))|
+| (PPRINT <obj>) |  (PROGN (TERPRI) (WRITE <obj> :ESCAPE T :PRETTY T)) |
+
+As a rule of thumb, PRINC should be used to generate output for humans, whereas
+PRIN1’s output is intended for the Lisp reader. PRINT and PPRINT are variants of PRIN1;
+they only differ in how whitespace is arranged between objects.
+
 ### read
 
 (**read** _input-stream?_ _eof-error-p?_ _eof-value?_ _recursive-p_) => an object
@@ -1404,13 +1415,78 @@ Here's a quick way to add an item to a sorted list:
 
 ### sharpsign
 
-It is a conditional read macro characters ```#+``` and ```#-```.  For example, ```#'fn```
-is read as ```(function fn)```. The character sequence ```#+``` is defined so that
-_feature_ expression reads as expression if the _feature_ is defined in the current
-implementation, and as nothing at all if it is not. The sequence ```#-``` acts in just the
-opposite way.
+It is a conditional read macro characters ```#+``` for conditional hiding or ```#-``` for
+revealing of code.  For example, ```#'fn``` is read as ```(function fn)```. The character
+sequence ```#+``` is defined so that _feature_ expression reads as expression if the
+_feature_ is defined in the current implementation, and as nothing at all if it is
+not. The sequence ```#-``` acts in just the opposite way. Here is the details:
 
-See also: ****features****
+- Every COMMON L ISP has a global special variable called ***FEATURES***, which
+  holds a list of symbols. These are typically keyword symbols, but they don’t
+  have to be.
+
+- Every Lisp’s list of features will be different (that being the whole point), but a
+  couple of things can be expected:
+
+  • One or more symbols identifying the vendor, like :LISPWORKS, :SBCL, or :CLISP.
+  • Sometimes also symbols identifying the version, like :LISPWORKS6 or even :LISPWORKS6.1.
+  • Symbols identifying the underlying operating system or architecture, like :LINUX or :X86.
+  • Symbols denoting capabilities the Lisp might or might not have (may be depending on
+    how it was built or on the platform it runs on), like :SB-THREAD for versions of
+    SBCL with multi-threading.
+
+- User code and library code can modify this list and might add symbols to it.
+  For example, once you’ve loaded the CFFI library, it has added :CFFI to *FEATURES*.
+
+- If your Lisp reads something like
+```cl
+#+:foo (bar)
+```
+then it’ll first read the symbol :FOO an then it’ll first read the symbol :FOO and
+check whether :FOO is in *FEATURES*. If it is, it will simply continue reading the (BAR)
+form. If it is not, it will skip that form.
+
+- Symbols will be read as if the keyword package were the current package, so
+the above could also have been written like so:
+```cl
+#+foo (bar)
+```
+But the following would be different because it’d mean to look for the symbol
+CL-USER::FOO in *FEATURES*:
+```cl
+#+cl-user::foo (bar)
+```
+- If the form following the ```#+``` is to be ignored, it will be read in a special mode
+  so that the reader will find the end of the form without creating symbols, complaining
+  about non-existent packages, and so on. So, if you’re on SBCL, then this
+
+```cl
+#+:lispworks (fli:register-module :thing-fish)
+```
+won’t result in error messages, even if there is no package named "FLI" in your image.
+
+- Instead of a symbol, you can also have expressions behind #+ that are comprised of
+  symbols  and the logical connectives AND, OR, and NOT, with the usual meaning. For
+  example, this
+
+```cl
+#+(or cmucl (and sbcl (not os-windows))) (do-it)
+```
+would mean to skip the (DO-IT) form unless we are on CMUCL or on SBCL, but in the latter
+case, only if the OS isn’t Microsoft Windows.
+
+- There’s also ```#-```, which is simply the opposite of #+. (So, if it weren’t there, you
+  could simulate it with NOT.)
+
+As almost all of the features aren’t standardized; you can’t really rely on certain
+things. For example, what do you need to be sure you’re on Mac OS X? Will :DARWIN
+be in *FEATURES* or :MACOS or something else?
+
+How does ```#+(OR)``` work? The (one) form following #+(OR) will be ignored. It is just a
+_clever trick_ relying on the fact that, in order to be logically consistent, the
+expression (OR) must always evaluate to NIL (try it), so this is as if you had written
+```#+FOO``` with :FOO not being in your list of features.  (Except that there’s no symbol of
+which you can be absolutely sure that it’s not in somebody’s *FEATURES* somewhere.)
 
 ### multiple-value-bind
 

@@ -127,6 +127,9 @@ _rather than just return the goal state._
 be reconstructed by ```READ```.
 - `#<Path ~,1f km: ~{~:(~a~)~^ - ~}>` - what it means?
 
+**Tip:** Remember that evaluation functions refer to the future, cost functions to the
+         past.
+
 #### Guessing versus Guaranteeing a Good Solution
 
 - An algorithm that will _probably_ return a solution that is _close_ to the best solution,

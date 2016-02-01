@@ -24,8 +24,9 @@
   ""
   "Let's add the definition of the relation LENGTH:"
   ""
-  "We say that a list has length ?n if there are N elements in the list. Given a"
-  "list (?head . ?tail) and an integer N, the goal length(L, N) succeeds if the length of the list L is N."
+  "The first line, says the empty list has length zero."
+  "The second line says that the length of any, other list is just one more than"
+  "the length of the list created by removing the first item."
   ""
   ((<- (length () 0)) @ 370)
   ((<- (length (?h . ?t) (1+ ?n)) (length ?t ?n)))

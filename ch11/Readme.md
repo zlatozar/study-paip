@@ -214,6 +214,9 @@ rule that Sandy likes _anyone_ who likes cats as follows:
 (fact (likes Kim Robin))
 (rule (likes Sandy ?x) if (likes ?x cats))
 ```
+In short: Facts are things true about the world, and reasoning procedures (or inferences)
+are ways to follow reasoning chains between facts.
+
 You can interpret this in two ways:<br/>
 - _"For any X, Sandy likes Χ **if** Χ likes cats."_ - **declarative interpretation**
 
@@ -312,7 +315,8 @@ unification circles as the **occurs check**.
 
 ### Implementation notes
 
-- **Predicate** is the relation name: ```(<- (likes Sandy cats))```. _'likes'_ is the predicate.
+-  A set of facts and rules about the same relation is called a **predicate**.<br/>
+```(<- (likes Sandy cats))```. _'likes'_ is the predicate.
 
 - _In Lisp, every symbol has a property list._ Property lists provide basically the same
   facilities as association lists and hash tables: You can store a value in a property list
@@ -362,3 +366,8 @@ programmer does not provide an explicit algorithm.
 - Note that there is no way in Prolog to express a **true definition**. We would like to say
 that _"P is the parent of C if and only if C is the child of P,"_ but Prolog makes us express
 the biconditional in one direction only.
+
+- _What is a continuation?_
+
+Continuation packages the current state of the computation into a function, which can be
+stored away and invoked later.
