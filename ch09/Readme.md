@@ -3,7 +3,7 @@
 There are **four** very general and language-independent techniques for speeding
 up an algorithm:
 
-* _Caching the results_ of computations for later reuse.
+    * _Caching the results_ of computations for later reuse.
 
 ```memo`` works by returning a function that has an internal hash-table. When that function is
 called, it first checks its hash-table to see if it has been called with the same
@@ -16,3 +16,14 @@ second time, it can just look up the result in the table.
     * _Compiling_ so that less work is done at run time.
     * _Delaying the computation_ of partial results that may never be needed.
     * _Indexing_ a data structure for quicker retrieval.
+
+#### SBCL profiling
+
+Let's profile ```main``` from ```foo``` package.
+
+```cl
+CL-USER> (require :sb-sprof)
+("SB-SPROF")
+CL-USER> (sb-sprof:with-profiling (:report :flat)
+           (foo:main 40))
+```

@@ -1250,6 +1250,16 @@ See MAPCAR.
 (mapcan (lambda (x) (if (> x 0) (list x) nil)) '(-4 6 -23 1 0 12 )) ;=> (6 1 12)
 ```
 
+Let's summaries:
+
+| Given: ((A) (B C) (D)) | ignore results | collect each result | merge results |
+|:-----------------------|----------------|---------------------|---------------|
+| Work on each element   | _mapc_         | _mapcar_            | _mapcan_      |
+| apply ```reverce```:   |                | ((A) (C B) (D))     | (A C B D)     |
+| Work on each tail      | _mapl_         | _maplist_           | _mapcon_      |
+| apply ```reverce```:   |                | ( ((D) (B C) (A)) ((D) (B C)) ((D)) )  | ((D) (B C) (A) (D) (B C) (D)) |
+
+
 ### consp
 
 (**consp** _expression_) => T or NIL
