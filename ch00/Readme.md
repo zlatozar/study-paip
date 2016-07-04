@@ -684,7 +684,7 @@ Suppose that WHEN is defined, with something like the following macro:
 ```
 When the code in `foo` is compiled, the WHEN macro will be run with those two forms as
 arguments. The parameter condition will be bound to the form `(> x 10)`, and the form
-`(print 'big)` will be collected into a list that will become the value of the `&rest`
+`(print 'big)` will be collected into _a list_ that will become the value of the `&rest`
 body parameter._Compiler builds the expression specified by the definition, then compiles
 the expression in the place of the original macro call_.
 - The job of the macro is still to produce code that will do something rather than to do
@@ -768,7 +768,7 @@ this:
 ```
 TIP: Do you know that ``` `(,x ,y)``` could be written as ```(cons x (cons y ()))```?
 
-However, you don’t need to take apart var-and-range "by hand" because macro parameter
+However, you don't need to take apart ```var-and-range``` "by hand" because macro parameter
 lists are what are called **destructuring** parameter lists. Destructuring, as the name
 suggests, involves taking apart a structure - in this case the list structure of the forms
 passed to a macro.
@@ -776,11 +776,13 @@ passed to a macro.
 Within a destructuring parameter list, a simple parameter name can be replaced with a
 nested parameter list. The parameters in the nested parameter list will take their values
 from the elements of the expression that would have been bound to the parameter the list
-replaced. For instance, you can replace `var-and-range` with a list `(var start end)`, and
-the three elements of the list will automatically be destructured into those three
-parameters. Hm, but _what is_ `body`? Typically `body` parameters are used to hold a _list_
-_of forms_(functions logic implementation) that make up the body of the macro. Here is a
-good example that clearly points where is the `body`:
+replaced. For instance, you can replace ```var-and-range``` with a list ```(var start
+end)```, and the three elements of the list will automatically be destructured into those
+three parameters. Hm, but _what is_ ```body```?
+
+It tells the macro expander "Give me all remaining expressions in the macro in a list."
+More strictly it holds a _list of forms_(functions logic implementation) that make up the
+body of the macro. Here is a good example that clearly points where is the `body`:
 
 ```cl
 (defmacro define (name-and-parameters &rest body)
@@ -788,21 +790,28 @@ good example that clearly points where is the `body`:
     ,@body))
 ```
 
-Now better version:
+Now better version of ```do-primes```:
 ``` cl
 ;; improved attempt
-(defmacro do-primes ((var start end) &body body)
+(defmacro do-primes ((var start end) &body body)     ;; use &body not &rest
   `(do ((,var (next-prime ,start) (next-prime (1+ ,var))))
        ((> ,var ,end))
      ,@body))
 ```
-In addition to being more concise, destructuring parameter lists also give you automatic
-error checking - with `do-primes` defined this way, Lisp will be able to detect a call whose
+In addition to being more concise, _destructuring_ parameter lists also give you automatic
+error checking - with ```do-primes``` defined this way, Lisp will be able to detect a call whose
 first argument isn't a three-element list and will give you a meaningful error message
 just as if you had called a function with too few or too many arguments. Also, in
 development environments such as SLIME that indicate what arguments are expected as soon
 as you type the name of a function or macro, if you use a destructuring parameter list,
 the environment will be able to tell you more specifically the syntax of the macro call.
+
+NOTE: ```&rest``` and ```&body``` do the same thing. ```&body``` is a hint to the system
+and  the human reader of the code that the remaining arguments are something like a
+function body.
+
+```&rest``` mainly communicates _"a list of objects, mostly of similar type"_, while
+```&body``` mainly communicates _"forms to be evaluated in the context set up by the macro"._
 
 ``` cl
 (do-primes var-and-range &rest body)   ; for first attempt
@@ -821,19 +830,43 @@ syntax is as a particularly concise way of writing code that generates lists.
 Here is some examples:
 
 ```
+Example 1:
+
 Backquote Syntax     Equivalent List-Building Code                Result
 `(a (+ 1 2) c)       (list 'a '(+ 1 2) 'c)                        (a (+ 1 2) c)
 `(a ,(+ 1 2) c)      (list 'a (+ 1 2) 'c)                         (a 3 c)
 `(a (list 1 2) c)    (list 'a '(list 1 2) 'c)                     (a (list 1 2) c)
 `(a ,(list 1 2) c)   (list 'a (list 1 2) 'c)                      (a (1 2) c)
 `(a ,@(list 1 2) c)                                               (a 1 2 c) ; @ interpolates lists.
+
+Example 2:
+Suppose that B is bound to (1 2)
+
+Backquote Syntax     Result
+`(a b c)             (a b c)
+`(a ,b c)            (a (1 2) c)
+`(a ,@b c)           (a 1 2 c)
+`(a b ,b ,@b c)      (a b (1 2) 1 2 c)
 ```
+
 **@** will place the elements of the list _directly_ inside in the expansion.
 Do you remember what is `body`? It holds a **list** of forms that make up the body of the
 macro! We have to traverse this list and insert very element in macros body. That's why we
-always see `,@body`.
+always see `,@body`. Let's illustrate with an example:
 
+```cl
+(defmacro let1 (var val &body body)
+  `(let ((,var ,val))
+    ,@body))
 
+;; consider the following use of our let1 macro:
+(let1 foo (+ 2 3)
+  (princ "Lisp is awesome!")
+  (* foo foo))
+
+;; body <==> ((princ "Lisp is awesome!") (* foo foo)), so ,@body place them
+
+```
 **@** is useful in macros that have `&rest` parameters representing, a body of a code.
 
 Let's test it by hand

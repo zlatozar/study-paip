@@ -37,9 +37,13 @@ two, and `cond` when there are more than two.
 ``` cl
 (setf (get 'AL 'state) 'Alabama) ; (get 'AL 'state) => ALABAMA
 ```
-Basically, the `setf` command do like this. Inner part is the **wish**:
-_"I would like to do ```(get 'AL 'state)```?"_ - outer is the desired value so we have to
-read like this: _"When I do ```(get 'AL 'state)``` I would like to receive ```ALABAMA```"_.
+Basically, the `setf` command do like this. Inner part is the **wish**: _"I would like to
+do ```(get 'AL 'state)```?"_ - outer is the desired value so we have to read like this:
+_"When I do ```(get 'AL 'state)``` I would like to receive ```ALABAMA```"_. In other
+words - instead of a variable name, you pass it a complex Lisp expression that retrieves a
+value. When you have a complicated, nested data structure, it's often easier to understand
+code that retrieves data from a specific location. You put in one place the code that that
+"gets at" this location and the value that you want to place.
 
 - In Lisp, the user can extend the expressions that are allowed in a `setf` form using the
 special forms `defsetf` or `define-setf-method`.
