@@ -24,13 +24,13 @@
 
 (defun ==/2 (?arg1 ?arg2 cont)
   "Are the two arguments EQUAL with no unification,
-  but with dereferencing?  If so, succeed."
+but with dereferencing?  If so, succeed."
   (if (deref-equal ?arg1 ?arg2)
       (funcall cont)))
 
 (defun deref-equal (x y)
   "Are the two arguments EQUAL with no unification,
-  but with dereferencing?"
+but with dereferencing?"
   (or (eql (deref x) (deref y))
       (and (consp x)
            (consp y)
@@ -68,7 +68,7 @@
 
 (defun bagof/3 (exp goal result cont)
   "Find all solutions to GOAL, and for each solution,
-  collect the value of EXP into the list RESULT."
+collect the value of EXP into the list RESULT."
   ;; Ex: Assume (p 1) (p 2) (p 3).  Then:
   ;;     (bagof ?x (p ?x) ?l) ==> ?l = (1 2 3)
   (let ((answers nil))
@@ -82,15 +82,15 @@
 
 (defun deref-copy (exp)
   "Copy the expression, replacing variables with new ones.
-  The part without variables can be returned as is."
-  ;; Bug fix by farquhar and norvig, 12/12/92.  Forgot to deref var.
+The part without variables can be returned as is."
+  ;; Bug fix by farquhar and norvig, 12/12/92.  Forgot to `deref' var.
   (sublis (mapcar #'(lambda (var) (cons (deref var) (?)))
                   (unique-find-anywhere-if #'var-p exp))
           exp))
 
 (defun setof/3 (exp goal result cont)
   "Find all unique solutions to GOAL, and for each solution,
-  collect the value of EXP into the list RESULT."
+collect the value of EXP into the list RESULT."
   ;; Ex: Assume (p 1) (p 2) (p 3).  Then:
   ;;     (setof ?x (p ?x) ?l) ==> ?l = (1 2 3)
   (let ((answers nil))

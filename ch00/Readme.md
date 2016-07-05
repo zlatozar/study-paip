@@ -832,12 +832,12 @@ Here is some examples:
 ```
 Example 1:
 
-Backquote Syntax     Equivalent List-Building Code                Result
-`(a (+ 1 2) c)       (list 'a '(+ 1 2) 'c)                        (a (+ 1 2) c)
-`(a ,(+ 1 2) c)      (list 'a (+ 1 2) 'c)                         (a 3 c)
-`(a (list 1 2) c)    (list 'a '(list 1 2) 'c)                     (a (list 1 2) c)
-`(a ,(list 1 2) c)   (list 'a (list 1 2) 'c)                      (a (1 2) c)
-`(a ,@(list 1 2) c)                                               (a 1 2 c) ; @ interpolates lists.
+Backquote Syntax     Equivalent List-Building Code  Result
+`(a (+ 1 2) c)       (list 'a '(+ 1 2) 'c)          (a (+ 1 2) c)
+`(a ,(+ 1 2) c)      (list 'a (+ 1 2) 'c)           (a 3 c)
+`(a (list 1 2) c)    (list 'a '(list 1 2) 'c)       (a (list 1 2) c)
+`(a ,(list 1 2) c)   (list 'a (list 1 2) 'c)        (a (1 2) c)
+`(a ,@(list 1 2) c)                                 (a 1 2 c) ; @ interpolates lists.
 
 Example 2:
 Suppose that B is bound to (1 2)

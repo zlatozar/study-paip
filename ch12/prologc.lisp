@@ -308,7 +308,7 @@ bindings (except for variables already bound)."
   (let ((pred (predicate (clause-head clause))))
     (assert (and (symbolp pred) (not (variable-p pred))))
     (pushnew pred *db-predicates*)
-    (pushnew pred *uncompiled*)                          ;***
+    (pushnew pred *uncompiled*)                      ;***
     (setf (get pred 'clauses)
           (nconc (get-clauses pred) (list clause)))
     pred))

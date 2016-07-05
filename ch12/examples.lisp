@@ -14,4 +14,4 @@
   ""
   ((prolog-compile 'likes) @ 389)
   ((prolog-compile 'member))
-  )
+)
