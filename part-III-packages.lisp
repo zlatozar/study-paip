@@ -112,10 +112,11 @@
            #:clause-body
            #:get-clauses
            #:predicate
+           #:clear-db
+           #:clear-predicate
            #:*db-predicates*
            #:variables-in
            #:unique-find-anywhere-if
-           #:<-
            #:?-))
 
 (defpackage #:ch11-exercises
@@ -134,15 +135,21 @@
         #:inspect
         #:tutor)
   (:import-from :pat-base
-                #:variable-p))
+                #:variable-p
+                #:get-binding
+                #:extend-bindings
+                #:binding-val))
 
 (defpackage #:ch12-second
   (:documentation "Chapter 12. Compiling Logic Programs (second version)")
   (:use #:common-lisp
         #:inspect
         #:tutor)
-  (:import-from :pat-base
-                #:variable-p))
+    (:import-from :pat-base
+                #:variable-p
+                #:get-binding
+                #:extend-bindings
+                #:binding-val))
 
 (defpackage #:ch12-final
   (:documentation "Chapter 12. Compiling Logic Programs (final version)")
@@ -150,6 +157,7 @@
         #:inspect
         #:tutor)
   (:import-from :paip-aux
+                #:new-symbol
                 #:length=1
                 #:reuse-cons
                 #:find-all
@@ -163,15 +171,20 @@
                 #:extend-bindings
                 #:binding-val)
   (:import-from :ch11-final
+                #:?-
+                #:clear-db
                 #:clause-head
                 #:clause-body
+                #:clear-predicate
                 #:get-clauses
                 #:predicate
                 #:*db-predicates*
                 #:variables-in)
   (:export #:prolog-compile
            #:run-prolog
+           #:top-level-prove
            ;; define build-in predicates
+           #:top-level-query/0
            #:read/1
            #:write/1
            #:nl/0
@@ -185,7 +198,22 @@
            #:setof/3
            #:is/2
            #:var/1
-           #:lisp/2
+           #:lisp/2 ; note that there is no lisp/1
            #:repeat/0
            #:numberp/1
-           #:atom/1))
+           #:atom/1
+
+           #:!
+           #:<-
+           #:if
+           #:and
+           #:or
+           ))
+
+(defpackage #:ch12-exercises
+  (:documentation "Selected exercises from Chapter 12")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor)
+
+  )

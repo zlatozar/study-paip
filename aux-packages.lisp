@@ -80,6 +80,8 @@ to test chapter exercises.")
            ;; ch11
            #:unique-find-if-anywhere
            #:find-if-anywhere
+           ;; ch12
+           #:new-symbol
            ))
 
 ;;; ____________________________________________________________________________

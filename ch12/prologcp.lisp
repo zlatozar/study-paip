@@ -127,6 +127,7 @@ collect the value of EXP into the list RESULT."
 (defun repeat/0 (cont)
   (loop (funcall cont)))
 
+;; Define if, member and length using Prolog
 (<- (if ?test ?then) (if ?then ?else (fail)))
 
 (<- (if ?test ?then ?else)

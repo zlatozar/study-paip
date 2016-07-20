@@ -123,4 +123,6 @@
                (:file "ch12/prologc" :depends-on ("ch11/prolog"))
                (:file "ch12/prologcp" :depends-on ("ch12/prologc"))
                (:file "ch12/examples" :depends-on ("ch12/prologc" "ch12/prologcp"))
+               (:file "ch12/exercises" :depends-on ("ch12/prologc" "ch12/prologcp"))
+
                ))

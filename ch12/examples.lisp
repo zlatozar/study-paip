@@ -14,9 +14,5 @@
   "But we load the files for you, in case you want to play with them."
   ""
   ((prolog-compile 'likes) @ 389)
-  ((prolog-compile 'member))
+  ((prolog-compile 'member))      ; defined as build-in predicate
 )
-
-;; (<- likes Robin cats)
-;; (<- likes Sandy ?x) (likes ?x cats)
-;; (<- likes Kim ?x) (likes ?x Lee) (likes ?x Kim)

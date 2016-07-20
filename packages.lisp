@@ -199,8 +199,7 @@
 
   ;; `ch11-final'
   (:export #:unique-find-anywhere-if
-           ;; Prolog user interface
-           #:<-
+           #:clear-db
            #:?-)
 
   ;; `ch11-exercises'

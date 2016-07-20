@@ -344,6 +344,7 @@ By default, the list is all symbols that need it."
   (mapc #'prolog-compile symbols)
   (setf *uncompiled* (set-difference *uncompiled* symbols)))
 
+;; In book it is 'ignore' but to avoid clashes it is renamed
 (defun ignore-fn (&rest args)
   (declare (ignore args))
   nil)
