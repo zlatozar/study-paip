@@ -37,7 +37,8 @@
         #:ch10
         #:ch11
         #:ch11-final
-        #:ch11-exercises)
+        #:ch11-exercises
+        #:ch12-final)
 
   ;; `inspect'
   (:export #:??
@@ -55,31 +56,31 @@
   (:shadowing-import-from :paip-aux
                           #:debug)
   ;; `paip-aux'
-  (:export ;; ch03
+  (:export ;; used in ch03
            #:find-all
            #:find-all-if
            #:declare-ignore
            #:true
            #:false
-           ;; ch04
+           ;; used in ch04
            #:enable-dbg
            #:disable-dbg
            #:dbg
            #:dbg-indent
            #:member-equal
-           ;; ch05
+           ;; used in ch05
            #:flatten      ;; see the version in `ch10' p. 329
            #:mklist
            #:random-elt
            #:starts-with
-           ;; ch08
+           ;; used in ch08
            #:length=1
            #:find-anywhere
-           ;; ch09
+           ;; used in ch09
            #:memoize
            #:delay
            #:force
-           ;; ch10
+           ;; used in ch10
            #:reuse-cons
            #:defresource
            #:with-resource
@@ -90,7 +91,7 @@
            #:front
            #:empty-queue-p
            #:queue-nconc
-           ;; ch11
+           ;; used in ch11
            #:unique-find-if-anywhere
            #:find-if-anywhere
            )
@@ -205,6 +206,11 @@
   ;; `ch11-exercises'
   (:export #:fact
            #:rule)
+
+  ;; `ch12'
+  (:export #:prolog-compile
+           #:run-prolog)
+
   )
 
 

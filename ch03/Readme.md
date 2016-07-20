@@ -34,6 +34,7 @@ consisting of the type of the structure and alternating pairs of slot names and 
 - `when` and `unless` are preferred when there is only one possibility, `if` when there are
 two, and `cond` when there are more than two.
 - `setf` is a **generic setter**. `setf` understands place structures! From book p. 75
+It contains the 'query' that finds the place where the new value should be set.
 ``` cl
 (setf (get 'AL 'state) 'Alabama) ; (get 'AL 'state) => ALABAMA
 ```
@@ -43,7 +44,8 @@ _"When I do ```(get 'AL 'state)``` I would like to receive ```ALABAMA```"_. In o
 words - instead of a variable name, you pass it a complex Lisp expression that retrieves a
 value. When you have a complicated, nested data structure, it's often easier to understand
 code that retrieves data from a specific location. You put in one place the code that that
-"gets at" this location and the value that you want to place.
+"gets at" this location and the value that you want to place. Using this feature, most
+types of data structures cat get by without any specific "setting" functions of there own.
 
 - In Lisp, the user can extend the expressions that are allowed in a `setf` form using the
 special forms `defsetf` or `define-setf-method`.

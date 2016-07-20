@@ -1,6 +1,6 @@
 ## Chapter 11
 
-The idea behind logic programming is that the programmer should state the _relationships_
+The idea behind _logic programming_ is that the programmer should state the _relationships_
 that describe a problem and its solution. These relationships act as constraints on the
 algorithms that can solve the problem, but the system itself, rather than the programmer,
 is responsible for the details of the algorithm.
@@ -9,7 +9,7 @@ We shall view functional programming as computation in evaluation mode (no infor
 guessing is allowed) and relational programming as computation in a deduction mode
 (information guessing is allowed.)
 
-### Prolog
+### Prolog language
 
 A Prolog program consists of a collection of _procedures_. Each procedure defines a
 particular _predicate_, being a certain relationship between its arguments. A procedure
@@ -19,7 +19,9 @@ clauses: _facts_ and _rules_.
 _In Prolog, there's not often a finely detailed step-by-step recipe._ If you find the
 relation you have to write few lines of code.
 
-**Tip**: All Prolog code lives in a data base.
+**Tip**: All Prolog code lives in a data base so Prolog program can be regarded as a
+relational database that contains rules as well as facts. It is easy to add and remove
+information from the database, and to pose sophisticated queries.
 
 Prolog contains three principal elements: The _terms_ that represent data objects (data
 structures), the _fact_ and _rules_ that specifies relationships between terms, and the
@@ -37,11 +39,11 @@ _variables_, and more complex objects called _structures_.
                            special symbol _underscore_ that begins with uppercase letter or
                            the underscore.
 
-Programmers can consider logical variables as named 'holes' in data structures.
+Programmers can consider logical variables as named _'holes'_ in data structures.
 
 - ```list``` is **[H|T]**
 
-**NOTE:** It is not mentioned in book but list in Lisp implementation is cons cells: ```(first . rest)```
+**NOTE:** It is not mentioned in book but list in Lisp implementation is **cons** cells: ```(first . rest)```
 
 - ```;``` is logical **OR**
 
@@ -54,8 +56,8 @@ A relation with **n** components is called an _n-ary_ relation. **n** is said to
 _arity_ of the relation. A _0-ary_ relation is called a _propositional relation_ or just
 _proposition_.
 
-- ```fact``` asserts the truth of a relation. _fact_ is _relation._ **Note** the period that
-             follows the relation.
+- ```fact``` asserts the truth of a relation. _fact_ is defined like this - **relation.** (note the period that
+             follows the relation).
 
 - ```rule``` is _conclusion :- condition [,condition] ..._**.**. **rule** asserts the conditional
 truth of a relation. Each rule must contains at least one condition. Like **facts**, rules
@@ -67,7 +69,7 @@ are terminated with a period.
               whether a sequence of terms are related. Like **facts**, queries are
               terminated with a period.
 
-#### Unification
+#### Unification (or matching)
 
 Unification is a process of matching terms.
 
@@ -98,6 +100,9 @@ about it.
 
 
 #### Backtracking
+
+_Backtracking is the process of going back to a previous goal and trying to resatisfy
+it, i.e. to find another way of satisfying it._
 
 _Backtracking is basically a form of searching._ In the context of Prolog, suppose that the
 Prolog interpreter is trying to satisfy a sequence of goals **goal_1**, **goal_2**.
@@ -138,6 +143,15 @@ these sentences. It is almost enough. There are two additional points to remembe
   represented implicitly by the program. So to capture the whole truth, one needs to allow
   for the fact that some of it will be calculated by back-chaining over the knowledge
   base.
+
+We can say it in other way:
+
+If we want computers to act intelligent, we must help them. We must tell them all the
+commonsense knowledge we have that they don't. This can be hard because this knowledge can
+be so obvious to us that we don't realize that a computer doesn't know it too, but we must
+try. There are two main kinds: _facts_ and _reasoning procedures_. Facts are things true
+about the world, and reasoning procedures (or inferences) are ways to follow reasoning
+chains between facts.
 
 ```
 Writing a Prolog program involves building a knowledge base of clauses that
@@ -214,6 +228,9 @@ rule that Sandy likes _anyone_ who likes cats as follows:
 (fact (likes Kim Robin))
 (rule (likes Sandy ?x) if (likes ?x cats))
 ```
+Getting computers to _remember_ complicated _interrelated facts_, and draw conclusions
+from them is **inferences**.
+
 In short: Facts are things true about the world, and reasoning procedures (or inferences)
 are ways to follow reasoning chains between facts.
 
@@ -370,4 +387,8 @@ the biconditional in one direction only.
 - _What is a continuation?_
 
 Continuation packages the current state of the computation into a function, which can be
-stored away and invoked later.
+stored away and invoked later. In this chapter continuations are stored in list and will
+be invoked later (if needed). This definition will be used later in the book (```call/cc```).
+
+This is not the meaning that is used in book - just list that contains data that could be
+used for the next step.

@@ -109,9 +109,11 @@
                 #:variable-p)
   (:export #:add-clause
            #:clause-head
+           #:clause-body
            #:get-clauses
            #:predicate
            #:*db-predicates*
+           #:variables-in
            #:unique-find-anywhere-if
            #:<-
            #:?-))
@@ -149,11 +151,41 @@
         #:tutor)
   (:import-from :paip-aux
                 #:length=1
-                #:reuse-cons)
+                #:reuse-cons
+                #:find-all
+                #:find-if-anywhere
+                #:find-anywhere)
+  (:shadowing-import-from :paip-aux
+                          #:symbol)
   (:import-from :pat-base
-                #:variable-p)
+                #:variable-p
+                #:get-binding
+                #:extend-bindings
+                #:binding-val)
   (:import-from :ch11-final
                 #:clause-head
+                #:clause-body
                 #:get-clauses
                 #:predicate
-                #:*db-predicates*))
+                #:*db-predicates*
+                #:variables-in)
+  (:export #:prolog-compile
+           #:run-prolog
+           ;; define build-in predicates
+           #:read/1
+           #:write/1
+           #:nl/0
+           #:=/2
+           #:==/2
+           #:deref-equal
+           #:call/1
+           #:not/1
+           #:bagof/3
+           #:deref-copy
+           #:setof/3
+           #:is/2
+           #:var/1
+           #:lisp/2
+           #:repeat/0
+           #:numberp/1
+           #:atom/1))

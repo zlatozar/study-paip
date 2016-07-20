@@ -55,7 +55,7 @@ then use `defparameter`.
 - A change to a parameter is considered a change to the program, not a change by the
 program.
 - **The craft of programming includes knowing what not to write, as well as what to write.**
-- `data-driven` programming is, when data drives what the program does next.
+- `data-driven` programming is, when data drives what the program does next. See Chapter 6 for more information.
 - Work with the problem as much as possible in its own terms, and to minimize the part of
 the solution that is written directly in Lisp.
 - The advantage of representing information in a _declarative form_ - as rules or facts

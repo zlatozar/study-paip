@@ -1,5 +1,12 @@
 ## Chapter 4
 
+- Success of AI programs is hard to measure.
+
+Perhaps the key issue in artificial intelligence is _reductionism_, the degree to which a
+program fails to reflect the full complexity of human beings. Reductionism includes how
+often program behavior duplicates human behavior and how much it differs when it does
+differ. Reductionism is _partly_ a moral issue because it requires moral judgments.
+
 - General Problem Solver(**GPS**) - a single computer program that could solve any problem,
 given a suitable description of the problem.
 It was the first program to separate its problem-solving strategy from its knowledge of

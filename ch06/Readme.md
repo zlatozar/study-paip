@@ -57,9 +57,19 @@ the list of features open-ended, so that new ones can be easily added when neede
 attempt a more formal specification.
 - This style of programming, where _pattern/action_ pairs are stored in a table, is called
 **data-driven programming**. It is a very flexible style that is appropriate for writing
-extensible systems.
-In our case it is very convenient because pattern is the same only function(predicate)
-that should be matched is different.
+extensible systems. In our case it is very convenient because pattern is the same only
+function(predicate) that should be matched is different.
+
+What actually is **data-driven programming**?
+
+In data-driven programming, the data determines what function or program gets executed.
+There is no central program that decides on the operations and flow of control.
+    One way of realizing a data-driven system is to attach functions to data or types of data
+and to invoke them when the data is encountered. Thus, the behavior of a data-driven
+system is determined not by a central program but by the collection of functions attached
+to the data. It is also important modularity device.
+    Another way is to have table with types and actions (functions)
+
 - A function that looks up a data-driven function and calls it is called a **dispatch**
 function.
 

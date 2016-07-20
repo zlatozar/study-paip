@@ -8,6 +8,7 @@
 (in-package #:ch12-final)
 
 (defexamples 12 "Compiling Logic Programs"
+  ""
   "This chapter presents a compiler that translates from Prolog to Lisp."
   "Unfortunatley, there's not much to see in terms of examples."
   "But we load the files for you, in case you want to play with them."
@@ -15,3 +16,7 @@
   ((prolog-compile 'likes) @ 389)
   ((prolog-compile 'member))
 )
+
+;; (<- likes Robin cats)
+;; (<- likes Sandy ?x) (likes ?x cats)
+;; (<- likes Kim ?x) (likes ?x Lee) (likes ?x Kim)

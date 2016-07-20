@@ -69,6 +69,7 @@
   ((<- (likes ?x ?x)) @ 363)
   ""
   "Now we can ask some queries:"
+
   ((?- (likes Sandy ?who)) @ 365)
   ((?- (likes ?who Sandy)))
   ((?- (likes Robin Lee)))
