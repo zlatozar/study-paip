@@ -92,8 +92,7 @@
                 #:variable-p)
   (:import-from :ch6
                 #:pat-match)
-  (:export #:<-
-           #:?-))
+  (:export #:?-))
 
 (defpackage #:ch11-final
   (:documentation "Chapter 11. Logic Programming (Prolog final version)")
@@ -108,14 +107,8 @@
                 #:no-bindings
                 #:variable-p)
   (:export #:add-clause
-           #:clause-head
-           #:clause-body
-           #:get-clauses
-           #:predicate
            #:clear-db
            #:clear-predicate
-           #:*db-predicates*
-           #:variables-in
            #:unique-find-anywhere-if
            #:?-))
 
@@ -157,6 +150,7 @@
         #:inspect
         #:tutor)
   (:import-from :paip-aux
+                #:reuse-cons
                 #:new-symbol
                 #:length=1
                 #:reuse-cons
@@ -166,23 +160,16 @@
   (:shadowing-import-from :paip-aux
                           #:symbol)
   (:import-from :pat-base
+                #:fail
+                #:no-bindings
                 #:variable-p
                 #:get-binding
                 #:extend-bindings
                 #:binding-val)
-  (:import-from :ch11-final
-                #:?-
-                #:clear-db
-                #:clause-head
-                #:clause-body
-                #:clear-predicate
-                #:get-clauses
-                #:predicate
-                #:*db-predicates*
-                #:variables-in)
   (:export #:prolog-compile
            #:run-prolog
            #:top-level-prove
+           #:show-prolog-vars/2
            ;; define build-in predicates
            #:top-level-query/0
            #:read/1

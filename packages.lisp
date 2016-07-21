@@ -200,6 +200,7 @@
   ;; `ch11-final'
   (:export #:unique-find-anywhere-if
            #:clear-db
+           #:clear-predicate
            #:?-)
 
   ;; `ch11-exercises'

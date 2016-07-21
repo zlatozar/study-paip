@@ -92,6 +92,9 @@
 - [Chapter-11](#chapter-11)
     - [get](#get)
     - [pushnew](#pushnew)
+- [Chapter-12](#chapter-12)
+    - [values](#values)
+    - [catch](#catch)
 - [Koans](#koans)
 - [Misc](#misc)
     - [getf](#getf)
@@ -1720,6 +1723,14 @@ See also: GETF
 
 PUSHNEW is a generalized assignment operator like PUSH, but it first checks to make sure
 the element is not a member of the list, so it is useful for adding an element to a set.
+
+### values
+
+TODO
+
+### catch
+
+TODO
 
 ## Koans
 

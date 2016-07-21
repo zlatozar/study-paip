@@ -118,10 +118,13 @@
                (:file "ch11/exercises" :depends-on ("tools/test" "ch11/prolog"))
 
                ;; Chapter 12
-               (:file "ch12/prologc1" :depends-on ("ch11/prolog"))
-               (:file "ch12/prologc2" :depends-on ("ch11/prolog"))
-               (:file "ch12/prologc" :depends-on ("ch11/prolog"))
+               (:file "ch12/prolog" :depends-on ("ch11/unify"))
+               (:file "ch12/prologc1" :depends-on ("ch12/prolog"))
+               (:file "ch12/prologc2" :depends-on ("ch12/prolog"))
+
+               (:file "ch12/prologc" :depends-on ("ch12/prolog"))
                (:file "ch12/prologcp" :depends-on ("ch12/prologc"))
+
                (:file "ch12/examples" :depends-on ("ch12/prologc" "ch12/prologcp"))
                (:file "ch12/exercises" :depends-on ("ch12/prologc" "ch12/prologcp"))
 
