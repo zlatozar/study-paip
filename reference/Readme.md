@@ -95,6 +95,7 @@
 - [Chapter-12](#chapter-12)
     - [values](#values)
     - [catch](#catch)
+    - [terpri](#terpri)
 - [Koans](#koans)
 - [Misc](#misc)
     - [getf](#getf)
@@ -1729,6 +1730,10 @@ the element is not a member of the list, so it is useful for adding an element t
 TODO
 
 ### catch
+
+TODO
+
+### terpri
 
 TODO
 

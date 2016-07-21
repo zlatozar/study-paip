@@ -167,40 +167,55 @@
                 #:extend-bindings
                 #:binding-val)
   (:export #:prolog-compile
+           #:compile-body
+           #:def-prolog-compiler-macro
+           #:maybe-add-undo-bindings
            #:run-prolog
            #:top-level-prove
-           #:show-prolog-vars/2
-           ;; define build-in predicates
-           #:top-level-query/0
-           #:read/1
-           #:write/1
-           #:nl/0
-           #:=/2
-           #:==/2
+           #:deref
            #:deref-equal
-           #:call/1
-           #:not/1
-           #:bagof/3
            #:deref-copy
-           #:setof/3
-           #:is/2
-           #:var/1
-           #:lisp/2 ; note that there is no lisp/1
-           #:repeat/0
-           #:numberp/1
-           #:atom/1
+           #:show-prolog-vars/2
+           #:top-level-query/0
 
-           #:!
+           ;; Prolog build in predicate
+           #:read/1    #:read
+           #:write/1   #:write
+           #:nl/0      #:nl
+           #:=/2       #:=
+           #:==/2      #:==
+           #:call/1    #:call
+           #:not/1     #:not
+           #:bagof/3   #:bagof
+           #:setof/3   #:setof
+           #:is=/2     #:is=
+           #:var/1     #:var
+           #:repeat/0  #:repeat
+           #:numberp/1 #:numberp
+           #:atom/1    #:atom
+           #:lisp/2    #:lisp
+
            #:<-
+           #:!
            #:if
-           #:and
-           #:or
-           ))
+           #:nil))
 
 (defpackage #:ch12-exercises
   (:documentation "Selected exercises from Chapter 12")
   (:use #:common-lisp
         #:inspect
         #:tutor)
+  (:import-from :pat-base
+                #:fail)
+  (:import-from :ch12-final
+                #:compile-body
+                #:def-prolog-compiler-macro
+                #:deref
+                #:maybe-add-undo-bindings)
+  (:export #:and
+           #:or
+           #:true
+           #:false
+           #:prolog-trace)
 
   )

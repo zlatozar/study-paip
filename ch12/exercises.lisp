@@ -7,34 +7,50 @@
 ;;; ____________________________________________________________________________
 
 
-;; (def-prolog-compiler-macro lisp (goal body cont bindings)
-;;   "lisp/1 and lisp/2"
-;;   (let ((args (args goal)))
-;;     (case (length args)
-;;       (1                                ; lisp/1
-;;          (let* ((lisp-exp (first args))
-;;                 (lisp-args (variables-in lisp-exp)))
-;;            `(progn
-;;               (apply #'(lambda ,lisp-args ,(insert-deref lisp-exp))
-;;                      ,(compile-arg lisp-args bindings))
-;;               ,(compile-body body cont bindings))))
-;;       (2                                ; lisp/2
-;;          (let* ((var (first args))
-;;                 (lisp-exp (second args))
-;;                 (lisp-args (variables-in lisp-exp)))
-;;            (compile-if
-;;             `(unify! ,(compile-arg var bindings)
-;;                      (apply #'(lambda ,lisp-args ,(insert-deref lisp-exp))
-;;                             ,(compile-arg lisp-args bindings)))
-;;             (compile-body body cont (bind-new-variables bindings goal)))))
-;;       (t :pass))))
+(def-prolog-compiler-macro and (goal body cont bindings)
+  (compile-body (append (args goal) body) cont bindings))
 
-;; (defun fail/0 (cont)
-;;   (declare (cl:ignore cont))
-;;   nil)
+(def-prolog-compiler-macro or (goal body cont bindings)
+  (let ((disjuncts (args goal)))
+    (case (length disjuncts)
+      (0 fail)
+      (1 (compile-body (cons (first disjuncts) body) cont bindings))
+      (t (let ((fn (gensym "F")))
+           `(flet ((,fn () ,(compile-body body cont bindings)))
+              .,(maybe-add-undo-bindings
+                 (loop for g in disjuncts collect
+                      (compile-body (list g) `#',fn
+                                    bindings)))))))))
 
-;; (defun true/0 (cont)
-;;   (funcall cont))
+;; when a goal succeeds, we call the continuation
+(defun true/0 (cont)
+  (funcall cont))
 
-;; (defun !/0 (cont)
-;;   (funcall cont))
+;; when a goal fails, we ignore the continuation
+(defun fail/0 (cont)
+  (declare (ignore cont))
+  nil)
+
+;; Prolog trace
+
+(defvar *prolog-trace-indent* 0)
+
+(defun prolog-trace (kind predicate &rest args)
+  (if
+   (member kind '(call redo))
+   (incf *prolog-trace-indent* 3))
+  (format t "~&~VT~a ~a:~{ ~a~}"
+          *prolog-trace-indent* kind predicate args)
+  (if
+   (member kind '(fail exit))
+   (decf *prolog-trace-indent* 3)))
+
+(defun >/2 (x y cont)
+       (if
+        (and (numberp (deref x)) (numberp (deref y)) (> χ y))
+        (funcall cont)))
+
+(defun numberp/1 (x cont)
+  (if
+   (numberp (deref x ) )
+   (funcall cont)))

@@ -15,4 +15,10 @@
   ""
   ((prolog-compile 'likes) @ 389)
   ((prolog-compile 'member))      ; defined as build-in predicate
+
+  ;; Do not uncomment because it requires user input
+  ;;
+  ;; ((?- (= ?p member) (call (?p ?x (a b c)))) @ 415)
+  ;; ((?- (member ?x (a b c)) (not (= ?x b))) @ 416)
+  ;; ((?- (not (= ?x b)) (member ?x (a b c))) @ 416)
 )

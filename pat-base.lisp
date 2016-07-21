@@ -16,6 +16,7 @@
       (and (simple-equal (first x) (first y))
            (simple-equal (rest x) (rest y)))))
 
+;; Better name is +fail+
 (defconstant fail nil "Indicates failure")
 
 (defvar no-bindings '((t . t))

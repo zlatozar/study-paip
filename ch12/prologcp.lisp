@@ -4,7 +4,7 @@
 ;;; Copyright (c) 1991 Peter Norvig
 
 ;;;; File prologcp.lisp:  Primitives for the prolog compiler
-;;;; needed to actually run some functions.
+;;;;                      needed to actually run some functions.
 
 (in-package #:ch12-final)
 
@@ -73,17 +73,18 @@ collect the value of EXP into the list RESULT."
   ;;     (bagof ?x (p ?x) ?l) ==> ?l = (1 2 3)
   (let ((answers nil))
     (call/1 goal #'(lambda ()
-                     ;; Bug fix by mdf0%shemesh@gte.com (Mark Feblowitz)
-                     ;; on 25 Jan 1996; was deref-COPY
                      (push (deref-EXP exp) answers)))
     (if (and (not (null answers))
              (unify! result (nreverse answers)))
         (funcall cont))))
 
+;; (?- (bagof ?l (and (length ?l (1+ (1+ (1+ 0))))
+;;                                (and (member a ?l) (member b ?l)))
+;;                        ?bag))
+
 (defun deref-copy (exp)
   "Copy the expression, replacing variables with new ones.
 The part without variables can be returned as is."
-  ;; Bug fix by farquhar and norvig, 12/12/92.  Forgot to `deref' var.
   (sublis (mapcar #'(lambda (var) (cons (deref var) (?)))
                   (unique-find-anywhere-if #'var-p exp))
           exp))
@@ -102,9 +103,10 @@ collect the value of EXP into the list RESULT."
                              :test #'deref-equal)))
         (funcall cont))))
 
-(defun is/2 (var exp cont)
-  ;; Example: (is ?x (+ 3 (* ?y (+ ?z 4))))
-  ;; Or even: (is (?x ?y ?x) (cons (first ?z) ?l))
+;; Rename it form 'is' to avoid name clash with `ch6:is'
+(defun is=/2 (var exp cont)
+  ;; Example: (?- (is= ?x (+ 3 (* ?y (+ ?z 4)))))
+  ;; Or even: (?- (is= (?x ?y ?x) (cons (first ?z) ?l)))
   (if (and (not (find-if-anywhere #'unbound-var-p exp))
            (unify! var (eval (deref-exp exp))))
       (funcall cont)))
@@ -127,7 +129,7 @@ collect the value of EXP into the list RESULT."
 (defun repeat/0 (cont)
   (loop (funcall cont)))
 
-;; Define if, member and length using Prolog
+;; Define functions 'if', 'member' and 'length' using Prolog
 (<- (if ?test ?then) (if ?then ?else (fail)))
 
 (<- (if ?test ?then ?else)

@@ -15,6 +15,7 @@
 
 (defun bound-p (var) (not (eq (var-binding var) unbound)))
 
+;; Gives actual value of the EXP
 (defmacro deref (exp)
   "Follow pointers for bound variables."
   `(progn (loop while (and (var-p ,exp) (bound-p ,exp))
@@ -45,6 +46,7 @@
 
 (defvar *trail* (make-array 200 :fill-pointer 0 :adjustable t))
 
+;; second
 (defun set-binding! (var value)
   "Set VAR's binding to VALUE, after saving the variable
 in the trail. Always returns t."
