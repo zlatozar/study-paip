@@ -3,29 +3,17 @@
 ;;; Code from Paradigms of Artificial Intelligence Programming
 ;;; Copyright (c) 1991 Peter Norvig
 
-;;;; File prolog.lisp: prolog from (11.3), with interactive backtracking.
+;;;; File prolog.lisp: the same as ch11/prolog.lisp (comments are removed)
 
 (in-package #:ch12-final)
 
-;;;; Does not include destructive unification (11.6); see `prologc.lisp'
-
-;; When we have key value, properties list fit perfectly. Value is just first rest.
-;; Compare with parsing in `ch2::rule-rhs'.
-
-;; Clauses are represented as (head . body) cons cells.
 (defun clause-head (clause) (first clause))
 (defun clause-body (clause) (rest clause))
 
-;; Clauses are stored on the predicate's plist.
-(defun get-clauses (pred) (get pred 'clauses)) ; e.g. plist for predicate LIKES is (CLAUSES (((LIKES SANDY ?X) (LIKES ?X CATS))))
+(defun get-clauses (pred) (get pred 'clauses))
 (defun predicate (relation) (first relation))
 
 (defun args (x) "The arguments of a relation" (rest x))
-
-;; Stores relations names for example for:
-;;
-;; (<- (likes Sandy ?x) (likes ?x cats)) => 'likes' will be stored in *db-predicate*.
-;; Then using 'clause' indicator we can extract predicate's plist.
 
 (defvar *db-predicates* nil
   "a list of all predicates stored in the database.")
@@ -33,10 +21,6 @@
 (defmacro <- (&rest clause)
   "Add a clause to the data base."
   `(add-clause ',(replace-?-vars clause)))
-
-;; Creates plist (clauses <all clauses as list>) and assign it to symbol.
-;; In Lisp, every symbol has a property list. You can see stored:
-;;        (symbol-plist '<predicate-name>)
 
 (defun add-clause (clause)
   "Add a clause to the data base, indexed by head's predicate - relation
@@ -83,7 +67,8 @@ with duplicates removed."
       (or (find-anywhere-if predicate (first tree))
           (find-anywhere-if predicate (rest tree)))))
 
-(defmacro ?- (&rest goals) `(top-level-prove ',(replace-?-vars goals)))
+(defmacro ?- (&rest goals)
+  `(top-level-prove ',(replace-?-vars goals)))
 
 ;; Idea first was introduced in `ch4-final::achieve-all'
 (defun prove-all (goals bindings)
@@ -107,9 +92,6 @@ with duplicates removed."
         ;; a primitive function to call
         (funcall clauses (rest goal) bindings
                  other-goals))))
-
-;; Note that this version `top-level-prove' need not call `show-prolog-solutions' itself,
-;; since the printing will be handled by the primitive for `show-prolog-vars'.
 
 (defun top-level-prove (goals)
   (prove-all `(,@goals (show-prolog-vars ,@(variables-in goals)))

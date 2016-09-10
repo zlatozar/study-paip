@@ -23,11 +23,11 @@
                                     bindings)))))))))
 
 ;; when a goal succeeds, we call the continuation
-(defun true/0 (cont)
+(defun true=/0 (cont)
   (funcall cont))
 
 ;; when a goal fails, we ignore the continuation
-(defun fail/0 (cont)
+(defun fail=/0 (cont)
   (declare (ignore cont))
   nil)
 
@@ -50,7 +50,7 @@
         (and (numberp (deref x)) (numberp (deref y)) (> χ y))
         (funcall cont)))
 
-(defun numberp/1 (x cont)
+(defun numberp=/1 (x cont)
   (if
    (numberp (deref x ) )
    (funcall cont)))

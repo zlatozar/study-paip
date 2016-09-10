@@ -38,7 +38,8 @@
         #:ch11
         #:ch11-final
         #:ch11-exercises
-        #:ch12-final)
+        #:ch12-final
+        #:ch12-exercises)
 
   ;; `inspect'
   (:export #:??
@@ -211,7 +212,50 @@
 
   ;; `ch12-final'
   (:export #:prolog-compile
-           #:run-prolog)
+           #:compile-body
+           #:def-prolog-compiler-macro
+           #:maybe-add-undo-bindings
+           #:run-prolog
+           #:top-level-prove
+           #:deref
+           #:deref-equal
+           #:deref-copy
+           #:show-prolog-vars/2
+           #:top-level-query/0
+
+           ;; Prolog build in predicate
+           #:read/1    #:read
+           #:write/1   #:write
+           #:nl/0      #:nl
+           #:=/2       #:=
+           #:==/2      #:==
+           #:call/1    #:call
+           #:not/1     #:not
+           #:bagof/3   #:bagof
+           #:setof/3   #:setof
+           #:is=/2     #:is=
+           #:var/1     #:var
+           #:repeat/0  #:repeat
+           #:numberp/1 #:numberp
+           #:atom/1    #:atom
+           #:lisp/2    #:lisp
+
+           #:?-
+           #:<-
+           #:!
+           #:if
+           #:nil)
+
+  ;; `ch12-exercises'
+  (:export #:prolog-trace
+
+           #:and
+           #:or
+
+           #:true=/0    #:true=
+           #:false=/0   #:false=
+           #:>/2        #:>
+           #:numberp=/1 #:numberp=)
 
   )
 

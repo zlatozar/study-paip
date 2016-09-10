@@ -213,10 +213,14 @@
                 #:def-prolog-compiler-macro
                 #:deref
                 #:maybe-add-undo-bindings)
-  (:export #:and
+  (:export #:prolog-trace
+
+           #:and
            #:or
-           #:true
-           #:false
-           #:prolog-trace)
+
+           #:true=/0    #:true=
+           #:false=/0   #:false=
+           #:>/2        #:>
+           #:numberp=/1 #:numberp=)
 
   )
