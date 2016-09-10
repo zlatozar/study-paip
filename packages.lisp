@@ -55,6 +55,9 @@
   ;; Avoid name collision with `cl:debug'
   (:shadowing-import-from :paip-aux
                           #:debug)
+
+  (:shadowing-import-from :ch12-final
+                          #:?-)
   ;; `paip-aux'
   (:export ;; used in ch03
            #:find-all
@@ -200,14 +203,13 @@
   ;; `ch11-final'
   (:export #:unique-find-anywhere-if
            #:clear-db
-           #:clear-predicate
-           #:?-)
+           #:clear-predicate)
 
   ;; `ch11-exercises'
   (:export #:fact
            #:rule)
 
-  ;; `ch12'
+  ;; `ch12-final'
   (:export #:prolog-compile
            #:run-prolog)
 
