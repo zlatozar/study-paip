@@ -221,6 +221,8 @@
            #:true=/0    #:true=
            #:false=/0   #:false=
            #:>/2        #:>
-           #:numberp=/1 #:numberp=)
+           #:numberp=/1 #:numberp=))
 
-  )
+(defpackage #:ch13
+  (:documentation "Chapter 12. Object Oriented Programming")
+  (:use #:common-lisp))
