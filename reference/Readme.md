@@ -94,6 +94,7 @@
     - [pushnew](#pushnew)
 - [Chapter-12](#chapter-12)
     - [values](#values)
+    - [throw](#throw)
     - [catch](#catch)
     - [terpri](#terpri)
 - [Koans](#koans)
@@ -1725,17 +1726,59 @@ See also: GETF
 PUSHNEW is a generalized assignment operator like PUSH, but it first checks to make sure
 the element is not a member of the list, so it is useful for adding an element to a set.
 
+## Chapter-12
+
 ### values
 
-TODO
+(**values** &rest _args_) => all arguments as values
+
+All of the arguments are returned, in order, as values.
+
+The expression ```(values)``` returns zero values. This is the standard idiom for returning no values from a function.
+The values function is the standard idiom for indicating that only one value is to be returned, as shown in the following example.
+
+```cl
+(defun foo (x y)
+  (values (floor (+ x y) y)))
+```
+
+This works because values returns exactly one value for each of its _argument forms;_ as for
+any function call, if any argument form to values produces more than one value, all but
+the first are discarded.
+
+```cl
+(values (values 1 2 3) 4 5) ;=>  1, 4, 5
+```
+
+### throw
+
+(**throw** _tag_ _expr_)
+
+Evaluates each of the two parameters and returns the value of the _expr_ to the
+CATCH-expression that has the named _tag_.
+
+Causes a non-local control transfer to a catch whose tag is ```eq``` to _tag_.
 
 ### catch
 
-TODO
+(**catch** _tag_ _form*_) => result*
+
+The parameters are evaluated from left to right (tag then forms). While evaluating a
+_form_, if a THROW-form is evaluated with the same tag as the value of _tag_, the result
+specified by THROW is immediately returned.
+
+```(catch 'foo form)``` catches a ```(throw 'foo form)``` but not a ```(throw 'bar form)```.
+
+NOTES: CATCH and THROW are special operators that can force the stack to unwind.  You wrap
+       CATCH around a body of code and then use THROW to cause the CATCH form to return
+       immediately with a specified value. The same as throwing an exception in Java.
 
 ### terpri
 
-TODO
+Simply tells Lisp to terminate the current line and start a new one for printing
+subsequent output
+
+See also: FRESH-LINE (puts new line if "needed")
 
 ## Koans
 
