@@ -1,4 +1,4 @@
-## Prolog crash course
+## Prolog notes
 
 ### Representing facts
 
@@ -6,10 +6,11 @@ Prolog syntax and semantics are much closer to _formal logic_, the most common w
 representing facts and reasoning methods used in the artificial-intelligence
 literature. The first thing is the _predicate expression_. Formally, a predicate
 expression is a name - a predicate followed by zero or more arguments enclosed in
-parentheses and separated by commas. Predicate names and arguments can be composed of any
-mixture of letters and numbers, except that names for now must start with a **lower-case**
-letter. The underscore symbol ```_``` also counts as a letter, and we will often use
-it to make names more readable. So these are all predicate expressions:
+parentheses and separated by commas. In general predicate symbol, is the name of a
+_relation_ that holds between the arguments. Predicate names and arguments can be composed
+of any mixture of letters and numbers, except that names for now must start with a
+**lower-case** letter. The underscore symbol ```_``` also counts as a letter, and we will
+often use it to make names more readable. So these are all predicate expressions:
 
 ```prolog
 p(x)
@@ -28,7 +29,7 @@ It could be in other language than English:
 дружба(русия, българия)
 ```
 
-A period will signal the end of a fact. We could also tell the computer:
+A **period** at the end will signal the end of a fact. We could also tell the computer:
 
 ```prolog
 % this is a comment
@@ -48,9 +49,11 @@ Predicates can mean many things. But they do fall into categories:
 | Examples               | ship(Kennedy) vehicle(ship)  | color(kennedy, gray) location(kennedy, 14n35e) | part_of(kennedy, us_navy) a_kind_of(kennedy, ship) | ship(kennedy, gray, 14n35e, 16feb85) | sum(3, 4, 7) | color(kennedy, gray, 0.8)  |
 | Meaning of the examples| "The Kennedy is a ship" "A ship is a vehicle" | "The color of the Kennedy is gray" "The location of the Kennedy is 14n35e" | "The Kennedy is part of the US Navy" "The Kennedy is a kind of ship" | "There is a ship record with entries Kennedy, gray, 14n35e and 16feb85" | "The sum of 3, 4, 7" | "We believe with certainty 0.8 that the Kennedy is gray|
 
-NOTE: We've said these predicates are like the types in computer languages, but there are
+NOTE: We've said these predicates are like the _types in computer languages_, but there are
 some differences. The main one is that they need never be defined anywhere. The type
 (predicate) names are just arbitrary codes used in look up.
+
+### Type of predicates
 
 - Predicate property
 
@@ -76,22 +79,23 @@ We could give as facts:
 owns(tom, fido).
 owns(tom, toms_car).
 ```
-    It's easy to get confused about argument order in relationship-predicate expressions. So
-we’ll try to follow this convention: if the predicate name is inserted between the two
+  It's easy to get confused about argument order in relationship-predicate expressions. So
+we'll try to follow this convention: if the predicate name is inserted between the two
 arguments, the result will be close to an English sentence giving the correct meaning. So
 if we insert "owns" between "tom" and "fido" we get "Tom owns Fido".
-    Special relationship predicate is frequently used in artificial intelligence. It's called
+
+  Special relationship predicate is frequently used in artificial intelligence. It's called
 ```a_kind_of``` or ```is_a``` (we prefer the first name, because "is" is vague), and it
 can replace all type predicates. Its first argument is a thing, and its second argument is
-the type of that thing (the predicate name in the one-argument form considered
-before).
-    Pictures can make a complicated set of facts a lot clearer. There's a simple pictorial
+the type of that thing (the predicate name in the one-argument form considered before).
+
+  Pictures can make a complicated set of facts a lot clearer. There's a simple pictorial
 way to show the predicate expressions we've been discussing: _the semantic network._
 Unfortunately, there is a major restriction on it: semantic networks can only
 directly represent predicates of two arguments (so type predicates must be in the
 two-argument form). Let's illustrate with an example.
 
-NOTE: this database will be used in following examples.
+NOTE: This database will be used in following examples.
 
 ```prolog
 a_kind_of(enterprise,ship).
@@ -121,7 +125,7 @@ and type:
 
 ?-['armada.pl'].
 ```
-after that you can do queries.
+after that you can do queries. Do not forget the dot at the end.
 
 - Predicates with three or more arguments (database predicate, function predicates)
 
@@ -181,7 +185,8 @@ argument facts in order, trying to match each to the query. When it finds one th
 in predicate name and first argument, it will type ```X = ``` followed by the fact's
 second argument, instead of typing yes. Or in technical jargon, it binds or matches ```X``` to a
 value and prints it. ```X``` here is a variable.
-    Prolog variables are designated by a capitalized first letter in a word (followed by
+
+  Prolog variables are designated by a **capitalized** first letter in a word (followed by
 other letters and numbers, either capitalized or uncapitalized). Variables can only be
 arguments in Prolog; they can't appear as predicate names. This means Prolog represents
 only _first-order logic_. First-order logic is sufficient for nearly all
@@ -258,7 +263,8 @@ subexpressions of "and"s and "or"s. Example:
 This reads: _"Find me an X such that either the Enterprise is part of it, or the
 Enterprise is part of some Y that is part of it."_
 
-STYLE: (1) "and"s occur more often in applications,<br/>
+STYLE: <br/>
+       (1) "and"s occur more often in applications,<br/>
        (2) they often require parentheses and so are hard to read, and <br/>
        (3) there is a better way to get the effect of an "or," we see later<br/>
 
@@ -279,3 +285,89 @@ Hint: Questions in English about a database often map directly into Prolog queri
 Words like "is", "are", "does" and "did" at the beginning of a question suggest
 queries without variables (yes/no queries). Words like "what", "which", "who",
 "where", "when", and "how" suggest variables.
+
+### "Function" and "Relation" definition
+
+A function is a mapping from ```n``` members of the domain of interpretation (where
+```n``` is the number of arguments that the function takes) onto one member of the domain
+of interpretation. For instance, suppose that the field of knowledge is the relationships
+between someone named "Bob" and several of the people he talked to at a family
+reunion. The domain of interpretation is the set of people:
+
+```[Bob, Bob's cousin George, Bob's cousin Mick, Mick's girlfriend Nancy]```
+
+_"Girlfriend of"_ is an important function in this field. The _"girlfriend of"_ function
+takes one argument, and so is a mapping from one person to another person. A particular
+application of this function maps "Mick" onto "Nancy." "Mick" is the argument, and "Nancy"
+is the value of this application of the function.
+
+A relation is a mapping from ```n``` members of the domain of interpretation (where
+```n``` is the number of arguments that the relation takes) onto a truth value (that is,
+onto a member of the set [```true```, ```false```]). The _"is the cousin of"_ relation
+takes two arguments, and so is a mapping from two people onto a truth value. If the value
+of a particular instance of a relation is true, it is said that the relation **holds**
+between its arguments. A relation that has only one argument is also called a
+**property**.
+
+### Writing in Prolog
+
+- The programmer analyzes the significant entities, functions, and relations in the
+application domain, and chooses symbols to represent each of them.
+
+- The programmer defines each of the significant functions and relations semantically. In
+the case of a relation, this entails specifying which instances of it are true and which
+are false.
+
+- The programmer defines each relation axiomatically with Prolog clauses. An axiomatic
+definition of a relation is successful if it captures the sense of the semantic
+definition. The set of axiomatic definitions of all significant relations in the
+application domain is a program that embodies the structure of the domain.
+
+- The programmer or user uses the Prolog interpreter to evaluate queries to the set of
+program clauses. The interpreter's answer to a query reflects the structure of the
+application domain, and can be used to solve problems in the application domain.
+
+### Models - declarative and procedural
+
+- Declarative
+
+The declarative semantic model of Prolog specifies the truth value of instances of
+relations. The word _declarative_ is used because a Prolog clause declares that a relation
+holds between its arguments if all of the conditions of the clause are met. For instance,
+the following clause:
+
+```prolog
+executive(Name, Salary) :-
+    employee(Name, Salary), Salary > 70000.
+```
+
+can be read as:
+
+```
+Anyone (Name) is an executive if
+    he or she is an employee
+    with a salary greater than $70,000.
+```
+
+Read according to the declarative model, Prolog clauses are formulas
+of first order predicate logic written in Horn clause form. The only
+logical connectives that can occur are "if," "and," and "or."
+
+- Procedural
+
+According to the procedural semantic model of Prolog, the conditions of a clause specify a
+_process_ to establish the truth value of the conclusion of the clause. A set of clauses
+with the same predicate name and the same number of arguments is understood as a
+procedure. A query with the same predicate name and same number of arguments as a
+procedure is understood to be a call to that _procedure_. For a query to succeed, the
+procedure it calls must be successfully evaluated. Each condition of a clause is also
+understood as a call to a procedure.
+
+Read procedurally, the meaning of the "executive" clause above is:
+
+```
+One way to find an executive is:
+    first, find an employee,
+    then second, verify that the salary
+    of the employee is greater than $70,000.
+```

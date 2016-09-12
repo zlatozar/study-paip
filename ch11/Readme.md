@@ -5,6 +5,12 @@ that describe a problem and its solution. These relationships act as constraints
 algorithms that can solve the problem, but the system itself, rather than the programmer,
 is responsible for the details of the algorithm.
 
+Logic programming allows a programmer to describe a situation with formulas of predicate
+logic, and then to use a _mechanical problem solver_ (i.e. a procedure) to make inferences
+(the process of reaching a conclusion from premisses) from the formulas.  When using a
+logic programming language, the emphasis is on describing the structure of the application,
+instead of telling the computer what to do.
+
 We shall view functional programming as computation in evaluation mode (no information
 guessing is allowed) and relational programming as computation in a deduction mode
 (information guessing is allowed.)
@@ -246,7 +252,8 @@ Here is the algorithm that searches for solutions:
 
     1. Try to locate Q(query) itself in the data base. If you can, then return success.
        _"If you ever find out that some Χ likes cats, then conclude that Sandy likes X."_
-       This is _forward chaining_: reasoning from a premise to a conclusion.
+       This is _forward chaining_: reasoning from a premise (statements that are assumed
+       to be true) to a conclusion.
 
     2. Otherwise, try to locate a conditional sentence of the form (P is a predicate)
        _If P1 and ... and Pn then Q_
