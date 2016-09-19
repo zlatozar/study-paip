@@ -53,7 +53,7 @@ quoted or unquoted symbol."
   '(function setf type variable compiler-macro method-combination)
   "Types that might work with (documentation obj type)")
 
-(defmacro ?? (symbol &rest ignored-arguments)
+(defmacro ?doc (symbol &rest ignored-arguments)
   "Print any documentation for the symbol.
 Includes variable, function, type, compiler macro, method
  combination, and setf documentation."

@@ -82,6 +82,8 @@ to test chapter exercises.")
            #:find-if-anywhere
            ;; ch12
            #:new-symbol
+           ;; ch13
+           #:rest2
            ))
 
 ;;; ____________________________________________________________________________

@@ -130,5 +130,6 @@
 
                ;; Chapter 13
                (:file "ch13/clos")
+               (:file "ch13/examples" :depends-on ("ch13/clos"))
 
                ))

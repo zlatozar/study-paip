@@ -225,4 +225,9 @@
 
 (defpackage #:ch13
   (:documentation "Chapter 12. Object Oriented Programming")
-  (:use #:common-lisp))
+  (:use #:common-lisp
+        #:inspect
+        #:tutor)
+  (:import-from :paip-aux
+                #:rest2)
+  (:shadow :otherwise))
