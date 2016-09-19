@@ -128,4 +128,7 @@
                (:file "ch12/examples" :depends-on ("ch12/prologc" "ch12/prologcp"))
                (:file "ch12/exercises" :depends-on ("ch12/prologc" "ch12/prologcp"))
 
+               ;; Chapter 13
+               (:file "ch13/clos")
+
                ))
