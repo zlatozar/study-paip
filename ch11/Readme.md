@@ -7,7 +7,7 @@ is responsible for the details of the algorithm.
 
 Logic programming allows a programmer to describe a situation with formulas of predicate
 logic, and then to use a _mechanical problem solver_ (i.e. a procedure) to make inferences
-(the process of reaching a conclusion from premisses) from the formulas.  When using a
+(the process of reaching a conclusion from premises) from the formulas. When using a
 logic programming language, the emphasis is on describing the structure of the application,
 instead of telling the computer what to do.
 

@@ -371,3 +371,77 @@ One way to find an executive is:
     then second, verify that the salary
     of the employee is greater than $70,000.
 ```
+
+### Tail recursion
+
+For a predicate defined by a recursive clause, the self-invocation should be the last goal in its body.
+And, for the Prolog system to discard all references to the goals preceding the last one (and thereby
+freeing up memory), a cut (!) should be introduced just before the self-invocation.
+
+```prolog
+
+% Calculating the sum of the (integer) entries in a list
+sum([],S,S).
+sum([H|T],Acc,S) :- NewAcc is Acc + H, !, sum(T,NewAcc,S).
+```
+
+### Cut operation
+
+The **cut** is an operation that is used to cut off backtracking when it is not
+wanted. When called, the cut always succeeds, but has the side-effect of removing any
+alternative choices in effect at the time. It follows that if 'cut' is called when there
+is only one possible solution, then the 'cut' has no effect.
+
+Cut has several uses:
+
+1. To change a non-deterministic predicate into a deterministic (functional) one. For
+example, we wish to check whether X is a member of a list L. If it is a member, we wish to
+discard the alternative choices. This is done by a deterministic membercheck predicate,
+which might be more efficient than the usual member, but cannot be used to generate
+multiple solutions.
+
+```prolog
+membercheck(X, [X|_]) :- !.
+membercheck(X, [_|L]) :- membercheck(X, L).
+```
+```
+?- membercheck(X, [a, b, c]).
+X= a;
+no.
+```
+
+Tip: Cut at the end of a rule means you want only one solution to the query
+of that rule.
+
+2. To specify the exclusion of some cases by 'committing' to the current choice.
+```
+s(X) = if p(X) then q(X) else r(X).
+```
+
+For example, the goal max(X,V,Z) instantiates Z to the greater of X and V:
+
+```prolog
+max(X, V, X) :- X >= V.
+max(X, V, V) :- X < V.
+```
+
+If max is called with X>=Y, the first clause will succeed, and the cut will assure that
+the second clause (the alternative choice) is never made. The advantage is that Prolog can
+disregard the second clause as an alternative backtracking choice. One consequence of the
+max program being written using a cut is that the test does not have to be made twice if X<Y.
+
+```prolog
+max(X, Y, X) :- X >= Y, !.
+max(X, Y, Y) :- X < Y.
+```
+
+Tip: The cut prunes Prolog's search tree. Place the cut (if you need one) at the exact
+point where you know that the current path is the correct one.
+
+```prolog
+p(X) :-
+    a(X), b(X), !, c(X), d(X).
+```
+
+Here, a(X) and b(X) can be tests that are allowed to fail, but c(X) and d(X) should
+always succeed right away, or we may accidentally cut off a correct answer.
