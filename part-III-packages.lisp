@@ -229,5 +229,8 @@
         #:inspect
         #:tutor)
   (:import-from :paip-aux
-                #:rest2)
-  (:shadow :otherwise))
+                #:rest2
+                #:dbg)
+  (:import-from :ch6
+                #:city
+                #:neighbors))

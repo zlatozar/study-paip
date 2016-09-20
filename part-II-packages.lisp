@@ -161,7 +161,11 @@ In Chapters 5 and 6 'pat-match' will be improved.")
            #:search-all
            #:rule-based-translator
            #:pat-match-abbrev
-           #:expand-pat-match-abbrev))
+           #:expand-pat-match-abbrev
+
+           ;; needed only for `ch13' examples
+           #:city
+           #:neighbors))
 
 (defpackage #:ch6-exercises
   (:documentation "Selected exercises form Chapter 6")
