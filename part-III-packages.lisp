@@ -224,7 +224,7 @@
            #:numberp=/1 #:numberp=))
 
 (defpackage #:ch13
-  (:documentation "Chapter 12. Object Oriented Programming")
+  (:documentation "Chapter 13. Object Oriented Programming")
   (:use #:common-lisp
         #:inspect
         #:tutor)

@@ -29,6 +29,8 @@
 ;;; ____________________________________________________________________________
 ;;;
 
+;; ATTENTION: Object oriented implementation use characters - there are not suitable to be packaged.
+
 (defun new-account (name &optional (balance 0.00)
                     (interest-rate .06))
   "Create a new account that knows the following messages:"

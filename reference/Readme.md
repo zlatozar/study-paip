@@ -97,6 +97,9 @@
     - [throw](#throw)
     - [catch](#catch)
     - [terpri](#terpri)
+- [Chapter-13](#chapter-13)
+    - [case](#case)
+    - [ecase](#ecase)
 - [Koans](#koans)
 - [Misc](#misc)
     - [getf](#getf)
@@ -1779,6 +1782,29 @@ Simply tells Lisp to terminate the current line and start a new one for printing
 subsequent output
 
 See also: FRESH-LINE (puts new line if "needed")
+
+## Chapter-13
+
+### case
+
+Lets you supply a value to compare against.
+
+Similar to switch statements in C-derived languages. Evaluates its first argument - the
+key form - and then find the clause whose first element - the key - is the same value
+according to EQL. In this case, that means the variable type is evaluated, yielding
+whatever value was passed. The keys aren't evaluated. In other words, the value of type
+will be compared to the literal objects read by the Lisp reader as part of the CASE form.
+Returns NIL if no matching clause is found.
+
+### ecase
+
+The E in ECASE stands for "exhaustive" or "error," meaning ECASE should signal an error if
+the key value is anything other than one of the keys listed. The regular CASE is looser,
+returning NIL if no matching clause is found.
+
+**WARNING:** Because the case/ecase command uses EQ for comparisons, it is usually used only for
+_branching on symbol values_. It **cannot** be used to branch on string values, among other
+things.
 
 ## Koans
 

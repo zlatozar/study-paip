@@ -49,7 +49,7 @@
 
   (:section "13.5 Delegation")
   ""
-  "FIXME: This is not working because of using 'otherwise'"
+  "ATTENTION: This is not working because of using 'otherwise'"
   ""
   ;; ((define-class password-account (password acct) ()
   ;;                (change-password (pass new-pass)
@@ -71,10 +71,10 @@
 
   (:section "13.7 CLOS: The Common Lisp Object System")
   ""
-  "Because some Lisp implementations can't convert a structure class into"
+  "ATTENTION: Because some Lisp implementations can't convert a structure class into"
   "a CLOS class, nor convert a regular function into a generic function,"
   "we use the names account*, name*, balance*, interest-rate*.  If you were"
-  "doing a real application, not just some examples, you would choose one"
+  "doing a REAL APPLICATION, not just some examples, you would choose one"
   "implementation and get to use the regular names."
   ""
   ((defclass account* ()
