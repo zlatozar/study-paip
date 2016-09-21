@@ -8,10 +8,8 @@
 
 (in-package #:ch14-second)
 
-;; (requires "krep1") ; Need some functions from previous version
-
 (defun index (key)
-  "Store key in a dtree node.  Key must be (predicate . args);
+  "Store key in a dtree node. Key must be (predicate . args);
   it is stored in the predicate's dtree."
   (dtree-index key (rename-variables key)    ; store unique vars
                (get-dtree (predicate key))))

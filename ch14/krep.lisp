@@ -8,8 +8,6 @@
 
 (in-package #:ch14-final)
 
-;; (requires "krep2") ; Need some functions from previous version
-
 ;;; ____________________________________________________________________________
 
 (defparameter *primitives* '(and sub ind rel val))

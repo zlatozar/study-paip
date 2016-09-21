@@ -26,23 +26,23 @@
   ((add-fact '(val latin-name bear ursidae)))
   ((add-fact '(val latin-name dog canis-familiaris)))
 
-  "Now retrieve-fact is used to answer three questions: What kinds of animals"
-  "are there?"
-  ""
-  ((retrieve-fact '(sub ?kind animal)) =>
-   (((?KIND . DOG))
-    ((?KIND . BEAR))))
+  ;; "Now retrieve-fact is used to answer three questions: What kinds of animals"
+  ;; "are there?"
+  ;; ""
+  ;; ((retrieve-fact '(sub ?kind animal)) =>
+  ;;  (((?KIND . DOG))
+  ;;   ((?KIND . BEAR))))
 
-  "What are the Latin names of each kind of animal?"
-  ""
-  ((retrieve-fact '(and (sub ?kind animal)
-                    (val latin-name ?kind ?latin))) =>
-   (((?LATIN . CANIS-FAMILIARIS) (?KIND . DOG))
-    ((?LATIN . URSIDAE) (?KIND . BEAR))))
+  ;; "What are the Latin names of each kind of animal?"
+  ;; ""
+  ;; ((retrieve-fact '(and (sub ?kind animal)
+  ;;                   (val latin-name ?kind ?latin))) =>
+  ;;  (((?LATIN . CANIS-FAMILIARIS) (?KIND . DOG))
+  ;;   ((?LATIN . URSIDAE) (?KIND . BEAR))))
 
-  "What are the colors of each individual bear?"
-  ""
-  ((retrieve-fact '(and (ind ?x bear) (val color ?x ?c))) @ 489 =>
-   (((?C . BROWN) (?X . YOGI))))
-  ((test-bears) @ 492)
+  ;; "What are the colors of each individual bear?"
+  ;; ""
+  ;; ((retrieve-fact '(and (ind ?x bear) (val color ?x ?c))) @ 489 =>
+  ;;  (((?C . BROWN) (?X . YOGI))))
+  ;; ((test-bears) @ 492)
   )

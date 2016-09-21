@@ -26,6 +26,7 @@
   "with figure 14.1 on page 474."
   ""
   ((test-index) @ 478)
+
   ""
   "Here is an example of fetching from the index"
   ((fetch '(p ? c)) @ 480 =>

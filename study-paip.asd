@@ -132,4 +132,12 @@
                (:file "ch13/clos")
                (:file "ch13/examples" :depends-on ("ch13/clos"))
 
+               ;; Chapter 14
+               (:file "ch14/prolog")
+               (:file "ch14/krep1" :depends-on ("ch14/prolog"))
+               (:file "ch14/krep2" :depends-on ("ch14/krep1"))
+               (:file "ch14/krep" :depends-on ("ch14/krep2"))
+
+               (:file "ch14/examples-krep1" :depends-on ("ch14/krep1"))
+               (:file "ch14/examples-krep" :depends-on ("ch14/krep"))
                ))

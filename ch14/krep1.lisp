@@ -7,8 +7,6 @@
 
 (in-package #:ch14-first)
 
-;; (requires "prolog")
-
 ;;; ____________________________________________________________________________
 
 ;; An `nlist' is implemented as a (count . elements) pair:

@@ -166,6 +166,9 @@
                 #:get-binding
                 #:extend-bindings
                 #:binding-val)
+  (:import-from :ch11
+                #:unify
+                #:subst-bindings)
   (:export #:prolog-compile
            #:compile-body
            #:def-prolog-compiler-macro
@@ -234,3 +237,72 @@
   (:import-from :ch6
                 #:city
                 #:neighbors))
+
+(defpackage #:ch14-first
+  (:documentation "Chapter 14. Knowledge Representation and Reasoning (first version)")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor)
+  (:import-from :paip-aux
+                #:reuse-cons
+                #:new-symbol
+                #:length=1
+                #:reuse-cons
+                #:find-all
+                #:find-if-anywhere
+                #:find-anywhere)
+  (:shadowing-import-from :paip-aux
+                          #:symbol)
+  (:import-from :pat-base
+                #:fail
+                #:no-bindings
+                #:variable-p
+                #:get-binding
+                #:extend-bindings
+                #:binding-val
+                #:lookup)
+  (:import-from :ch11
+                #:unify
+                #:subst-bindings)
+  (:export #:dtree-index
+           #:get-dtree
+           #:retrieve
+           #:fetch
+           #:index
+           ;; From other packages
+           #:fail
+           #:rename-variables
+           #:unify
+           #:clause-head
+           #:clause-body
+           #:subst-bindings
+           #:query-bind
+           #:predicate
+           #:args
+           #:variable-p
+           #:no-bindings))
+
+(defpackage #:ch14-second
+  (:documentation "Chapter 14. Knowledge Representation and Reasoning (second version)")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor
+        #:ch14-first)
+  (:export #:def-attached-fn
+           #:retrieve-fact
+           ;; From other packages
+           #:fail
+           #:fetch
+           #:index
+           #:predicate
+           #:args
+           #:variable-p
+           #:retrieve
+           #:no-bindings))
+
+(defpackage #:ch14-final
+  (:documentation "Chapter 14. Knowledge Representation and Reasoning (final version)")
+  (:use #:common-lisp
+        #:inspect
+        #:tutor
+        #:ch14-second))
