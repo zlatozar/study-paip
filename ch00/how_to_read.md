@@ -7,6 +7,22 @@ you will be at practically everything. Setting time limits and keeping to them (
 accomplishing your goals) is one of the most important life skills you can learn. So never
 start to read without planning when to stop.
 
+### Prepare for the reading
+
+- Place should be quiet and cozy
+
+- Light in the room is very important
+
+- Temperature in should be 17-21 Celsius
+
+- Sit comfortably
+
+- Find out a way to concentrate and be patient
+
+- Drink water
+
+- In pauses - walk outside
+
 ### Have a purpose and a strategy
 
 Three good ways to think about this are:
@@ -53,7 +69,6 @@ Focus especially on the beginnings and ends of chapters and major sections. Pay 
 attention to the passages you marked on the first round. Try to answer any questions you
 generated on the first round.
 
-
 #### Notes: recall and note-taking (10-20 percent of total time)
 
 _This is not at all the same thing as text markup; your goal here is to process the_
@@ -66,12 +81,10 @@ remember and relocate the most important things. 1-3 pages of notes per 100 page
 is a good goal to shoot for; more than that is often too much. Use some system that lets
 you easily find places in the book (e.g., start each note with a page number.)
 
-
-Example:
+**Example:**
 
 For a **250 page** book, you might spend **15 minutes** on overview, **4 hours** on detailed reading,
 and **20-30 minutes** making notes.
-
 
 ### Focus on the parts with high information content
 
@@ -99,7 +112,6 @@ Focus on the following elements, in more or less the following order:
   
 - On second and third read pay attention to your notes
 
-
 ### Use Personal Text Markup Language
 
 Always, always, always mark up your reading. This is a critical part of active reading. Do
@@ -112,7 +124,7 @@ unnecessary. Use your own words.
 
 ### Use a citation manager
 
-_Docear_ is a good choice?
+_Docear_ is my choice
 
 ### Use your unconscious mind
 
