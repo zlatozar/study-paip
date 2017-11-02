@@ -14,7 +14,7 @@
 
 (defun add-fact (fact)
   "Add the fact to the data base."
-  (cond ((eq (predicate fact) 'and)
+  (cond ((eq (predicate fact) 'and)       ;; again not package friendly...
          (mapc #'add-fact (args fact)))
         ((or (not (every #'atom (args fact)))
              (some #'variable-p (args fact))
