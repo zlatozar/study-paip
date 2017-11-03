@@ -1,5 +1,7 @@
 ## Chapter 11
 
+### Logic programming
+
 The idea behind _logic programming_ is that the programmer should state the _relationships_
 that describe a problem and its solution. These relationships act as constraints on the
 algorithms that can solve the problem, but the system itself, rather than the programmer,
@@ -22,222 +24,6 @@ interact and hold under various circumstances. Ideally, the Prolog interpreter t
 of the "how" aspect of problem solving, freeing the programr-r to focus on the relations
 characterizing a problem.
 
-### Prolog language
-
-A Prolog program consists of a collection of _procedures_. Each procedure defines a
-particular _predicate_, being a certain relationship between its arguments. A procedure
-consists of one or more assertions, or _clauses_. It is convenient to think of two kinds of
-clauses: _facts_ and _rules_.
-
-_In Prolog, there's not often a finely detailed step-by-step recipe._ If you find the
-relation you have to write few lines of code.
-
-**Tip**: All Prolog code lives in a data base so Prolog program can be regarded as a
-relational database that contains rules as well as facts. It is easy to add and remove
-information from the database, and to pose sophisticated queries.
-
-What is Prolog?
-
-1. Declaring some ```facts``` about objects and their relationships;
-2. Defining ```rules``` about objects and their relationships, and
-3. Asking ```questions``` (queries) about objects and their relationships.
-
-
-#### Facts
-
-A ```fact``` is the most basic statement in Prolog. Facts are conclusions or
-consequents that have no conditions or antecedents; facts thus form simple statements
-about objects and their relationships. A fact announces that some relation is _true_. A
-finite set of facts constitutes a simple logic program. Here is some examples:
-
-```prolog
-
-likes(joe,apples).  % "joe likes apples."
-friend(bonny,joe).  %  "bonny is a friend of joe."
-mother(sally,sue).  % "sally is the mother of sue."
-```
-
-
-#### Rules
-
-A single program-clause can either be a ```fact``` or a ```rule```. Rules define complicated
-relationships among objects by announcing that the _head_ of the rule is true if all of
-the goals in the body of the rule are true. A rule has the form
-
-```
-|-- head --|    |-- body --|
- B1......Bn  :-  A1......An
-
-```
-
-```:-``` can be read as the word _"if"_ or _"is implied by"_
-
-Here is an example:
-
-```prolog
-
-happy(X) -:    % Any X is happy if
-   has(X,Y),   % X has Y and
-   dog(Y).     % Y is a dog.
-```
-
-Prolog programs are composed of facts and rules. Facts are stored with rules. A collection
-of facts and rules is commonly referenced as _database_. There is no need Prolog programming 
-to differentiate between programming and data.
-
-### Queries.
-
-Queries form provide a means for retrieving information from a logic program.
-A query has the special form:
-
-```
-? - G1,G2,...,Gn
-```
-
-A query initiates the execution of a program and is tyically typed at the terminal with
-the interpreter running and the desired program loaded. Prolog solves a query by forming
-a set of _variable bindings_ that makes each of the goals in the query consistent with the
-facts ard rules in the program. This process can be illustrated with the following
-example:
-
-```
-fact 1. likes(joe,apples).
-fact 2. friend(bonny,joe).
-
-rule 1. likes(X,Y) :-
-           friend(X,Z),
-           likes(Z,Y).
-```
-
-
-The interpreter now knows two facts that state that ```joe``` likes ```apples``` and ```bonny``` is a friend
-of ```joe```. The single rule expresses a more complex relationship. _Any X likes any Y if X is_
-_a friend of Z and Z likes Y_. The database, once loaded, can be interrogated with queries.
-
-Consider the following query:
-
-```
-?- likes(joe,X).
-```
-
-The Prolog interpreter will start at the top of the database and search for a _fact_ or _rule_
-whose head matches our query. The interpreter knows it is looking for facts or rules named
-```likes``` with **two** arguments, the first of which must be ```joe``` or able to be instantiated to
-```joe```. The second variable X has not yet been instantiated. The first fact encountered
-that meets all the requircnents is _fact 1_ if X is instantiated to "apples". The interpreter
-will respond to our query with:
-
-```
-X = apples
-more (y/n)? y
-no
-```
-
-The interpreter can not find any more facts c. rules that it can match with our query.
-As a more complex example, consider the compound query:
-
-```
-?-likes(joe,X),likes(bonny,X).
-```
-
-This query asks the interpreter to find some inbtantiation for the variable X that both "'joe"
-and "bonny" like. The following sequente of events will occur:
-
-1. The first goal of the query succeeds because of fact number **1** with X instantiated to
-   "apples".
-
-2. "bonny" can not be matched to any likes fact so the second goal can only succeed
-   through rule **1**. The rule is invoked with X instantiated to "bonny" and the variable
-   Y instantiated to "apples".
-   
-3. The first goal of rule **1** succeeds with X instantiated to "bonny" and Z instantiated
-   to "joe" via fact **2**.
-   
-4. The second goal of rule **1** then succeeds with Z instantiated to "joe" and Y to
-   "apples".
-   
-5. Sine both goals of the query goal succeeded the query itself succeeds with X
-   instantiated to "apples"
-   
-
-### Prolog syntax
-
-Prolog uses only one data-type, the ```term```. Any term has one of three forms:
-
-```
-1. a constant
-2. a variable, or
-3  a structure.
-```
-
-#### constant
-
-A ```constant``` is either an ```atom``` or a ```number```.  An atom can be represented
-either by a sequence of alphanumeric characters beginning with a lower-cas, letter or by a
-sequence of characters enclosed in single quotes.  A variable in Prolog stands for some
-_definite_ but **unidentified** object. A variable is expressed by a sequence of
-alphanumeric character or underscores, beginning Jith either an upper-case letter or an
-underscore. Variables in Prolog do not designate storage-locations in memory as do
-variables used in conventional languages. Instead, variables are used for pattern-matching
-within a term. Example:
-
-```
-Constants       Variables
---------------------------
-  a               A
-  ab              Ab
-  a_b             A_B
-  'AB'            _AB5
-  1              _1
-```
-
-#### compound term
-
-A ```compound term``` is composed of a ```functor``` and a sequence of one or more arguments
-and is commonly referred to as a structure. A structure has the form
-
-```
-foo(t1,....tn)
-```
-
-where foo, the functor (or predicate), is an atom and ```t1,...,tn```, the arguments, are terms.
-The number of arguments is referred to as the arity of the term. The Prolog interpreter
-distinguishes among the different forms of structures by the name of the functor and its
-arity. A constant is considered to have an arity of zero.
-
-```
-Prolog Structure                                     Funtor        Arity
--------------------------------------------------------------------------
-student(name(first(tom)))                           student         1
-
-family(dad(joe),mom(bonny),children(jill,joshua))   family          3
-
-```
-
-#### list
-
-An important data structure used in logic programming is the ```list```. A list
-is a sequence of any number of terms such as ```6, bob, (fred(man),sally(woman)), four```.
-Written in Prolog, this list would appear as ```[6,bob,[fred(man),sally(woman)],four]```.
-
-A list is expressed with the following format: ```[Head|Tail]```. For example [1,2,3]
-
-The head of a list is the first term (or element) in the list. The head of the list in
-the above example is the element "1". The tail of a list is itself _a list_ that consists of
-everything in the original list except the head. The tail of the above example is the list
-[2,3]. Square brackets "[]" are used to denote an empty list.
-
-Sometimes it is convenient to denote more than one element at the front of a list. To show
-this, the representation is [X,Y,Z|Y] where X, Y, and Z are the first three elements of
-the list and Y is the tail. The list [1,2,3], written in this form would be [1,2,3|[]].
-
-**NOTE:** It is not mentioned in book but list in Lisp implementation is **cons** cells: ```(first . rest)```
-
-- ```;``` is logical **OR**
-
-- ```,``` is logical **AND**, separates goals
-
-- ```=``` represents unification in Prolog
 
 ### Unification (or matching)
 
@@ -432,6 +218,10 @@ Here is the algorithm that searches for solutions:
   **Logic variables represent values which value you don't know yet.**
 
 **ATTENTION:** With introduced Lisp syntax we can't import rules from another package.
+
+### Lists
+
+It is not mentioned in book but list in Lisp implementation is **cons** cells: ```(first . rest)```
 
 ### Unification and Pattern Matching
 
